@@ -1,18 +1,24 @@
-express = require('express.io');
-// server = require('./server/server.js');
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
-app = express().http().io();
-app.use(express.static('client'));
+app.use(express.static(__dirname + '/public'));
 
-app.io.route('sum', function(req){
-	numbers = req.data;
-	sum = 0;
-	for(i = 0; i < numbers.length; i++) {
-		sum += numbers[i];
-	}
-	req.io.emit('resp-sum', sum);
+app.get('/', function (req, res) {
+	res.sendfile(__dirname + '/index.html');
 });
 
-console.log('server running at port 5566')
+io.on('connection', function (socket) {
 
-app.listen(5566);
+	socket.on('sum', function (data) {
+		sum = 0;
+		for (var i = 0; i < data.length; i++) sum += data[i]
+		socket.emit('sum', sum);
+	});
+
+});
+
+var port = 8080;
+server.listen(port);
+console.log('Server listens on ' + port)
