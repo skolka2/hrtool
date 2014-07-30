@@ -29,14 +29,16 @@ First.prototype.sayNo = function(){
 }
 
 var Second = function(number){
-	First.call(this, number);
+	this.super = First
+	this.super.call(this, number);
 	this.type = 'second';
 }
 
 Second.prototype = new First();
 Second.prototype.constructor = Second;
 
-Second.prototype.getType = function(){
+Second.prototype.sayHi = function(){
+	this.super.prototype.sayHi.apply(this, arguments);
 	console.log('all');
 }
 
