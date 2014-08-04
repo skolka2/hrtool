@@ -2,15 +2,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Planning poker</title>
-    <script src="socket.io/socket.io.js"></script>
-    <script src="js/test.js"></script>
+    <title></title>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-       var app = new App();
-       app.getSumFromBackend([3,4,4,4]);
+       (function(){
+           io = io.connect();
+           
+           // Emit ready event, and wait for acknowledgement.
+            io.emit('client connected', function(data) {
+                if(data)
+                    window.console.log('>> Conected to the server');
+            });
+       })();
     </script>
 </head>
 <body>
-    <div id="main-wrapper"></div>
+    
+    
+    
 </body>
 </html>
