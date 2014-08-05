@@ -1,10 +1,11 @@
 ﻿function getView(view) {
+    var curView;
     switch (view) {
     case 'users':
-            return users;
+        return curView = UserView();
     case 'features':
-        return features;
-    default:
-        return "/";
+        return curView = new FeatureView();
+        default:
+            return curView = new DefaultView();
     }
 }

@@ -3,8 +3,8 @@ var Router = function () { }
 
     Router.prototype.init = function () {
     var obj = this.getPath();
-        //console.log(obj.view);
-        getView(obj.view);
+    var selView = getView(obj.view);
+        selView.render();
 
     }
     Router.prototype.getPath = function() {
