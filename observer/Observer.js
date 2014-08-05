@@ -1,5 +1,6 @@
 var Observer = (function() {
     var instance;
+    var _componentId = 1;
     
     var init = function () {
         var _subscribers = {};
@@ -120,6 +121,10 @@ var Observer = (function() {
                 instance = init();
             
             return instance;
+        },
+        
+        getComponentId: function() {
+            return _componentId++;
         }
     };
 })();

@@ -4,7 +4,6 @@
  * @returns {ObservableComponent}
  */
 var ObservableComponent = function() {
-    this.componentId = ObservableComponent.componentId++;
 };
 
 /**
@@ -51,10 +50,9 @@ ObservableComponent.prototype.destroyComponent = function () {
     observer.removeAsSource(this.componentId);
 };
 
-/**
- * Component counter
- */
-ObservableComponent.componentId = 1;
+ObservableComponent.prototype.setId = function() {
+    this.componentId = Observer.getInstance().getComponentId();
+};
 /**
  * Map of components
  */
