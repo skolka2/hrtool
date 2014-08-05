@@ -10,8 +10,7 @@
            
            // Emit ready event, and wait for acknowledgement.
             io.emit('client connected', function(data) {
-                if(data)
-                    window.console.log('>> Conected to the server');
+                    console.log(data);
             });
        })();
     </script>
