@@ -4,7 +4,7 @@ var mediator =  function() {
 
 }
 
-mediator.prototype = Observer;
+mediator.prototype = new Observer();
 mediator.prototype.constructor = mediator; 
 
 /*
