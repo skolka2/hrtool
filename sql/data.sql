@@ -1,154 +1,68 @@
 -- Test data for database.
 
--- Data for ROLES table.
-INSERT INTO ROLES
-VALUES (0, "User");
-
-INSERT INTO ROLES
-VALUES (1, "Team manager");
-
-INSERT INTO ROLES
-VALUES (2, "Administrator");
+-- Data for USER_ROLES table.
+INSERT INTO user_roles (title) VALUES ('User'), VALUES ('Team manager'), VALUES('Administrator'); 
 
 -- Data for DEPARTMENTS table.
-INSERT INTO DEPARTMENTS
-VALUES (0, 'Sales');
-
-INSERT INTO DEPARTMENTS
-VALUES (1, 'Development');
-
-INSERT INTO DEPARTMENTS
-VALUES (2, 'Products');
+INSERT INTO departments (title) VALUES ('Sales'), VALUES ('Development'), VALUES('Products');
 
 -- Data for TEAMS table.
-INSERT INTO TEAMS
-VALUES (0, 'Sales team 1', 0);
-
-INSERT INTO TEAMS
-VALUES (1, 'Sales team 2', 0);
-
-INSERT INTO TEAMS
-VALUES (2, 'Development team 1', 1);
-
-INSERT INTO TEAMS
-VALUES (3, 'Development team 2', 1);
-
-INSERT INTO TEAMS
-VALUES (4, 'Products team 1', 2);
-
-INSERT INTO TEAMS
-VALUES (5, 'Products team 2', 2);
+INSERT INTO teams (title, id_department) 
+VALUES ('Sales team 1', SELECT id_department FROM departments WHERE title='Sales'),
+VALUES ('Sales team 2', SELECT id_department FROM departments WHERE title='Sales'),
+VALUES ('Development team 1', SELECT id_department FROM departments WHERE title='Development'),
+VALUES ('Development team 2', SELECT id_department FROM departments WHERE title='Development'),
+VALUES ('Products team 1', SELECT id_department FROM departments WHERE title='Products'),
+VALUES ('Products team 2', SELECT id_department FROM departments WHERE title='Products');
 
 -- Data for DEFAULT_TASKS table.
-INSERT INTO DEFAULT_TASKS
-VALUES (0, 'Zalozit si e-mail', 'akjdaskdnadnaln', null, null);
-
-INSERT INTO DEFAULT_TASKS
-VALUES (1, 'Zalozit si Podio ucet', 'akjdaskdnadnaln', null, null);
-
-INSERT INTO DEFAULT_TASKS
-VALUES (2, 'Pozdravit developery', 'akjdaskdnadnaln', null, 1);
-
-INSERT INTO DEFAULT_TASKS
-VALUES (3, 'Pozdravit salesmany', 'akjdaskdnadnaln', null, 0);
-
-INSERT INTO DEFAULT_TASKS
-VALUES (4, 'Pozdravit developery z tymu 1', 'akjdaskdnadnaln', 2, 1);
+INSERT INTO default_tasks (title, description, id_team, id_department)
+VALUES ('Zalozit si e-mail', 'akjdaskdnadnaln', null, null),
+VALUES ('Zalozit si Podio ucet', 'akjdaskdnadnaln', null, null),
+VALUES ('Pozdravit developery', 'akjdaskdnadnaln', null, SELECT id_department FROM departments WHERE title='Development'),
+VALUES ('Pozdravit salesmany', 'akjdaskdnadnaln', null, SELECT id_department FROM departments WHERE title='Sales'),
+VALUES ('Pozdravit developery z tymu 1', 'akjdaskdnadnaln', SELECT id_team FROM teams WHERE title='Development team 1', SELECT id_department FROM departments WHERE title='Development');
 
 -- Data for USERS table.
-INSERT INTO USERS
-VALUES (0, 'Jan', 'Koren', 'jan.koren@socialbakers.com', 1, null);
+INSERT INTO users (first_name, last_name, email, id_role, id_buddy)
+VALUES ('Jan', 'Koren', 'jan.koren@socialbakers.com', SELECT id_role FROM user_roles WHERE title='Team manager', null),
+VALUES ('David', 'Moravek', 'david.moravek@socialbakers.com', SELECT id_role FROM user_roles WHERE title='Administrator', null),
+VALUES ('Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', null),
+VALUES ('Marek', 'Simunek', 'marek.simunek@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', null),
+VALUES ('Vladimir', 'Neckar', 'vladimir.neckar@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', null),
+VALUES ('Karel', 'Zibar', 'karel.zibar@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'),
+VALUES ('Frantisek', 'Kolenak', 'frantisek.kolenak@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', null),
+VALUES ('Lukas', 'Witz', 'lukas.witz@socialbakers.com', SELECT id_role FROM user_roles WHERE title='User', SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com');
 
-INSERT INTO USERS
-VALUES (1, 'David', 'Moravek', 'david.moravek@socialbakers.com', 2, null);
+-- Data for USERS_TEAMS table.
+INSERT INTO users_teams (id_user, id_team, is_admin) 
+VALUES (SELECT id_user FROM users WHERE email='jan.koren@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 1', TRUE),
+VALUES (SELECT id_user FROM users WHERE email='jan.koren@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 2', TRUE),
+VALUES (SELECT id_user FROM users WHERE email='david.moravek@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 1', FALSE),
+VALUES (SELECT id_user FROM users WHERE email='david.moravek@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 2', TRUE);
 
-INSERT INTO USERS
-VALUES (2, 'Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com', 0, null);
-
-INSERT INTO USERS
-VALUES (3, 'Marek', 'Simunek', 'marek.simunek@socialbakers.com', 0, null);
-
-INSERT INTO USERS
-VALUES (4, 'Vladimir', 'Neckar', 'vladimir.neckar@socialbakers.com', 0, null);
-
-INSERT INTO USERS
-VALUES (5, 'Karel', 'Zibar', 'karel.zibar@socialbakers.com', 0, null);
-
-INSERT INTO USERS
-VALUES (6, 'Frantisek', 'Kolenak', 'frantisek.kolenak@socialbakers.com', 0, null);
-
-INSERT INTO USERS
-VALUES (7, 'Lukas', 'Witz', 'lukas.witz@socialbakers.com', 0, null);
-
--- Data for USERS_IN_TEAM table.
-INSERT INTO USERS_IN_TEAMS
-VALUES (0, 0, 2);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (1, 0, 3);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (2, 1, 2);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (3, 1, 3);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (4, 2, 3);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (5, 3, 3);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (6, 4, 2);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (7, 5, 3);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (8, 6, 2);
-
-INSERT INTO USERS_IN_TEAMS
-VALUES (9, 7, 2);
+INSERT INTO users_teams (id_user, id_team)
+VALUES (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 2'),
+VALUES (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 1'),
+VALUES (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 2'),
+VALUES (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 1'),
+VALUES (SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 2'),
+VALUES (SELECT id_user FROM users WHERE email='lukas.witz@socialbakers.com', SELECT id_team FROM teams WHERE title='Development team 1');
 
 -- Data for TASKS table.
-INSERT INTO TASKS
-VALUES (0, 'Create DB schema', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 2, null);
-
-INSERT INTO TASKS
-VALUES (1, 'Create test data', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 2, null);
-
-INSERT INTO TASKS
-VALUES (2, 'helpers', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 2, null);
-
-INSERT INTO TASKS
-VALUES (3, 'Implementovat express.io', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 5, null);
-
-INSERT INTO TASKS
-VALUES (4, 'Nasadit Easy-Pg a vytvorit config.json', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 5, null);
-
-INSERT INTO TASKS
-VALUES (5, 'mediator', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 3, null);
-
-INSERT INTO TASKS
-VALUES (6, 'base model', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 3, null);
-
-INSERT INTO TASKS
-VALUES (7, 'core', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 4, null);
-
-INSERT INTO TASKS
-VALUES (8, 'router', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 4, null);
-
-INSERT INTO TASKS
-VALUES (9, 'base component', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 6, null);
-
-INSERT INTO TASKS
-VALUES (10, 'view base', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 6, null);
-
-INSERT INTO TASKS
-VALUES (11, 'observer', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', FALSE, '2014-08-01', '2014-08-05', 7, null);
-
-
+INSERT INTO tasks (title, description, notes, date_from, date_to, id_user, id_buddy)
+VALUES ('Create DB schema', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com', SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'),
+VALUES ('Create test data', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com', SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'),
+VALUES ('helpers', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com', null),
+VALUES ('Implementovat express.io', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com', null),
+VALUES ('Nasadit Easy-Pg a vytvorit config.json', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com', null),
+VALUES ('mediator', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com', null),
+VALUES ('base model', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com', null),
+VALUES ('core', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com', null),
+VALUES ('router', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com', null),
+VALUES ('base component', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com', SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),
+VALUES ('view base', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com', null),
+VALUES ('observer', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', SELECT id_user FROM users WHERE email='lukas.witz@socialbakers.com', null);
 
 /*
 -- Delete statements for clearing all tables when needed.
