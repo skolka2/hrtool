@@ -8,14 +8,14 @@ mediator.prototype = Observer;
 mediator.prototype.constructor = mediator; 
 
 /*
-  * @returns {object} singleton socket
-  */
-  mediator.prototype.getSocket = function() {
-  	if (mediator.socket == null) {
-  		mediator.socket = io.connect();
-  	}
-  	return mediator.socket;
-  };
+* @returns {object} singleton socket
+*/
+mediator.prototype.getSocket = function() {
+	if (mediator.socket == null) {
+		mediator.socket = io.connect();
+	}
+	return mediator.socket;
+};
 
 /* call backend to retrieve data
 * @param {object} callee 
