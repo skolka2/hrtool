@@ -8,16 +8,16 @@
        (function(){
            io = io.connect();
            
-           // Emit ready event, and wait for acknowledgement.
-            io.emit('client connected', function(data) {
-                    console.log(data);
+            
+            io.on('logged', function(err, data){
+               window.console.log(err + '\n' + data); 
             });
        })();
     </script>
 </head>
 <body>
     
-    
+    <a href="/auth/google">Sign In with Google</a>
     
 </body>
 </html>
