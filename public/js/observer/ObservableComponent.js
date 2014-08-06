@@ -4,6 +4,17 @@
  * @returns {ObservableComponent}
  */
 var ObservableComponent = function() {
+    this.componentId = ++ObservableComponent._componentId;
+};
+
+ObservableComponent._componentId = 0;
+
+ObservableComponent.getObserver = function () {
+    if(!ObservableComponent.observer) {
+        ObservableComponent.observer = new Observer();
+    }
+    
+    return ObservableComponent.observer;
 };
 
 /**
@@ -15,7 +26,7 @@ var ObservableComponent = function() {
  * @returns {undefined}
  */
 ObservableComponent.prototype.listen = function (type, fn, src) {
-    Observer.getInstance().on(this, type, fn, src);
+    ObservableComponent.getObserver().on(this, type, fn, src);
 };
 
 /**
@@ -25,7 +36,7 @@ ObservableComponent.prototype.listen = function (type, fn, src) {
  * @returns {undefined}
  */
 ObservableComponent.prototype.notify = function (type, data) {
-    Observer.getInstance().fire(this, type, data);
+    ObservableComponent.getObserver().fire(type, data, this.componentId);
 };
 
 /**
@@ -34,7 +45,7 @@ ObservableComponent.prototype.notify = function (type, data) {
  * @returns {undefined}
  */
 ObservableComponent.prototype.setAsParent = function (child) {
-    ObservableComponent._componentMap[child.componentId] = this.componentId;
+    ObservableComponent.getObserver().mapOfComponents[child.componentId] = this.componentId;
 };
 
 /**
@@ -43,17 +54,7 @@ ObservableComponent.prototype.setAsParent = function (child) {
  * @returns {undefined}
  */
 ObservableComponent.prototype.destroyComponent = function () {
-    delete ObservableComponent._componentMap[this.componentId];
+    delete ObservableComponent.getObserver().componentMap[this.componentId];
     
-    var observer = Observer.getInstance();
-    observer.removeListener(this.componentId);
-    observer.removeAsSource(this.componentId);
+    ObservableComponent.getObserver().removeListener(this.componentId);
 };
-
-ObservableComponent.prototype.setId = function() {
-    this.componentId = Observer.getInstance().getComponentId();
-};
-/**
- * Map of components
- */
-ObservableComponent._componentMap = {};

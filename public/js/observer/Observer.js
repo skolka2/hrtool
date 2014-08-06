@@ -1,130 +1,105 @@
-var Observer = (function() {
-    var instance;
-    var _componentId = 1;
+/**
+ * Constructor of class Observer: creates new map of components
+ * (an object /associative array/, where the key is the component's ID
+ * and the value is its parent's ID.
+ * 
+ * It also creates a map of subscribers with this structure:
+ * map {object}
+ * |
+ * |-------type of event {object}
+ * |         |----listener's ID {object}
+ * |         |            |----function to call {function}
+ * |         |----listener's ID {object}
+ * |                      |----function to call {function}
+ * |
+ * |-------type of event {object}
+ *           |----listener's ID {object}
+ *           |            |----function to call {function}
+ *           |----listener's ID {object}
+ *                        |----function to call {function}
+ * @returns {Observer}
+ */
+var Observer = function () {
+    this._subscribers = {};
+    this.mapOfComponents = {};
+};
+
+/**
+ * Fires an event and notifies all parents listening to the event type.
+ * @param {string} type type of event being fired
+ * @param {type} data data to pass on the listeners
+ * @param {number} src source of event
+ * @returns {undefined}
+ */
+Observer.prototype.fire = function (type, data, src) {
+    var parents = this._getParents(src);
     
-    var init = function () {
-        var _subscribers = {};
-        
-        return {
-
-            /**
-             * Fires an event and notifies all listeners of the event if they listen to the
-             * source.
-             * @param {string} type type of event being fired
-             * @param {type} data data to pass on the listeners
-             * @param {number} src source of event
-             * @returns {undefined}
-             */
-            fire: function (type, data, src) {
-                var itemType = _subscribers[type];
-                for(var subsc in itemType) {
-                    if (itemType[subsc].src === undefined
-                            || (src !== undefined && itemType[subsc].src.indexOf(src) > -1)) {
-
-                        itemType[subsc].func(data);
-                    }
-                };
-            },
-
-            /**
-             * Subscribes caller to given type of event.
-             * @param {object} owner caller that wants to be informed
-             * @param {string} type type of event
-             * @param {function} fn function to call when event triggered
-             * @param {array} source array of 
-             * @returns {undefined}
-             */
-            on: function (owner, type, fn, source) {
-                if(typeof (fn) !== "function") {
-                    return;
-                }
-
-                if(_subscribers[type] === undefined) {
-                    _subscribers[type] = {};
-                }
-
-                var typeItem = _subscribers[type];
-
-                if(typeItem[owner.componentId] === undefined) {
-                    typeItem[owner.componentId] = {};
-                }
-
-                var ownerItem = typeItem[owner.componentId];
-
-                ownerItem.func = fn.bind(owner);
-                ownerItem.src = source;
-            },
-
-            /**
-             * Removes all listeners of given component's id
-             * @param {number} listenerId
-             * @returns {undefined}
-             */
-            removeListener: function (listenerId) {
-                for(var itemEvent in _subscribers) {
-                    if(listenerId in _subscribers[itemEvent]) {
-                        delete _subscribers[itemEvent][listenerId];
-                    }
-                }
-            },
-
-            /**
-             * Removes given component's id from all listeners' sources
-             * @param {type} listenerId
-             * @returns {undefined}
-             */
-            removeAsSource: function (listenerId) {
-                for(var itemEvent in _subscribers) {
-                    var idList = _subscribers[itemEvent];
-
-                    for(var itemId in idList) {
-                        var index = idList[itemId].src.indexOf(listenerId);
-
-                        if(index > -1) {
-                            idList[itemId].src.splice(index, 1);
-                        }
-                    }
-                }
-            },
-
-            /**
-             * Add source to be listen to on given source
-             * @param {string} type
-             * @param {number} subscriberId
-             * @param {number} sourceId
-             * @returns {undefined}
-             */
-            addSourceToListener: function (type, subscriberId, sourceId) {
-                if(_subscribers[type][subscriberId].src !== undefined)
-                    _subscribers[type][subscriberId].src.push(sourceId);
-            },
-
-            /**
-             * Unsubscribe from source
-             * @param {string} type
-             * @param {number} subscriberId
-             * @param {number} sourceId
-             * @returns {undefined}
-             */
-            removeSourceFromListener: function (type, subscriberId, sourceId) {
-                if(_subscribers[type][subscriberId].src !== undefined) {
-                    var index = _subscribers[type][subscriberId].src.indexOf(sourceId);
-                    _subscribers[type][subscriberId].src.splice(index, 1);
-                }
-            }
-        };
-    };
-    
-    return {
-        getInstance: function() {
-            if(!instance)
-                instance = init();
-            
-            return instance;
-        },
-        
-        getComponentId: function() {
-            return _componentId++;
+    while(parents.length > 0) {
+        var id = parents.pop();
+        if(this._subscribers[type] && this._subscribers[type][id]) {
+            this._subscribers[type][id](data);
         }
-    };
-})();
+    }
+    
+    /*var itemType = this._subscribers[type];
+    for(var subsc in itemType) {
+        itemType[subsc](data);
+    };*/
+};
+
+/**
+ * Finds all components that contains (directly or not) given component.
+ * @param {number} childId Id of component that we want to find parents of.
+ * @returns {Observer.prototype._getParents.parents|Array}
+ */
+Observer.prototype._getParents = function(childId) {
+    var parents = [];
+    var iter = childId;
+    
+    while(this.mapOfComponents[iter]) {
+        var parent = this.mapOfComponents[iter];
+        parents.push(parent);
+        iter = parent;
+    }
+    
+    return parents;
+};
+
+/**
+ * Subscribes caller to given type of event.
+ * @param {object} owner caller that wants to be informed
+ * @param {string} type type of event
+ * @param {function} fn function to call when event triggered
+ * @returns {undefined}
+ */
+Observer.prototype.on = function (owner, type, fn) {
+    if(typeof (fn) !== "function") {
+        return;
+    }
+
+    if(this._subscribers[type] === undefined) {
+        this._subscribers[type] = {};
+    }
+
+    var typeItem = this._subscribers[type];
+
+    if(typeItem[owner.componentId] === undefined) {
+        typeItem[owner.componentId] = {};
+    }
+
+    typeItem[owner.componentId] = fn.bind(owner);
+};
+
+/**
+ * Removes all listeners of given component's id
+ * @param {number} listenerId
+ * @returns {undefined}
+ */
+Observer.prototype.removeListener = function (listenerId) {
+    for(var itemEvent in this._subscribers) {
+        if(listenerId in this._subscribers[itemEvent]) {
+            delete this._subscribers[itemEvent][listenerId];
+        }
+    }
+};
+
