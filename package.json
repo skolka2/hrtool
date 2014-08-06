@@ -2,12 +2,10 @@
   "name": "hrtool",
   "version": "0.0.0",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "license": "ISC",
   "dependencies": {
-    "express": "^4.7.2",
-    "socket.io": "^1.0.6"
+    "express.io": "~1.1.13",
+    "easy-pg": "~1.0.1",
+    "debug": "~1.0.4"
   }
 }
