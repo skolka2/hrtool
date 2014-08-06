@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS tasks CASCADE;
 CREATE TABLE tasks
 (
 	id_task SERIAL PRIMARY KEY,
-	title TEXT NOT NULL,
+	title CHARACTER VARYING (255) NOT NULL,
 	description TEXT,
 	notes TEXT,
 	completed BOOLEAN DEFAULT FALSE,
@@ -28,8 +28,8 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users
 (
 	id_user SERIAL PRIMARY KEY,
-	first_name TEXT NOT NULL,
-	last_name TEXT NOT NULL,
+	first_name CHARACTER VARYING (128) NOT NULL,
+	last_name CHARACTER VARYING (128) NOT NULL,
 	email TEXT NOT NULL UNIQUE,
 	id_user_role INTEGER,
 	id_buddy INTEGER
@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS user_roles CASCADE;
 CREATE TABLE user_roles
 (
 	id_user_role SERIAL PRIMARY KEY,
-	title TEXT NOT NULL
+	title CHARACTER VARYING (128) NOT NULL
 );
 
 DROP TABLE IF EXISTS users_teams CASCADE;
@@ -54,7 +54,7 @@ DROP TABLE IF EXISTS teams CASCADE;
 CREATE TABLE teams
 (
 	id_team SERIAL PRIMARY KEY,
-	title TEXT NOT NULL,
+	title CHARACTER VARYING (128) NOT NULL,
 	id_department INTEGER NOT NULL
 );
 
@@ -62,14 +62,14 @@ DROP TABLE IF EXISTS departments CASCADE;
 CREATE TABLE departments
 (
 	id_department SERIAL PRIMARY KEY,
-	title TEXT NOT NULL
+	title CHARACTER VARYING (128) NOT NULL
 );
 
 DROP TABLE IF EXISTS department_roles CASCADE;
 CREATE TABLE department_roles
 (
 	id_department_role SERIAL PRIMARY KEY,
-	title TEXT NOT NULL,
+	title CHARACTER VARYING (128) NOT NULL,
 	id_department INTEGER NOT NULL
 );
 
