@@ -1,9 +1,14 @@
 
 
-	//TODO get elements from helper, inherit from observableComponent
+//TODO get elements from helper
 var BaseView =	function(){
-	BaseView.mainWrapper = "main-wrapper";
-}
+	this.super = ObservableComponent;
+	this.super.prototype.constructor.apply(this);
+}	
+
+BaseView.prototype = new ObservableComponent();
+BaseView.prototype.constructor = ComponentBase;
+
 
 BaseView.prototype.render = function(){
 	this.base = document.getElementById(BaseView.mainWrapper);
@@ -23,4 +28,4 @@ BaseView.prototype.render = function(){
 	}
 };
 
-
+BaseView.mainWrapper = "main-wrapper";
