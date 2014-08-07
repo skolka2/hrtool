@@ -7,7 +7,7 @@ var BaseView =	function(){
 }	
 
 BaseView.prototype = new ObservableComponent();
-BaseView.prototype.constructor = ComponentBase;
+BaseView.prototype.constructor = BaseView;
 
 
 BaseView.prototype.render = function(){
