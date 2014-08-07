@@ -1,12 +1,10 @@
 var App = function() {
-   
-}
-App.prototype.initRouter = function () {
-    this.router = Router.init();
-}
+    this.router = new Router();
+    this.router.init();
+};
+
 
 window.onload = function() {
 
     var app = new App();
-    app.initRouter();
 };
