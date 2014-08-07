@@ -11,11 +11,14 @@ ComponentLoginBar.prototype.addLoginBar = function () {
     var userData = this.getUserData('012345');
     var ahref;
     div.id = "LoginBar";
+    //create ahref buddy 
+    ahref = ComponentLoginBar.prototype.createAhref("loginBar_buddy", userData.buddyFirstName + " " + userData.buddySurName, window.location + "User/user=" + userData.buddyId);
+    div.appendChild(ahref);
     //create ahref Login name
     ahref = ComponentLoginBar.prototype.createAhref("loginBar_name", userData.firstName + " " + userData.surName, window.location + "User/user=" + userData.id);
     div.appendChild(ahref);
-    //create ahref buddy 
-    ahref = ComponentLoginBar.prototype.createAhref("loginBar_buddy", userData.buddyFirstName + " " + userData.buddySurName, window.location + "User/user=" + userData.buddyId);
+    //create logout button
+    ahref = ComponentLoginBar.prototype.createButton("login_btn", "Logout");
     div.appendChild(ahref);
     return div;
 }
@@ -35,6 +38,18 @@ ComponentLoginBar.prototype.getUserData = function (userID) {
 
 ComponentLoginBar.prototype.createDom = function () {
     this.element = ComponentLoginBar.prototype.addLoginBar();
+}
+
+//shut be in helper?
+ComponentLoginBar.prototype.createButton = function(id, textNode) {
+    var btn = document.createElement("button");
+    var t = document.createTextNode(textNode);
+    btn.id = id;
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('name', textNode);
+    btn.setAttribute('value', textNode);
+    btn.appendChild(t);
+    return btn;
 }
 
 //shut be in helper?
