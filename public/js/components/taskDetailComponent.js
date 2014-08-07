@@ -5,11 +5,11 @@ Also contains variables for storing data about the task.
 var TaskDetailComponent = function() {
 	this.super = ComponentBase;
 	this.super.call(this);
-	this.taskTitle = '';
-	this.dateFrom = null;
-	this.dateTo = null;
-	this.taskTescription = '';
-	this.taskNotes = '';
+	this.taskTitle = 'title';
+	this.dateFrom = new Date();
+	this.dateTo = new Date();
+	this.taskDescription = 'description';
+	this.taskNotes = 'notes';
 	this.finished = false;
 }
 
@@ -20,6 +20,8 @@ TaskDetailComponent.prototype.constructor = TaskDetailComponent;
 Overridden function from component BaseObject - it creates DOM, which will be rendered by other function (render) inherrited from ComponentBase.
 */
 TaskDetailComponent.prototype.createDom = function() {
+
+
 
 	var divWrapper = document.createElement("div"); //wrapper of other elements
 
@@ -34,11 +36,11 @@ TaskDetailComponent.prototype.createDom = function() {
 	var titleCol = document.createElement("td"); //column with title of the task
 	titleCol.setAttribute("width","80%");
 	titleCol.setAttribute("colspan","2");
-	titleCol.innerHTML = "title";
+	titleCol.innerHTML = this.taskTitle;
 
 	var dateCol = document.createElement("td"); //column with timerange of the task
 	dateCol.setAttribute("width","20%");
-	dateCol.innerHTML = "timerange: "
+	dateCol.innerHTML = "timerange: "+dateFrom.getDate()+"."+(dateFrom.getMonth()+1)+"."+dateFrom.getFullYear()+" - "+dateTo.getDate()+"."+(dateTo.getMonth()+1)+"."+dateTo.getFullYear();
 
 	titleRow.appendChild(titleCol);
 	titleRow.appendChild(dateCol);
@@ -49,12 +51,12 @@ TaskDetailComponent.prototype.createDom = function() {
 
 	var descriptionCol = document.createElement("td"); //column with description of the task
 	descriptionCol.setAttribute("width","40%");
-	descriptionCol.innerHTML = "description";
+	descriptionCol.innerHTML = this.taskDescription;
 
 	var notesCol = document.createElement("td"); //column with user notes of the task
 	notesCol.setAttribute("width","60%");
 	notesCol.setAttribute("colspan","2");
-	notesCol.innerHTML = "notes";
+	notesCol.innerHTML = this.taskNotes;
 
 	middleRow.appendChild(descriptionCol);
 	middleRow.appendChild(notesCol);
@@ -83,4 +85,17 @@ TaskDetailComponent.prototype.createDom = function() {
 	divWrapper.appendChild(taskTable);
 
 	this.element = divWrapper; //saving all DOM elements in the element of this object
+}
+
+/*
+Function for setting up data for this particular task.
+taskTitle - String, dateFrom - Date, dateTo - Date, taskDescription - String, taskNotes - String, taskFinished - Boolean.
+*/
+TaskDetailComponent.prototype.setData = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskFinished) {
+	this.taskTitle = taskTitle;
+	this.dateFrom = dateFrom;
+	this.dateTo = dateTo;
+	this.taskDescription = taskDescription;
+	this.taskNotes = taskNotes;
+	this.taskFinished = taskFinished;
 }
