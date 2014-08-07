@@ -3,19 +3,19 @@
  * (an object /associative array/, where the key is the component's ID
  * and the value is its parent's ID.
  * 
- * It also creates a map of subscribers with this structure:
+ * It also creates a map of publishers with this structure:
  * map {object}
  * |
  * |-------type of event {object}
- * |         |----listener's ID {object}
+ * |         |----publisher's ID {object}
  * |         |            |----function to call {function}
- * |         |----listener's ID {object}
+ * |         |----publisher's ID {object}
  * |                      |----function to call {function}
  * |
  * |-------type of event {object}
- *           |----listener's ID {object}
+ *           |----publisher's ID {object}
  *           |            |----function to call {function}
- *           |----listener's ID {object}
+ *           |----publisher's ID {object}
  *                        |----function to call {function}
  * @returns {Observer}
  */
@@ -56,10 +56,9 @@ Observer.prototype._getParents = function(childId) {
     var parents = [];
     var iter = childId;
     
-    while(this.mapOfComponents[iter]) {
-        var parent = this.mapOfComponents[iter];
-        parents.push(parent);
-        iter = parent;
+    while(iter) {
+        parents.push(iter);
+        iter = this.mapOfComponents[iter];
     }
     
     return parents;
@@ -67,12 +66,13 @@ Observer.prototype._getParents = function(childId) {
 
 /**
  * Subscribes caller to given type of event.
- * @param {object} owner caller that wants to be informed
+ * @param {ObservableComponent} calee caller of the function
  * @param {string} type type of event
  * @param {function} fn function to call when event triggered
+ * @param {object} owner ObservableComponent that fired an event
  * @returns {undefined}
  */
-Observer.prototype.on = function (owner, type, fn) {
+Observer.prototype.on = function (calee, type, fn, owner) {
     if(typeof (fn) !== "function") {
         return;
     }
@@ -102,4 +102,3 @@ Observer.prototype.removeListener = function (listenerId) {
         }
     }
 };
-
