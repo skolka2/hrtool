@@ -1,32 +1,35 @@
-﻿
-var Router = function () { }
+﻿var Router = function () { }
 
-    Router.prototype.init = function () {
+Router.prototype.init = function () {
     var obj = this.getPath();
     var selView = getView(obj.view);
-        selView.render();
+    selView.render();
 
-    }
-    Router.prototype.getPath = function() {
-
-        var url = window.location.hash;
-        if(url != ""){
+}
+Router.prototype.getPath = function () {
+    
+    var url = window.location.hash;
+    if (url != "") {
         var map = {};
-        var tmpUrl = url.split('?');
-        if (tmpUrl.length < 2) {
-            tmpUrl.push("");
-        }
+        var output = {
+            view: "", parameters: ""
+        };
+        var arr = url.split('?');
         //get parameters
-        var params = tmpUrl.pop();
-        var vars = params.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            map[pair[0]] = pair[1];
+        if (arr[1]) {
+            var params = arr[1];
+            var vars = params.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                map[pair[0]] = pair[1];
+            }
+            output['parameters'] = map;
         }
         //get views
-        var view = tmpUrl.pop().substring(1);
-        return { view: view, parameters: map };
-        }
-        else return { view: "", parameters: "" };
+        var index = arr[0].lastIndexOf('#');
+        output['view'] = arr[0].substring(index + 1);
+        return output;
     }
+    else return { view: "", parameters: "" };
+}
 
