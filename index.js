@@ -52,7 +52,6 @@ passport.use(new GoogleStrategy({
 
 
 
-
 //ENDPOINTS
 
 //root of web aplication
@@ -68,6 +67,7 @@ app.get('/handshake', function (req, res) {
         res.json({user: req.session.passport.user});
     }
 });
+    
 
 
 //redirect to a google login formular
@@ -96,4 +96,3 @@ dbClient.on('error', function(err){
 app.http().io();
 app.listen(config.port);
 console.log('Server listens on port ' + config.port);
-
