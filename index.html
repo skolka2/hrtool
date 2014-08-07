@@ -1,9 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <script src="/socket.io/socket.io.js"></script>
+    <title>Planning poker</title>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="js/router/router.js"></script>
+    <script src="js/router/routerConfig.js"></script>
+    <script src="js/views/defaultView.js"></script>
+    <script src="js/views/userView.js"></script>
+    <script src="js/views/featureView.js"></script>
+    <script src="js/test.js"></script>
     <script>
        (function(){
            io = io.connect();
@@ -15,9 +21,5 @@
        })();
     </script>
 </head>
-<body>
-    
-    
-    
 </body>
 </html>
