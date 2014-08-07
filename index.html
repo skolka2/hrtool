@@ -2,8 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Planning poker</title>
+
+    <title></title>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="js/app.js"></script>
+    <script src="/js/components/baseComponent.js"></script>
+    <script src="/js/components/loginBar.js"></script>
     <script src="js/router/router.js"></script>
     <script src="js/router/routerConfig.js"></script>
     <script src="js/views/defaultView.js"></script>
@@ -11,15 +15,15 @@
     <script src="js/views/featureView.js"></script>
     <script>
        (function(){
-           io = io.connect();
-           
-           // Emit ready event, and wait for acknowledgement.
-            io.emit('client connected', function(data) {
-                    console.log(data);
+           io = io.connect();           
+            io.on('logged', function(err, data){
+               window.console.log(err + '\n' + data); 
             });
        })();
     </script>
 </head>
 <body>
+    <div id="main-wrapper"></div>
+    <a href="/auth/google">Sign In with Google</a>
 </body>
 </html>
