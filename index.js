@@ -61,20 +61,23 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-//successfully singed user
-app.get('/logged', function (req, res) {
-    debug('USER: ' + req.user);
-    res.sendfile(__dirname + '/index.html');
+//checks if user is logged in session and acording to it sends proper redirect url
+app.get('/handshake', function (req, res) {
+    if(!req.session.passport.user){
+        res.json({error: 'not logged in', url : '/auth/google'});
+    }else{
+        res.json({user: req.session.passport.user});
+    }
 });
+
 
 //redirect to a google login formular
 app.get('/auth/google', passport.authenticate('google'));
 
 // Google will redirect the user to this URL after authentication.  
 app.get('/auth/google/return', 
-  passport.authenticate('google', { successRedirect: '/logged',
+  passport.authenticate('google', { successRedirect: '/',
                                     failureRedirect: '/' }));
-
 
 
 
@@ -96,4 +99,20 @@ app.listen(config.port);
 console.log('Server listens on port ' + config.port);
 
 
+
+/**
+ * Function returns basic user info from database
+ * @param {object} user - JSON ubject providid by google API
+ * @returns {object}
+ */
+function getUserInfo(user){
+    dbClient.queryOne("SELECT * FROM users WHERE email=$1", [user.emails[0].value], 
+        function(err, row){
+            if(err){
+                debug('sendUserInfo: database error\n' + err);
+                return;
+            }
+            return row;
+        });
+}
 

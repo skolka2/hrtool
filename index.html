@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <title></title>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
-       (function(){
-           io = io.connect();
-           
-            
-            io.on('logged', function(err, data){
-               window.console.log(err + '\n' + data); 
+        (function(){
+            io = io.connect();
+            $.get("/handshake",function(data, status){
+                window.console.log(data);
+                if(data.error)
+                    window.location.replace(data.url);
             });
-       })();
+            
+            
+        })();
     </script>
 </head>
-<body>
-    
-    <a href="/auth/google">Sign In with Google</a>
-    
+<body>    
+    <a href="/handshake">Sign In with Google</a>
 </body>
 </html>
