@@ -13,7 +13,6 @@ app.use(express.session({secret: 'SBKS_hrtool'}));
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
 
-
 passport.serializeUser(function(user, done) {
     return done(null, user);
 });
@@ -23,8 +22,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-        returnURL: 'http://localhost:' + config.port + '/auth/google/return',
-        realm: 'http://localhost:' + config.port + '/'
+        returnURL: config.host + ':' + config.port + '/auth/google/return',
+        realm: config.host + ':' + config.port + '/'
         },
         function(identifier, profile, done) {                                   //finds a user in database if registred
             dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()], 
@@ -48,8 +47,7 @@ passport.use(new GoogleStrategy({
     ));
     
 
- 
- 
+
 
 
 
