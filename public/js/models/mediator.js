@@ -1,16 +1,16 @@
 
-var mediator =  function() {
-	this.super = Observer;
+var Mediator =  function() {
+	this.super = ObservableComponent;
 
 }
 
-mediator.prototype = new Observer();
-mediator.prototype.constructor = mediator; 
+Mediator.prototype = new ObservableComponent();
+Mediator.prototype.constructor = mediator; 
 
 /*
 * @returns {object} singleton socket
 */
-mediator.prototype.getSocket = function() {
+Mediator.prototype.getSocket = function() {
 	if (mediator.socket == null) {
 		mediator.socket = io.connect();
 	}
@@ -24,7 +24,7 @@ mediator.prototype.getSocket = function() {
 * @param {type} type type of event
 * @param {object} transform transformation of loaded data
 */
-mediator.prototype.loadData = function(callee, endpoint, params, type, transform){
+Mediator.prototype.loadData = function(callee, endpoint, params, type, transform){
 	var self = this;
 	this.getSocket().emit(endpoint, params, function( err) {	
 		if (err != null) {

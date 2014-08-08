@@ -1,8 +1,11 @@
 /* ModelBase constructor */
 var ModelBase =  function( ) {
-	this.componentId = null;
+	this.super = ObservableComponent;
 	this.mediator = new mediator();
 }
+
+ModelBase.prototype = new ObservableComponent();
+ModelBase.prototype.constructor = ModelBase; 
 
 /* loadData using medaitor 
 * @param {object} callee 
