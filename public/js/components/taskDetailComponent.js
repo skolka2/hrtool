@@ -11,7 +11,7 @@ var TaskDetailComponent = function(taskTitle, dateFrom, dateTo, taskDescription,
 	this.taskDescription = taskDescription;
 	this.taskNotes = taskNotes;
 	this.taskBuddy = taskBuddy;
-	this.finished = taskFinished;
+	this.isFinished = taskFinished;
 }
 
 TaskDetailComponent.prototype = new ComponentBase();
@@ -24,29 +24,29 @@ TaskDetailComponent.prototype.createDom = function() {
 
 	var color = this.setTimeColor();
 
-	var taskWrapper = helper["elementsFunctions"].createElement('<div class="task-wrapper" style="border: 2px solid; height:20%; width:70%;"></div>');
+	var taskWrapper = helper["elementsFunctions"].createElement('<div class="task-wrapper" style="border: 2px solid; width:1000px;"></div>');
 
-	var headerWrapper = helper["elementsFunctions"].createElement('<div class="header-wrapper" clear="none" height="20%" style="border-bottom: 2px solid;"></div>');
+	var headerWrapper = helper["elementsFunctions"].createElement('<div class="header-wrapper" clear="none" style="border-bottom: 2px solid; height:50px;"></div>');
 
-	var titleLabel = helper["elementsFunctions"].createElement('<label class="task-label" style="float:left;">'+this.taskTitle+'</label>');
+	var titleLabel = helper["elementsFunctions"].createElement('<label class="task-label">'+this.taskTitle+'</label>');
 	headerWrapper.appendChild(titleLabel);
 
 	var timeLabel = helper["elementsFunctions"].createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
 	headerWrapper.appendChild(timeLabel);
 
-	var descriptionWrapper = helper["elementsFunctions"].createElement('<div class="description-wrapper" clear="none" height="60%" width="60%"></div>');
+	var descriptionWrapper = helper["elementsFunctions"].createElement('<div class="description-wrapper" style="height:200px; width:400px; float:left;"></div>');
 
 	var descriptionParagraph = helper["elementsFunctions"].createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</div>');
 	descriptionWrapper.appendChild(descriptionParagraph);
 
-	var notesWrapper = helper["elementsFunctions"].createElement('<div class="notes-wrapper" clear="none" height="60%" width="60%"></div>');
+	var notesWrapper = helper["elementsFunctions"].createElement('<div class="notes-wrapper" style="height:200px; float:left;"></div>');
 
 	var notesText = helper["elementsFunctions"].createElement('<textarea class="notes-text"> Task notes: '+this.taskNotes+'</textarea>');
 	notesWrapper.appendChild(notesText);
 
-	var footerWrapper = helper["elementsFunctions"].createElement('<div class="footer-wrapper" clear="none" height="20%" style="border-top: 2px solid;"></div>');
+	var footerWrapper = helper["elementsFunctions"].createElement('<div class="footer-wrapper" style="border-top: 2px solid; clear:both; height:50px;"></div>');
 
-	var buddyLabel = helper["elementsFunctions"].createElement('<label class="buddy-label" style="float:left;">'+this.taskBuddy+'</label>');
+	var buddyLabel = helper["elementsFunctions"].createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
 	footerWrapper.appendChild(buddyLabel);
 
 	var saveNotesBttn = helper["elementsFunctions"].createElement('<button class="save-notes" type="button" style="float:right;">Save notes</button>');
@@ -67,7 +67,7 @@ TaskDetailComponent.prototype.createDom = function() {
 Function for setting up color of the label with time, so it can signalize if deadline on the task has been met.
 */
 TaskDetailComponent.prototype.setTimeColor = function() {
-	if((this.dateTo < new Date()) && (this.finished === false)) {
+	if((this.dateTo < new Date()) && (this.isFinished === false)) {
 		return "#FF704D";
 	}
 	else {
