@@ -2,15 +2,16 @@
 Object, which contains HTML element for task detail and other properties and functions inherrited from ComponentBase object.
 Also contains variables for storing data about the task. 
 */
-var TaskDetailComponent = function() {
+var TaskDetailComponent = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskBuddy, taskFinished) {
 	this.super = ComponentBase;
 	this.super.call(this);
-	this.taskTitle = 'title';
-	this.dateFrom = new Date();
-	this.dateTo = new Date();
-	this.taskDescription = 'description';
-	this.taskNotes = 'notes';
-	this.finished = false;
+	this.taskTitle = taskTitle;
+	this.dateFrom = dateFrom;
+	this.dateTo = dateTo;
+	this.taskDescription = taskDescription;
+	this.taskNotes = taskNotes;
+	this.taskBuddy = taskBuddy;
+	this.finished = taskFinished;
 }
 
 TaskDetailComponent.prototype = new ComponentBase();
@@ -21,81 +22,71 @@ Overridden function from component BaseObject - it creates DOM, which will be re
 */
 TaskDetailComponent.prototype.createDom = function() {
 
+	var color = this.setTimeColor();
 
+	var taskWrapper = helper["elementsFunctions"].createElement('<div class="task-wrapper" style="border: 2px solid; height:20%; width:70%;"></div>');
 
-	var divWrapper = document.createElement("div"); //wrapper of other elements
+	var headerWrapper = helper["elementsFunctions"].createElement('<div class="header-wrapper" clear="none" height="20%" style="border-bottom: 2px solid;"></div>');
 
-	var taskTable = document.createElement("table"); //table of the task detail element
-	taskTable.setAttribute("width","1024px");
-	taskTable.setAttribute("height","300px");
-	taskTable.setAttribute("border","1");
+	var titleLabel = helper["elementsFunctions"].createElement('<label class="task-label" style="float:left;">'+this.taskTitle+'</label>');
+	headerWrapper.appendChild(titleLabel);
 
-	var titleRow = document.createElement("tr"); //row with title and dates of the task
-	titleRow.setAttribute("height","20%");
+	var timeLabel = helper["elementsFunctions"].createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+	headerWrapper.appendChild(timeLabel);
 
-	var titleCol = document.createElement("td"); //column with title of the task
-	titleCol.setAttribute("width","80%");
-	titleCol.setAttribute("colspan","2");
-	titleCol.innerHTML = this.taskTitle;
+	var descriptionWrapper = helper["elementsFunctions"].createElement('<div class="description-wrapper" clear="none" height="60%" width="60%"></div>');
 
-	var dateCol = document.createElement("td"); //column with timerange of the task
-	dateCol.setAttribute("width","20%");
-	dateCol.innerHTML = "timerange: "+dateFrom.getDate()+"."+(dateFrom.getMonth()+1)+"."+dateFrom.getFullYear()+" - "+dateTo.getDate()+"."+(dateTo.getMonth()+1)+"."+dateTo.getFullYear();
+	var descriptionParagraph = helper["elementsFunctions"].createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</div>');
+	descriptionWrapper.appendChild(descriptionParagraph);
 
-	titleRow.appendChild(titleCol);
-	titleRow.appendChild(dateCol);
-	taskTable.appendChild(titleRow);
+	var notesWrapper = helper["elementsFunctions"].createElement('<div class="notes-wrapper" clear="none" height="60%" width="60%"></div>');
 
-	var middleRow = document.createElement("tr"); //row with description and user notes of the task
-	middleRow.setAttribute("height","60%");
+	var notesText = helper["elementsFunctions"].createElement('<textarea class="notes-text"> Task notes: '+this.taskNotes+'</textarea>');
+	notesWrapper.appendChild(notesText);
 
-	var descriptionCol = document.createElement("td"); //column with description of the task
-	descriptionCol.setAttribute("width","40%");
-	descriptionCol.innerHTML = this.taskDescription;
+	var footerWrapper = helper["elementsFunctions"].createElement('<div class="footer-wrapper" clear="none" height="20%" style="border-top: 2px solid;"></div>');
 
-	var notesCol = document.createElement("td"); //column with user notes of the task
-	notesCol.setAttribute("width","60%");
-	notesCol.setAttribute("colspan","2");
-	notesCol.innerHTML = this.taskNotes;
+	var buddyLabel = helper["elementsFunctions"].createElement('<label class="buddy-label" style="float:left;">'+this.taskBuddy+'</label>');
+	footerWrapper.appendChild(buddyLabel);
 
-	middleRow.appendChild(descriptionCol);
-	middleRow.appendChild(notesCol);
-	taskTable.appendChild(middleRow);
+	var saveNotesBttn = helper["elementsFunctions"].createElement('<button class="save-notes" type="button" style="float:right;">Save notes</button>');
+	footerWrapper.appendChild(saveNotesBttn);
 
-	var buttonRow = document.createElement("tr"); //row with buttons for changing the property of the task
-	buttonRow.setAttribute("height","20%");
+	var finishTaskBttn = helper["elementsFunctions"].createElement('<button class="finish-task" type="button" style="float:right;">Finish task</button>')
+	footerWrapper.appendChild(finishTaskBttn);
 
-	var buttonCol = document.createElement("td"); //column with buttons for changing the property of the task
-	buttonCol.setAttribute("colspan","3");
-	buttonCol.setAttribute("align","right");
+	taskWrapper.appendChild(headerWrapper);
+	taskWrapper.appendChild(descriptionWrapper);
+	taskWrapper.appendChild(notesWrapper);
+	taskWrapper.appendChild(footerWrapper);
 
-	var notesButton = document.createElement("button"); //button for saving user notes of the task
-	notesButton.setAttribute("type","button");
-	notesButton.innerHTML = "Save notes";
-
-	var completeButton = document.createElement("button"); //button for flaging task as finished
-	completeButton.setAttribute("type","button");
-	completeButton.innerHTML = "Finish task"
-
-	buttonCol.appendChild(notesButton);
-	buttonCol.appendChild(completeButton);
-	buttonRow.appendChild(buttonCol);
-	taskTable.appendChild(buttonRow);
-
-	divWrapper.appendChild(taskTable);
-
-	this.element = divWrapper; //saving all DOM elements in the element of this object
+	this.element = taskWrapper; //saving all DOM elements in the element of this object
 }
 
 /*
-Function for setting up data for this particular task.
-taskTitle - String, dateFrom - Date, dateTo - Date, taskDescription - String, taskNotes - String, taskFinished - Boolean.
+Function for setting up color of the label with time, so it can signalize if deadline on the task has been met.
 */
-TaskDetailComponent.prototype.setData = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskFinished) {
-	this.taskTitle = taskTitle;
-	this.dateFrom = dateFrom;
-	this.dateTo = dateTo;
-	this.taskDescription = taskDescription;
-	this.taskNotes = taskNotes;
-	this.taskFinished = taskFinished;
+TaskDetailComponent.prototype.setTimeColor = function() {
+	if((this.dateTo < new Date()) && (this.finished === false)) {
+		return "#FF704D";
+	}
+	else {
+		return "#99FF66";
+	}
+}
+
+/*
+Function for event on button for finishing tasks.
+*/
+TaskDetailComponent.prototype.finishTask = function() {
+	//TO-DO
+	alert("Not yet implemented...");
+}
+
+/*
+Function for event on button for saving user notes.
+*/
+TaskDetailComponent.prototype.saveNotes = function() {
+	//TO-DO
+	alert("Not yet implemented...");
 }
