@@ -3,3 +3,4 @@ config.json
 .DS_Store
 .ntvs_analysis.dat
 .idea/*
+.ntvs_analysis.dat.tmp
