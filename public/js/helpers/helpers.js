@@ -11,14 +11,14 @@ helper = {
 				return result;
 			}
 			else {
-				console.log("Not a number!")
+				console.log("Not a number!");
 			}
 		}
-	}
+	},
 
 	elementsFunctions: {
 		//function for converting string into DOM element
-		getElement: function(str) {
+		createElement: function(str) {
 			var myElement = $(str);
 			return myElement[0];
 		}
