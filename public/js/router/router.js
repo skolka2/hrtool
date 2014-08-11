@@ -1,9 +1,10 @@
 ﻿var Router = function () { }
 
 Router.prototype.init = function () {
-    var obj = this.getPath();
-    var selView = getView(obj.view);
-    selView.render();
+    var path = this.getPath();
+    this.routerConfig = new RouterConfig();
+    var setView = this.routerConfig.setView(path);
+    setView.render();
 
 }
 Router.prototype.getPath = function () {
