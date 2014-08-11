@@ -3,8 +3,8 @@
 Router.prototype.init = function () {
     var path = this.getPath();
     this.routerConfig = new RouterConfig();
-    var setView = this.routerConfig.setView(path);
-    setView.render();
+    this.view = this.routerConfig.setView(path);
+    this.view.render();
 
 }
 Router.prototype.getPath = function () {
