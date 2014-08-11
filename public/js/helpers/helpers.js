@@ -3,20 +3,20 @@ var helper;
 //helper containing formating and other functions
 
 helper = {
-	formatFunctions: {
+	format: {
 		//function for converting number (in parameter) to precentage representated by returning string
 		getPercentage: function(num) {
-			if(typeof num === 'number') {
+			if(!(isNaN(num))) {
 				var result = (num * 100).toFixed(2)+"%";
 				return result;
 			}
 			else {
-				console.log("Not a number!");
+				return ("Can't get the percentage, input is not a number!");
 			}
 		}
 	},
 
-	elementsFunctions: {
+	dom: {
 		//function for converting string into DOM element
 		createElement: function(str) {
 			var myElement = $(str);
