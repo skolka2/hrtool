@@ -16,17 +16,17 @@ ComponentCheckBox.prototype = new ComponentBase();
 ComponentCheckBox.prototype.constructor = ComponentCheckBox;
 
 ComponentCheckBox.prototype.createDom = function(){
-	var buddyCheckbox = this.helper.elementsFunctions.createElement("<div></div>");	
+	var buddyCheckbox = this.helper.dom.createElement("<div></div>");	
 	buddyCheckbox.className =  "buddy-checkbox";
 
-	this.checkChecked = this.helper.elementsFunctions.createElement("<div></div>");
+	this.checkChecked = this.helper.dom.createElement("<div></div>");
 	if(this.checked){
 		this.checkChecked.className = ComponentCheckBox.checkBoxClass.CHECKED;	
 	}
 	else{
 		this.checkChecked.className = ComponentCheckBox.checkBoxClass.NOTCHECKED;
 	}
-	this.label = this.helper.elementsFunctions.createElement("<div></div>");
+	this.label = this.helper.dom.createElement("<div></div>");
 	this.label.className = "label";
 
 	this.label.innerText = this.labelText;
