@@ -1,15 +1,15 @@
-var ComponentCheckBox = function(){
+var ComponentCheckBox = function(labelText,checked){
 	this.super = ComponentBase;
 	this.super.prototype.constructor.apply(this);
-	this.helper = helper;
-
+	this.labelText =  "DefaultText";
 	this.checked = false;
 
-	this.createDom();
-
-	//this.element.onclick = this.onClickFunction;
-
-	//this.listen("CheckBoxChange",this,this,this.changeCheck);
+	if(labelText != null && typeof labelText != 'undefined'){
+		this.labelText = labelText;
+	}
+	if(checked != null && typeof checked != 'undefined'){
+		this.checked = checked;
+	}
 }
 
 ComponentCheckBox.prototype = new ComponentBase();
@@ -19,35 +19,58 @@ ComponentCheckBox.prototype.createDom = function(){
 	var buddyCheckbox = this.helper.elementsFunctions.createElement("<div></div>");	
 	buddyCheckbox.className =  "buddy-checkbox";
 
-	var checkChecked = this.helper.elementsFunctions.createElement("<div></div>");
-	checkChecked.className =  "check checked";
+	this.checkChecked = this.helper.elementsFunctions.createElement("<div></div>");
+	if(this.checked){
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.CHECKED;	
+	}
+	else{
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.NOTCHECKED;
+	}
 	this.label = this.helper.elementsFunctions.createElement("<div></div>");
 	this.label.className = "label";
 
-	this.label.innerText = "Ahoj";
+	this.label.innerText = this.labelText;
 
-	checkChecked.appendChild(this.label);
-	buddyCheckbox.appendChild(checkChecked);
+	this.checkChecked.appendChild(this.label);
+	buddyCheckbox.appendChild(this.checkChecked);
 
 	this.element = buddyCheckbox;
 
+	this.handleOnClick = this.handleOnClick.bind(this);
+	this.setChecked = this.setChecked.bind(this);
+
+	this.element.addEventListener(baseComponent.EventType.CLICK ,this.handleOnClick,false);
+	this.listen(ComponentCheckBox.EventType.CHANGE,this,this,this.setChecked);
 	/*<div class=buddy-checkbox>
-		<div class=check checked/>
+		<div class=check.Checked/>
 			<div class="label">checkbox label
 			</div>
 		</div>
 	</div>*/
 }
 
+ComponentCheckBox.prototype.handleOnClick = function(){
+	this.fire("CheckBoxChange",!this.checked);
+}
+
 ComponentCheckBox.prototype.setCheckBoxTittle = function(tittle){
 	this.label.innerText = tittle;
 }
 
-ComponentCheckBox.prototype.onClickFunction = function(){
-	//this.fire("CheckBoxChange",!this.checked);  //Bad scope, cant see fire function from OBS
+ComponentCheckBox.prototype.setChecked = function(checked){
+	this.checked = checked;
+	if(this.checked){
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.CHECKED;		
+	}
+	else{
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.NOTCHECKED;
+	}
 }
 
-
-ComponentCheckBox.prototype.changeCheck = function(checked){
-	this.checked = checked;
+ComponentCheckBox.checkBoxClass = {
+	CHECKED:"check.Checked",
+	NOTCHECKED:"check.notChecked"
+}
+ComponentCheckBox.EventType = {
+	CHANGE:"CheckBoxChange"
 }
