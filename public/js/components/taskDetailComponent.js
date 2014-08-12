@@ -24,35 +24,35 @@ TaskDetailComponent.prototype.createDom = function() {
 
 	var color = this.setTimeColor();
 
-	var taskWrapper = helper["dom"].createElement('<div class="task-wrapper" style="border: 2px solid; width:1000px;"></div>');
+	var taskWrapper = this.helper.dom.createElement('<div class="task-wrapper" style="border: 2px solid; width:1000px;"></div>');
 
-	var headerWrapper = helper["dom"].createElement('<div class="header-wrapper" clear="none" style="border-bottom: 2px solid; height:50px;"></div>');
+	var headerWrapper = this.helper.dom.createElement('<div class="header-wrapper" clear="none" style="border-bottom: 2px solid; height:50px;"></div>');
 
-	var titleLabel = helper["dom"].createElement('<label class="task-label">'+this.taskTitle+'</label>');
+	var titleLabel = this.helper.dom.createElement('<label class="task-label">'+this.taskTitle+'</label>');
 	headerWrapper.appendChild(titleLabel);
 
-	var timeLabel = helper["dom"].createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+	var timeLabel = this.helper.dom.createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
 	headerWrapper.appendChild(timeLabel);
 
-	var descriptionWrapper = helper["dom"].createElement('<div class="description-wrapper" style="height:200px; width:400px; float:left;"></div>');
+	var descriptionWrapper = this.helper.dom.createElement('<div class="description-wrapper" style="height:200px; width:400px; float:left;"></div>');
 
-	var descriptionParagraph = helper["dom"].createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</div>');
+	var descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</div>');
 	descriptionWrapper.appendChild(descriptionParagraph);
 
-	var notesWrapper = helper["dom"].createElement('<div class="notes-wrapper" style="height:200px; float:left;"></div>');
+	var notesWrapper = this.helper.dom.createElement('<div class="notes-wrapper" style="height:200px; float:left;"></div>');
 
-	var notesText = helper["dom"].createElement('<textarea class="notes-text"> Task notes: '+this.taskNotes+'</textarea>');
+	var notesText = this.helper.dom.createElement('<textarea class="notes-text"> Task notes: '+this.taskNotes+'</textarea>');
 	notesWrapper.appendChild(notesText);
 
-	var footerWrapper = helper["dom"].createElement('<div class="footer-wrapper" style="border-top: 2px solid; clear:both; height:50px;"></div>');
+	var footerWrapper = this.helper.dom.createElement('<div class="footer-wrapper" style="border-top: 2px solid; clear:both; height:50px;"></div>');
 
-	var buddyLabel = helper["dom"].createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
+	var buddyLabel = this.helper.dom.createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
 	footerWrapper.appendChild(buddyLabel);
 
-	var saveNotesBttn = helper["dom"].createElement('<button class="save-notes" type="button" style="float:right;">Save notes</button>');
+	var saveNotesBttn = this.helper.dom.createElement('<button class="save-notes" type="button" style="float:right;">Save notes</button>');
 	footerWrapper.appendChild(saveNotesBttn);
 
-	var finishTaskBttn = helper["dom"].createElement('<button class="finish-task" type="button" style="float:right;">Finish task</button>')
+	var finishTaskBttn = this.helper.dom.createElement('<button class="finish-task" type="button" style="float:right;">Finish task</button>')
 	footerWrapper.appendChild(finishTaskBttn);
 
 	taskWrapper.appendChild(headerWrapper);
