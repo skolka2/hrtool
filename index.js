@@ -7,11 +7,18 @@ var app             = express();
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
+var dbController    = require('./lib/dbController')(dbClient);
 
 app.use(express.cookieParser());
 app.use(express.session({secret: 'SBKS_hrtool'}));
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
+
+
+app.http().io();
+app.listen(config.port);
+console.log('Server listens on port ' + config.port);
+
 
 passport.serializeUser(function(user, done) {
     return done(null, user);
@@ -79,6 +86,18 @@ app.get('/auth/google/return',
 
 
 
+//ROUTES
+
+//All saved tasks will be sent to klient
+app.io.route('task:getAll', function(req){
+    dbController.getAllTasks(req); 
+});
+
+
+
+
+
+
 
 
 
@@ -92,6 +111,3 @@ dbClient.on('error', function(err){
 
 
 
-app.http().io();
-app.listen(config.port);
-console.log('Server listens on port ' + config.port);
