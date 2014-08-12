@@ -5,39 +5,38 @@ var Mediator =  function() {
 }
 
 Mediator.prototype = new ObservableComponent();
-Mediator.prototype.constructor = mediator; 
+Mediator.prototype.constructor = Mediator; 
 
 /*
 * @returns {object} singleton socket
 */
 Mediator.prototype.getSocket = function() {
-	if (mediator.socket == null) {
-		mediator.socket = io.connect();
+	if (Mediator.socket == null) {
+		Mediator.socket = io.connect();
 	}
-	return mediator.socket;
+	return Mediator.socket;
 };
 
 /* call backend to retrieve data
-* @param {object} callee 
 * @param {string} endpoint
 * @param {object} params parametres
 * @param {type} type type of event
 * @param {object} transform transformation of loaded data
 */
-Mediator.prototype.loadData = function(callee, endpoint, params, type, transform){
+Mediator.prototype.loadData = function(endpoint, params, type, transform){
 	var self = this;
 	this.getSocket().emit(endpoint, params, function( err) {	
 		if (err != null) {
 			console.log("error", err);
 		}
-	};
+	});
 
 	this.getSocket().on(endpoint, params, function(data) {
 		if (transform != null) {
 			data = transform(data);
 		}
-		self.fire(type, data, callee);
-	};
+		self.fire(type, data);
+	});
 };
 
 
