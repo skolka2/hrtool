@@ -2,7 +2,7 @@
 Object, which contains HTML element for task detail and other properties and functions inherrited from ComponentBase object.
 Also contains variables for storing data about the task. 
 */
-var TaskDetailComponent = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskBuddy, taskFinished) {
+var ComponentTaskDetail = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskBuddy, taskFinished) {
 	this.super = ComponentBase;
 	this.super.call(this);
 	this.taskTitle = taskTitle;
@@ -14,13 +14,13 @@ var TaskDetailComponent = function(taskTitle, dateFrom, dateTo, taskDescription,
 	this.isFinished = taskFinished;
 }
 
-TaskDetailComponent.prototype = new ComponentBase();
-TaskDetailComponent.prototype.constructor = TaskDetailComponent;
+ComponentTaskDetail.prototype = new ComponentBase();
+ComponentTaskDetail.prototype.constructor = ComponentTaskDetail;
 
 /*
 Overridden function from component BaseObject - it creates DOM, which will be rendered by other function (render) inherrited from ComponentBase.
 */
-TaskDetailComponent.prototype.createDom = function() {
+ComponentTaskDetail.prototype.createDom = function() {
 
 	var color = this.setTimeColor();
 
