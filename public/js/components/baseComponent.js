@@ -1,14 +1,12 @@
-var ComponentBase;
-
-
-
 //Default constructor
-ComponentBase = function(){
+var ComponentBase = function(){
 	this.super = ObservableComponent;
 	this.super.prototype.constructor.apply(this);
 	this.childs = {};
 	this.element = null;
 	this.rendered = false;
+
+	this.helper = helper;
 }
 
 ComponentBase.prototype = new ObservableComponent();
@@ -40,9 +38,9 @@ ComponentBase.prototype.removeChild = function (name){
 ComponentBase.prototype.removeFromDOM = function (){
 	//check if its rendered
 	if(this.rendered){
+		this.element.remove();
 		for(child in this.childs){
 			this.childs[child].component.removeFromDOM();
-			this.element.remove();
 		}
 		
 		this.rendered = false;
@@ -116,3 +114,6 @@ ComponentBase.prototype.getWrapper = function(wrapper){
 }
 
 ComponentBase.mainWrapper = "main-wrapper";
+ComponentBase.EventType = {
+	CLICK = "click"
+}
