@@ -52,13 +52,12 @@ ComponentBase.prototype.removeFromDOM = function (){
 ComponentBase.prototype.destroy = function (){
 	//check if its rendered
 	this.removeFromDOM();
-	
-	//TODO After obs is done remove from obs(listeners)
+	this.removeListeners(this.componentId);
 	for(name in this.childs){
 		
 		this.childs[name].component.destroy();
 		delete this.childs[name];
-		//Remove from obs
+		
 	}
 	
 }
