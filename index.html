@@ -15,17 +15,24 @@
     <script src="js/views/defaultView.js"></script>
     <script src="js/views/userView.js"></script>
     <script src="js/views/featureView.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>
-       (function(){
-           io = io.connect();           
-            io.on('logged', function(err, data){
-               window.console.log(err + '\n' + data); 
+        (function(){
+            $.get("/handshake",function(data, status){
+                window.console.log(data);
+                if(data.error){
+                    //TODO zobrazit tlačítko login
+                    document.getElementById('loginButton').style.display = 'block';
+                }else{
+                    //TODO app.init();
+                    document.getElementById('loginButton').style.display = 'none';
+                }
             });
-       })();
+        })();
     </script>
 </head>
 <body>
     <div id="main-wrapper"></div>
-    <a href="/auth/google">Sign In with Google</a>
+    <a href="/auth/google" id="loginButton">Sign In with Google</a>
 </body>
 </html>

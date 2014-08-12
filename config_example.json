@@ -1,4 +1,5 @@
 {
-    "port"              : 8080,
-    "conString"  : "pg://postgres:database@localhost:5433/hrtool_database"
+    "host"      : "http://localhost",
+    "port"      : 8080,
+    "conString" : "pg://postgres:database@localhost:5433/hrtool_database"
 }
