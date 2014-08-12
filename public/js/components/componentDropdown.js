@@ -24,7 +24,7 @@ var ComponentDropdown = function(data) {
 
 ComponentDropdown.prototype = new ComponentBase();
 ComponentDropdown.prototype.constructor = ComponentDropdown;
-ComponentDropdown.EventType.CHANGE = 'change';
+ComponentDropdown.EventType = {CHANGE: 'change'};
 
 /**
  * Shows the list of items provided in data object
