@@ -22,15 +22,15 @@
     <script src="/js/components/componentTaskDetail.js"></script>
     <script src="/js/components/componentTaskList.js"></script>
     <script src="/js/components/componentDropdown.js"></script>
-    <script>
+    <script>        
         (function(){
-            $.get("/handshake",function(data, status){
+            $.get("/handshake",function(data){
                 if(data.error){
                     //TODO zobrazit tlačítko login
                     document.getElementById('loginButton').style.display = 'block';
                 }else{
                     document.getElementById('loginButton').style.display = 'none';
-                    var app = new App();
+                    app = new App();
                     app.init();
                     app.bulk = data;
                 }
