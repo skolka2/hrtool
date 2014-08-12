@@ -39,7 +39,7 @@ ComponentCheckBox.prototype.createDom = function(){
 	this.handleOnClick = this.handleOnClick.bind(this);
 	this.setChecked = this.setChecked.bind(this);
 
-	this.element.addEventListener(this.super.EventType.CLICK ,this.handleOnClick,false);
+	this.element.addEventListener(ComponentCheckBox.EventType.CLICK ,this.handleOnClick,false);
 	this.listen(ComponentCheckBox.EventType.CHANGE,this,this,this.setChecked);
 	/*<div class=buddy-checkbox>
 		<div class=check.Checked/>
@@ -71,6 +71,5 @@ ComponentCheckBox.checkBoxClass = {
 	CHECKED:"check.Checked",
 	NOTCHECKED:"check.notChecked"
 }
-ComponentCheckBox.EventType = {
-	CHANGE:"CheckBoxChange"
-}
+
+ComponentCheckBox.EventType.CHANGE = "CheckBoxChange";
