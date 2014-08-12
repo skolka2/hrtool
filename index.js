@@ -21,7 +21,7 @@ app.listen(config.port);
 console.log('Server listens on port ' + config.port);
 
 
-passport.serializeUser(function (user, done) {
+passport.serializeUser(function(user, done) {
     return done(null, user);
 });
 
@@ -135,6 +135,8 @@ app.get('/auth/google/return',
 
 //ROUTES
 
+>>>>>>> vlozeni uzivatele a vraceni vsech tasku
+
 //All saved tasks will be sent to klient
 router.register('task:getAll', function (req) {
     dbController.getAllTasks(req);
@@ -149,7 +151,6 @@ router.register('user:insert', function (req) {
 router.register('user:insertFromCSV', function (req, next) {
     dbController.insertUsersFromCSV(req, req.data);
 });
-
 
 
 
