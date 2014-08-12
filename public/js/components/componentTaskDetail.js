@@ -66,7 +66,7 @@ ComponentTaskDetail.prototype.createDom = function() {
 /*
 Function for setting up color of the label with time, so it can signalize if deadline on the task has been met.
 */
-TaskDetailComponent.prototype.setTimeColor = function() {
+ComponentTaskDetail.prototype.setTimeColor = function() {
 	if((this.dateTo < new Date()) && (this.isFinished === false)) {
 		return "#FF704D";
 	}
@@ -78,7 +78,7 @@ TaskDetailComponent.prototype.setTimeColor = function() {
 /*
 Function for event on button for finishing tasks.
 */
-TaskDetailComponent.prototype.finishTask = function() {
+ComponentTaskDetail.prototype.finishTask = function() {
 	//TO-DO
 	alert("Not yet implemented...");
 }
@@ -86,7 +86,7 @@ TaskDetailComponent.prototype.finishTask = function() {
 /*
 Function for event on button for saving user notes.
 */
-TaskDetailComponent.prototype.saveNotes = function() {
+ComponentTaskDetail.prototype.saveNotes = function() {
 	//TO-DO
 	alert("Not yet implemented...");
 }
