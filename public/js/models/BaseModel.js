@@ -1,7 +1,7 @@
 /* ModelBase constructor */
 var ModelBase =  function( ) {
 	this.super = ObservableComponent;
-	this.mediator = new mediator();
+	this.mediator = new Mediator();
 }
 
 ModelBase.prototype = new ObservableComponent();
