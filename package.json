@@ -10,6 +10,7 @@
     "nodemon": "^1.2.1",
     "debug": "~1.0.4",
     "passport": "~0.2.0",
-    "passport-google": "~0.3.0"
+    "passport-google": "~0.3.0",
+    "csv-parse": "0.0.6"
   }
 }
