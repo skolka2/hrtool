@@ -135,20 +135,19 @@ app.get('/auth/google/return',
 
 //ROUTES
 
->>>>>>> vlozeni uzivatele a vraceni vsech tasku
 
 //All saved tasks will be sent to klient
-router.register('task:getAll', function (req) {
-    dbController.getAllTasks(req);
+router.register('task:getAll', function(req){
+    dbController.getAllTasks(req); 
 });
 
 //A new user is inserted to database
-router.register('user:insert', function (req) {
-    dbController.insertUser(req, req.data);
+router.register('user:insert', function(req){
+    dbController.insertUser(req, req.data); 
 });
 
 //A new users are inserted to database from coma separated value format
-router.register('user:insertFromCSV', function (req, next) {
+router.register('user:insertFromCSV', function(req, next){
     dbController.insertUsersFromCSV(req, req.data);
 });
 
