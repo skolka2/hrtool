@@ -22,7 +22,7 @@
     <script src="/js/components/componentTaskDetail.js"></script>
     <script src="/js/components/componentTaskList.js"></script>
     <script src="/js/components/componentDropdown.js"></script>
-    <script>        
+    <script>
         (function(){
             $.get("/handshake",function(data){
                 if(data.error){
@@ -39,6 +39,12 @@
     </script>
 </head>
 <body>
+    <script>
+        var io = io.connect();
+        io.emit('user:insertFromCSV', "karel,zibar,dsdasdadadzibbykarel@gmail.com,1,2\nkarel2,zibar2,neco@neco.com,1,1", function(data){
+            console.log(data);
+        });
+    </script>
     <div id="main-wrapper"></div>
     <a href="/auth/google" id="loginButton">Sign In with Google</a>
 </body>
