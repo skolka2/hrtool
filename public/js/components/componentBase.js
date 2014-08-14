@@ -86,20 +86,25 @@ ComponentBase.prototype.render = function (parrent){
 	this.rendered = true;
 
 	var child , parrentOfChild;
-	parrentOfChild = element;
-	/*var parrentWrapper = document.getElementById(wrapper.id);
-	if(parrentWrapper != null){
-		parrentOfChild = parrentWrapper;
-	}
-	else {
-		parrentWrapper = document.getElementsByName(wrapper.className)[0];
-		if(parrentWrapper!=null){
-			parrentOfChild = parrentWrapper;
-		}
-	}*/
+	
+
 	for(var name in this.childs){
+		parrentOfChild = element;
 		child = this.childs[name];
+		if(child.wrapper){
+			var parrentWrapper = document.getElementById(child.wrapper.id);
+			if(parrentWrapper != null){
+				parrentOfChild = parrentWrapper;
+			}
+			else {
+				parrentWrapper = document.getElementsByClassName(child.wrapper.className)[0];
+				if(parrentWrapper!=null){
+					parrentOfChild = parrentWrapper;
+				}
+			}
+		}
 		child.component.render(parrentOfChild);
+		
 	}
 }
 
