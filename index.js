@@ -7,6 +7,7 @@ var app             = express();
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
+var bulk = {};
 
 app.use(express.cookieParser());
 app.use(express.session({secret: 'SBKS_hrtool'}));
@@ -26,7 +27,7 @@ passport.use(new GoogleStrategy({
         realm: config.host + ':' + config.port + '/'
         },
         function(identifier, profile, done) {                                   //finds a user in database if registred
-            dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()], 
+            dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()],
                 function(err, user){
                     if(err){              
                         debug('google login: database error: ' + err);
@@ -43,9 +44,34 @@ passport.use(new GoogleStrategy({
                     }
                 }
             );
-        }
+        } 
     ));
-    
+
+
+//Preparing default structure of bulk data which will be sent to each logged client
+bulk.departments = [];
+bulk.teams = {};
+bulk.map = {};
+dbClient.queryAll("SELECT * FROM departments", function(err, data){
+    if(!err){
+        bulk.departments = data;
+        for(var i in data){
+            dbClient.queryAll("SELECT * FROM teams WHERE id_department=$1", [data[i].id_department], function(err2, data2){
+                if(!err2){
+                    bulk.map[data2[0].id_department] = data2;
+                }
+            });
+        }
+    }
+});
+dbClient.queryAll("SELECT * FROM teams", function(err, data){
+    if(!err){
+        for(var i in data){
+            bulk.teams[data[i].id_team] = data[i];
+            delete bulk.teams[data[i].id_team].id_team; //id_team is key so there is no need to have it
+        }
+    }
+});
 
 
 
@@ -58,12 +84,18 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-//checks if user is logged in session and acording to it sends proper redirect url
+//checks if user is logged in session and according to it sends error or default bulk data
 app.get('/handshake', function (req, res) {
     if(!req.session.passport.user){
         res.json({error: 'not logged in'});
     }else{
-        res.json({user: req.session.passport.user});
+        //bulk.user = req.session.passport.user;
+        dbClient.queryOne("SELECT * FROM users WHERE id_user=$1", [req.session.passport.user.id_buddy], function(err, data){
+            if(!err){
+                bulk.hrBuddy = data;
+                res.json(bulk);
+            }
+        });
     }
 });
     
