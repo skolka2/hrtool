@@ -7,7 +7,7 @@ var app             = express();
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
-var dbController    = require('./lib/dbController')(dbClient);
+var dbController    = require('./lib/repositories/dbController')(dbClient);
 
 app.use(express.cookieParser());
 app.use(express.session({secret: 'SBKS_hrtool'}));
