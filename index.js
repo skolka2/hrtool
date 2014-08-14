@@ -9,13 +9,12 @@ app.http().io();
 require('express.io-middleware')(app);
 /* middleware adding multiroute functionality*/
 app.io.use(function (req, next) {
- debug("wtf" +req.session.passport.user );
+
     if(typeof req.session.passport.user ==="undefined"){
         debug("not logged in");
         //you are not register
          req.io.respond({error: "not logged in"});
     } else {
-        debug("logged in");
         next();
     }
 });
