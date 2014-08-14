@@ -72,7 +72,8 @@ ComponentBase.prototype.createDom = function (){
 ComponentBase.prototype.getElement = function (){
 	if(this.element == null){
 		this.createDom();
-    }
+
+	}
 	return this.element;
 }
 
@@ -86,10 +87,9 @@ ComponentBase.prototype.render = function (parrent){
 	this.rendered = true;
 
 	var child , parrentOfChild;
-	
-
 	for(var name in this.childs){
 		parrentOfChild = element;
+
 		child = this.childs[name];
 		if(child.wrapper){
 			var parrentWrapper = document.getElementById(child.wrapper.id);
