@@ -2,16 +2,16 @@
 Object, which contains HTML element for task detail and other properties and functions inherrited from ComponentBase object.
 Also contains variables for storing data about the task. 
 */
-var ComponentTaskDetail = function(taskTitle, dateFrom, dateTo, taskDescription, taskNotes, taskBuddy, taskFinished) {
+var ComponentTaskDetail = function(taskParams) {
 	this.super = ComponentBase;
 	this.super.call(this);
-	this.taskTitle = taskTitle;
-	this.dateFrom = dateFrom;
-	this.dateTo = dateTo;
-	this.taskDescription = taskDescription;
-	this.taskNotes = taskNotes;
-	this.taskBuddy = taskBuddy;
-	this.isFinished = taskFinished;
+	this.taskTitle = taskParams.task_title; //String
+	this.dateFrom = new Date(taskParams.date_from); //Date
+	this.dateTo = new Date(taskParams.date_to); //Date
+	this.taskDescription = taskParams.task_description; //String
+	this.taskNotes = taskParams.task_notes; //String
+	this.taskBuddy = taskParams.task_buddy; //String
+	this.isFinished = taskParams.task_finished; //Boolean
 }
 
 ComponentTaskDetail.prototype = new ComponentBase();

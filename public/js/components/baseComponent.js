@@ -4,14 +4,15 @@ var ComponentBase;
 
 //Default constructor
 ComponentBase = function(){
-	this.super = ObservableComponent;
-	this.super.prototype.constructor.apply(this);
+	this.super = EventEmitter;
+	this.super.prototype.constructor.call(this);
+    this.helper = helper;
 	this.childs = {};
 	this.element = null;
 	this.rendered = false;
 }
 
-ComponentBase.prototype = new ObservableComponent();
+ComponentBase.prototype = new EventEmitter();
 ComponentBase.prototype.constructor = ComponentBase;
 
 //Insert child component
@@ -74,8 +75,7 @@ ComponentBase.prototype.createDom = function (){
 ComponentBase.prototype.getElement = function (){
 	if(this.element == null){
 		this.createDom();
-		return this.element;
-	}
+    }
 	return this.element;
 }
 

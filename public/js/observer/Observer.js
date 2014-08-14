@@ -72,7 +72,7 @@ Observer.prototype._getParents = function(childId) {
  * @param {object} owner ObservableComponent that fired an event
  * @returns {undefined}
  */
-Observer.prototype.on = function (calee, type, fn, owner) {
+Observer.prototype.on = function (type, fn, owner) {
     if(typeof (fn) !== "function") {
         return;
     }
@@ -87,7 +87,7 @@ Observer.prototype.on = function (calee, type, fn, owner) {
         typeItem[owner.componentId] = {};
     }
 
-    typeItem[owner.componentId] = fn.bind(owner);
+    typeItem[owner.componentId] = fn;
 };
 
 /**
