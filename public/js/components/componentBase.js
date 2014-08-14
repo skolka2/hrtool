@@ -90,6 +90,7 @@ ComponentBase.prototype.render = function (parrent){
 	for(var name in this.childs){
 		parrentOfChild = element;
 
+
 		child = this.childs[name];
 		if(child.wrapper){
 			var parrentWrapper = document.getElementById(child.wrapper.id);
