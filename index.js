@@ -3,10 +3,17 @@ var config          = require('./config.json');                                 
 var epg             = require('easy-pg');
 var dbClient        = epg(config.conString);                                    //database client for sending queries
 var express         = require('express.io');
+
+
 var app             = express();
+app.http().io();
+require('express.io-middleware')(app);
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
+var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
+require('./lib/routes/tasks-route')(router, tasksRepository );
+
 
 app.use(express.cookieParser());
 app.use(express.session({secret: 'SBKS_hrtool'}));
@@ -50,7 +57,6 @@ passport.use(new GoogleStrategy({
 
 
 
-
 //ENDPOINTS
 
 //root of web aplication
@@ -66,7 +72,10 @@ app.get('/handshake', function (req, res) {
         res.json({user: req.session.passport.user});
     }
 });
+
     
+
+
 
 
 //redirect to a google login formular
@@ -79,11 +88,6 @@ app.get('/auth/google/return',
 
 
 
-
-
-
-
-
 //database error
 dbClient.on('error', function(err){
     debug('>> Database error:\n' + err);
@@ -92,6 +96,7 @@ dbClient.on('error', function(err){
 
 
 
-app.http().io();
+
+
 app.listen(config.port);
 console.log('Server listens on port ' + config.port);

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -28,7 +28,12 @@
                     document.getElementById('loginButton').style.display = 'none';
                 }
             });
+            
         })();
+          var socket = io.connect();
+       socket.emit('tasks:list', function (data) { 
+        window.console.log(data)});
+      
     </script>
 </head>
 <body>
