@@ -5,7 +5,20 @@ var dbClient        = epg(config.conString);                                    
 var express         = require('express.io');
 var app             = express();
 app.http().io();
+/*init middleware */
 require('express.io-middleware')(app);
+/* middleware adding multiroute functionality*/
+app.io.use(function (req, next) {
+ debug("wtf" +req.session.passport.user );
+    if(typeof req.session.passport.user ==="undefined"){
+        debug("not logged in");
+        //you are not register
+         req.io.respond({error: "not logged in"});
+    } else {
+        debug("logged in");
+        next();
+    }
+});
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
