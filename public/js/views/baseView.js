@@ -14,11 +14,8 @@ BaseView.prototype.constructor = BaseView;
 BaseView.prototype.render = function(){
 	this.base = document.getElementById(BaseView.mainWrapper);
 	if(typeof this.base != 'undefined'){ //checks if, in body, exists main-wrapper
-		var childs = this.base.childNodes;
-		var length = childs.length;
-		for(var i = 0;i < length;i++){
-			
-			this.base.removeChild(childs[0]);	//Delete all content from main-wrapper
+		while( this.base.childNodes.length > 0 ){
+     		this.base.removeChild(this.base.childNodes[0])
 		}
 	}
 	else{	//Adds main-wrapper
