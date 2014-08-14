@@ -2,12 +2,12 @@
 
 //TODO get elements from helper
 var BaseView =	function(){
-	this.super = ObservableComponent;
+	this.super = EventEmitter;
 	this.super.prototype.constructor.apply(this);
 	this.helper = helper;
 }	
 
-BaseView.prototype = new ObservableComponent();
+BaseView.prototype = new EventEmitter();
 BaseView.prototype.constructor = BaseView;
 
 
