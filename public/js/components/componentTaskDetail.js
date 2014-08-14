@@ -5,12 +5,12 @@ Also contains variables for storing data about the task.
 var ComponentTaskDetail = function(taskParams) {
 	this.super = ComponentBase;
 	this.super.call(this);
+	this.taskBuddy = taskParams.task_buddy; //String
 	this.taskTitle = taskParams.task_title; //String
 	this.dateFrom = new Date(taskParams.date_from); //Date
 	this.dateTo = new Date(taskParams.date_to); //Date
 	this.taskDescription = taskParams.task_description; //String
 	this.taskNotes = taskParams.task_notes; //String
-	this.taskBuddy = taskParams.task_buddy; //String
 	this.isFinished = taskParams.task_finished; //Boolean
 }
 
@@ -28,32 +28,26 @@ ComponentTaskDetail.prototype.createDom = function() {
 
 	var headerWrapper = this.helper.dom.createElement('<div class="header-wrapper" clear="none" style="border-bottom: 2px solid; height:50px;"></div>');
 
+	var buddyLabel = this.helper.dom.createElement('<label class="task-label" style="margin-right:50px;">'+this.taskBuddy+'</label>');
+	headerWrapper.appendChild(buddyLabel);
+
 	var titleLabel = this.helper.dom.createElement('<label class="task-label">'+this.taskTitle+'</label>');
 	headerWrapper.appendChild(titleLabel);
 
 	var timeLabel = this.helper.dom.createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
 	headerWrapper.appendChild(timeLabel);
 
-	var descriptionWrapper = this.helper.dom.createElement('<div class="description-wrapper" style="height:200px; width:400px; float:left;"></div>');
+	var descriptionWrapper = this.helper.dom.createElement('<div class="description-wrapper" style="height:200px; width:300px; float:left;"></div>');
 
-	var descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</div>');
+	var descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</p>');
 	descriptionWrapper.appendChild(descriptionParagraph);
 
-	var notesWrapper = this.helper.dom.createElement('<div class="notes-wrapper" style="height:200px; float:left;"></div>');
+	var notesWrapper = this.helper.dom.createElement('<div class="notes-wrapper" style="height:200px; border-left: 2px solid; float:left;"></div>');
 
-	var notesText = this.helper.dom.createElement('<textarea class="notes-text"> Task notes: '+this.taskNotes+'</textarea>');
+	var notesText = this.helper.dom.createElement('<p class="notes-text"> Task notes: '+this.taskNotes+'</p>');
 	notesWrapper.appendChild(notesText);
 
 	var footerWrapper = this.helper.dom.createElement('<div class="footer-wrapper" style="border-top: 2px solid; clear:both; height:50px;"></div>');
-
-	var buddyLabel = this.helper.dom.createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
-	footerWrapper.appendChild(buddyLabel);
-
-	var saveNotesBttn = this.helper.dom.createElement('<button class="save-notes" type="button" style="float:right;">Save notes</button>');
-	footerWrapper.appendChild(saveNotesBttn);
-
-	var finishTaskBttn = this.helper.dom.createElement('<button class="finish-task" type="button" style="float:right;">Finish task</button>')
-	footerWrapper.appendChild(finishTaskBttn);
 
 	taskWrapper.appendChild(headerWrapper);
 	taskWrapper.appendChild(descriptionWrapper);
@@ -73,20 +67,4 @@ ComponentTaskDetail.prototype.setTimeColor = function() {
 	else {
 		return "#99FF66";
 	}
-}
-
-/*
-Function for event on button for finishing tasks.
-*/
-ComponentTaskDetail.prototype.finishTask = function() {
-	//TO-DO
-	alert("Not yet implemented...");
-}
-
-/*
-Function for event on button for saving user notes.
-*/
-ComponentTaskDetail.prototype.saveNotes = function() {
-	//TO-DO
-	alert("Not yet implemented...");
 }
