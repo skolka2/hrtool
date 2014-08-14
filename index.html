@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -35,7 +35,12 @@
                     app.bulk = data;
                 }
             });
+            
         })();
+          var socket = io.connect();
+       socket.emit('tasks:list', function (data) { 
+        window.console.log(data)});
+      
     </script>
 </head>
 <body>
