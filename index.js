@@ -3,6 +3,8 @@ var config          = require('./config.json');                                 
 var epg             = require('easy-pg');
 var dbClient        = epg(config.conString);                                    //database client for sending queries
 var express         = require('express.io');
+
+
 var app             = express();
 app.http().io();
 /*init middleware */
@@ -134,7 +136,7 @@ app.get('/handshake', function (req, res) {
 //redirect to a google login formular
 app.get('/auth/google', passport.authenticate('google'));
 
-// Google will redirect the user to this URL after authentication.
+// Google will redirect the user to this URL after authentication.  
 app.get('/auth/google/return',
   passport.authenticate('google', {
     successRedirect: '/',
@@ -145,8 +147,11 @@ app.get('/auth/google/return',
 
 
 
+
+
+
 //database error
-dbClient.on('error', function(err){
+dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
 });
 
