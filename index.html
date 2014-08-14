@@ -12,7 +12,7 @@
     <script src="/js/models/BaseModel.js"></script>
     <script src="/js/models/mediator.js"></script>
     <script src="/js/models/query.js"></script>
-    <script src="/js/components/baseComponent.js"></script>
+    <script src="/js/components/componentBase.js"></script>
     <script src="/js/components/loginBar.js"></script>
     <script src="js/router/router.js"></script>
     <script src="js/router/routerConfig.js"></script>
@@ -41,4 +41,13 @@
     <div id="main-wrapper"></div>
     <a href="/auth/google" id="loginButton">Sign In with Google</a>
 </body>
+    <script>
+        var b = new ComponentBase();
+        b.getElement().className = "WTF";
+
+        var c = new ComponentBase();
+        b.addChild("My Precious!",c,null);
+        b.render();
+    </script>
+
 </html>

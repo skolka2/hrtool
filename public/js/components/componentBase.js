@@ -1,6 +1,6 @@
 //Default constructor
 var ComponentBase = function(){
-	this.super = ObservableComponent;
+	this.super = EventEmitter;
 	this.super.prototype.constructor.apply(this);
 	this.childs = {};
 	this.element = null;
@@ -9,7 +9,7 @@ var ComponentBase = function(){
 	this.helper = helper;
 }
 
-ComponentBase.prototype = new ObservableComponent();
+ComponentBase.prototype = new EventEmitter();
 ComponentBase.prototype.constructor = ComponentBase;
 
 //Insert child component
@@ -22,6 +22,7 @@ ComponentBase.prototype.addChild = function (name, component, wraper){
 			'component': component,
 			'wrapper': wraper
 		};
+		this.setAsChild(this.childs[name].component);
 	}
 }
 
@@ -39,7 +40,7 @@ ComponentBase.prototype.removeFromDOM = function (){
 	//check if its rendered
 	if(this.rendered){
 		this.element.remove();
-		for(child in this.childs){
+		for(var child in this.childs){
 			this.childs[child].component.removeFromDOM();
 		}
 		
@@ -53,7 +54,7 @@ ComponentBase.prototype.destroy = function (){
 	//check if its rendered
 	this.removeFromDOM();
 	this.removeListeners(this.componentId);
-	for(name in this.childs){
+	for(var name in this.childs){
 		
 		this.childs[name].component.destroy();
 		delete this.childs[name];
@@ -71,17 +72,15 @@ ComponentBase.prototype.createDom = function (){
 ComponentBase.prototype.getElement = function (){
 	if(this.element == null){
 		this.createDom();
-		return this.element;
 	}
 	return this.element;
 }
 
 // Renders and insert component into dom (including child)
-ComponentBase.prototype.render = function (wrapper){
+ComponentBase.prototype.render = function (parrent){
 	
 	var element = this.getElement();
-	wrapper = this.getWrapper(wrapper);
-	var parrent = wrapper;
+	parrent = this.getWrapper(parrent);
 	parrent.appendChild(element);
 
 	this.rendered = true;
@@ -98,7 +97,7 @@ ComponentBase.prototype.render = function (wrapper){
 			parrentOfChild = parrentWrapper;
 		}
 	}*/
-	for(name in this.childs){
+	for(var name in this.childs){
 		child = this.childs[name];
 		child.component.render(parrentOfChild);
 	}
@@ -114,5 +113,5 @@ ComponentBase.prototype.getWrapper = function(wrapper){
 
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {
-	CLICK = "click"
+	CLICK: "click"
 }
