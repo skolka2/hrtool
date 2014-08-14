@@ -14,7 +14,6 @@ app.io.use(function (req, next) {
         //you are not register
          req.io.respond({error: "not logged in"});
     } else {
-        debug("logged in");
         next();
     }
 });
