@@ -1,11 +1,7 @@
 
 var Mediator =  function() {
-	this.super = ObservableComponent;
 
 }
-
-Mediator.prototype = new ObservableComponent();
-Mediator.prototype.constructor = Mediator; 
 
 /*
 * @returns {object} singleton socket
@@ -20,25 +16,41 @@ Mediator.prototype.getSocket = function() {
 /* call backend to retrieve data
 * @param {string} endpoint
 * @param {object} params parametres
-* @param {type} type type of event
+* @param {object} model
 * @param {object} transform transformation of loaded data
 */
-Mediator.prototype.loadData = function(endpoint, params, type, transform){
-	var self = this;
-	this.getSocket().emit(endpoint, params, function( err) {	
-		if (err != null) {
-			console.log("error", err);
-		}
-	});
+Mediator.prototype.loadData = function (endpoint, params, model, transform) {
+    var self = this;
+    this.getSocket().emit(endpoint, params, function (resp) {
+        if (resp.error) {
+            console.log("error", err);
+        } else {
+            if (transform != null) {
+                resp.data = transform(resp.data);
+            }
+            model.update(resp.data);
+        }
+    });
 
-	this.getSocket().on(endpoint, params, function(data) {
-		if (transform != null) {
-			data = transform(data);
-		}
-		self.fire(type, data);
-	});
 };
 
+Mediator.prototype.fakeLoadData = function(endpoint, params, model, transform) {
+    update = model.update.bind(model);
+    setTimeout(function() {
+        var resp = {
+            'roman': {
+                'car': 'bmw'
+            },
+            'marek': {
+                'car': 'porsche'
+            },
+            'mirek': {
+                'car': 'skoda'
+            }
+        }
+        update(resp);
+    }, 3000);
+}
 
 
 

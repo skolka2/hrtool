@@ -72,7 +72,7 @@ ComponentBase.prototype.createDom = function (){
 ComponentBase.prototype.getElement = function (){
 	if(this.element == null){
 		this.createDom();
-	}
+    }
 	return this.element;
 }
 
