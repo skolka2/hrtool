@@ -3,8 +3,6 @@ var config          = require('./config.json');                                 
 var epg             = require('easy-pg');
 var dbClient        = epg(config.conString);                                    //database client for sending queries
 var express         = require('express.io');
-
-
 var app             = express();
 app.http().io();
 require('express.io-middleware')(app);
@@ -19,7 +17,17 @@ app.use(express.cookieParser());
 app.use(express.session({secret: 'SBKS_hrtool'}));
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
-
+/*
+router.register(function (req, next) {
+      console.log(req);
+    if(req.session.passport.user ===undefined){
+        //you are not register
+        console.log('you are not logged in');
+    } else {
+        next();
+    }
+});
+*/
 passport.serializeUser(function(user, done) {
     return done(null, user);
 });
@@ -29,9 +37,9 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-        returnURL: config.host + ':' + config.port + '/auth/google/return',
-        realm: config.host + ':' + config.port + '/'
-        },
+    returnURL: config.host + ':' + config.port + '/auth/google/return',
+    realm: config.host + ':' + config.port + '/'
+},
         function(identifier, profile, done) {                                   //finds a user in database if registred
             dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()], 
                 function(err, user){
@@ -49,10 +57,10 @@ passport.use(new GoogleStrategy({
                         return done(null, false, { message: 'This user is not registred!' });
                     }
                 }
-            );
+                );
         }
-    ));
-    
+        ));
+
 
 
 
@@ -73,7 +81,7 @@ app.get('/handshake', function (req, res) {
     }
 });
 
-    
+
 
 
 
@@ -84,7 +92,7 @@ app.get('/auth/google', passport.authenticate('google'));
 // Google will redirect the user to this URL after authentication.  
 app.get('/auth/google/return', 
   passport.authenticate('google', { successRedirect: '/',
-                                    failureRedirect: '/' }));
+    failureRedirect: '/' }));
 
 
 
