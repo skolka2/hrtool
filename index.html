@@ -39,7 +39,7 @@
         })();
           var socket = io.connect();
        socket.emit('tasks:list', function (data) { 
-        window.console.log(data)});
+        window.console.log(data.data)});
       
     </script>
 </head>
