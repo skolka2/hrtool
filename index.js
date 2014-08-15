@@ -159,7 +159,6 @@ router.register('user:getInfo', function(req, next){
 
 
 
-
 //database error
 dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
