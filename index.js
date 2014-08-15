@@ -63,13 +63,18 @@ dbClient.queryAll("SELECT * FROM departments", function(err, data){
     if(!err){
         bulk.departments = data;
         for(var i in data){
+            bulk.map[data[i].id_department] = [];
             dbClient.queryAll("SELECT * FROM teams WHERE id_department=$1", [data[i].id_department], function(err2, data2){
                 if(!err2){
-                    bulk.map[data2[0].id_department] = data2;
-                }
+                    for(var j in data2){
+                        bulk.map[data2[0].id_department].push(data2[j].id_team);
+                    }
+                }else
+                    debug('handshake: bulk error\n' + err);
             });
         }
-    }
+    }else
+        debug('handshake: bulk error\n' + err);
 });
 dbClient.queryAll("SELECT * FROM teams", function(err, data){
     if(!err){
@@ -77,10 +82,9 @@ dbClient.queryAll("SELECT * FROM teams", function(err, data){
             bulk.teams[data[i].id_team] = data[i];
             delete bulk.teams[data[i].id_team].id_team; //id_team is key so there is no need to have it
         }
-    }
+    }else
+        debug('handshake: bulk error\n' + err);
 });
-
-
 
 
 
@@ -93,21 +97,25 @@ app.get('/', function (req, res) {
 
 //checks if user is logged in session and according to it sends error or default bulk data
 app.get('/handshake', function (req, res) {
-    if (!req.session.passport.user) {
-        res.json({ error: 'not logged in' });
-    } else {
-        res.json({ user: req.session.passport.user });
-        if(!req.session.passport.user){
-            res.json({error: 'not logged in'});
-        }else {
-            //bulk.user = req.session.passport.user;
-            dbClient.queryOne("SELECT * FROM users WHERE id_user=$1", [req.session.passport.user.id_buddy], function (err, data) {
-                if (!err) {
-                    bulk.hrBuddy = data;
-                    res.json(bulk);
-                }
-            });
-        }
+    if(!req.session.passport.user){
+        res.json({error: 'not logged in'});
+    }else{
+        //bulk.user = req.session.passport.user;
+        dbClient.queryOne("SELECT * FROM users WHERE id_user=$1", [req.session.passport.user.id_buddy], function(err, data){
+            if(!err){
+                bulk.hrBuddy = data;
+                dbClient.queryAll("SELECT id_team, is_admin FROM users_teams WHERE id_user=$1",
+                        [req.session.passport.user.id_user], function(err2, data2){
+                    if(!err2) {
+                        bulk.userTeams = data2;
+                        res.json(bulk);
+                        debug('handshake: bulk ok');
+                    }else
+                        debug('handshake: bulk error\n' + err);
+                });
+            }else
+                debug('handshake: bulk error\n' + err);
+        });
     }
 });
 
