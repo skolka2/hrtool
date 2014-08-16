@@ -13,32 +13,46 @@ var ComponentDropdown = function(data) {
     this.super.call(this);
     this.selected = "";
     
-    this.__selectedTextElement = document.createElement('span');
-    this.__list = document.createElement('ul');
-    this.__list.className = 'dropDownButton';
-    this.__list.id = 'dropDownList_' + this.componentId;
-    this.__selectedTextElement.addEventListener('click', this.__openList.bind(this), false);
+    this._selectedTextElement = document.createElement('span');
+
+    this._list = document.createElement('ul');
+    this._list.className = 'dropDownButton';
+    this._list.id = 'dropDownList_' + this.componentId;
+    this._list.style.visibility = 'hidden';
+
+    this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._openList.bind(this), false);
     this.changeData(data);
 };
 
 
 ComponentDropdown.prototype = new ComponentBase();
 ComponentDropdown.prototype.constructor = ComponentDropdown;
+ComponentDropdown.EventType = ComponentDropdown.EventType || {};
 ComponentDropdown.EventType.CHANGE = 'change';
 
 /**
  * Shows the list of items provided in data object
  * @returns {undefined}
  */
-DropDown.prototype.__openList = function () {
+ComponentDropdown.prototype._openList = function () {
+    if(this._list.style.visibility === 'visible') {
+        this._list.style.visibility = 'hidden';
+            return;
+    }
     /*Close list on click in body (outside of span)*/
-    document.body.addEventListener('click', function(res) {
-        if(res.srcElement !== this.__selectedTextElement) {
-            this.__list.style.visibility = 'hidden';
-            document.body.removeEventListener('click');
+    this._list.style.visibility = 'visible';
+    var onClick;
+    onClick = function (ev) {
+        if (ev.target.className === 'dropDownItem') {
+            this._makeSelection(ev);
         }
-    }.bind(this), false);
-    this.__list.style.visibility = 'visible';    
+        if(ev.target !== this._list && ev.target !== this._selectedTextElement) {
+            this._list.style.visibility = 'hidden';
+            document.body.removeEventListener('click', onClick, false);
+        }
+    }.bind(this);
+
+    document.body.addEventListener(ComponentBase.EventType.CLICK, onClick, false);
 };
 
 /**
@@ -47,21 +61,20 @@ DropDown.prototype.__openList = function () {
  * where items is an object or array with items to be shown as options.
  * @returns {undefined}
  */
-ComponentDropdown.prototype.__fillWithData = function(data) {
+ComponentDropdown.prototype._fillWithData = function(data) {
     if(data.selected) {
         this.selected = data.selected;
+        this._selectedTextElement.textContent = this.selected;
     }
-    
-    this.__list.style.visibility = 'hidden';
+
     for(var item in data.items) {
         var li = document.createElement('li');
         li.className = 'dropDownItem';
-        li.addEventListener('click', this.__makeSelection.bind(this), false);
         
         var text = document.createTextNode(data.items[item]);
         
         li.appendChild(text);
-        this.__list.appendChild(li);
+        this._list.appendChild(li);
     };
 };
 
@@ -73,8 +86,13 @@ ComponentDropdown.prototype.__fillWithData = function(data) {
  * @returns {undefined}
  */
 ComponentDropdown.prototype.changeData = function (data) {
-    if(data !== undefined && data.items)
-        this.__fillWithData(data);
+    if(data !== undefined && data.items) {
+        var item;
+        while(item = this._list.children.item()) {
+            this._list.removeChild(item);
+        }
+        this._fillWithData(data);
+    }
 };
 
 /**
@@ -82,13 +100,11 @@ ComponentDropdown.prototype.changeData = function (data) {
  * @param {type} src
  * @returns {undefined}
  */
-ComponentDropdown.prototype.__makeSelection = function (src) {
+ComponentDropdown.prototype._makeSelection = function (src) {
     this.selected = src.target.textContent;
-    this.__selectedTextElement.innerText = this.selected;
-    document.body.removeEventListener('click');
-    this.__list.style.visibility = 'hidden';
+    this._selectedTextElement.innerHTML = this.selected;
     
-    this.fire(ComponentDropdown.EventType.CHANGE, this.selected, this.componentId);
+    this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
 };
 
 /**
@@ -96,13 +112,10 @@ ComponentDropdown.prototype.__makeSelection = function (src) {
  * @returns {undefined}
  */
 ComponentDropdown.prototype.createDom = function() {
-    this.super.prototype.createDom.apply(this);
-    
+    this.element = document.createElement("div");
     this.element.className = 'dropDownDiv';
     this.element.id = 'dropDownDiv_' + this.componentId;
     
-    this.element.appendChild(this.__selectedTextElement);
-    this.element.appendChild(this.__list);
+    this.element.appendChild(this._selectedTextElement);
+    this.element.appendChild(this._list);
 };
-
-
