@@ -11,7 +11,9 @@ CREATE TABLE tasks
 	date_from DATE NOT NULL,
 	date_to DATE NOT NULL,
 	id_user INTEGER NOT NULL,
-	id_buddy INTEGER
+	id_buddy INTEGER,
+  id_team INTEGER,
+	id_department INTEGER
 );
 
 DROP TABLE IF EXISTS default_tasks CASCADE;
@@ -109,6 +111,14 @@ ADD CONSTRAINT fk_default_tasks_id_team
 FOREIGN KEY (id_team)
 REFERENCES teams(id_team);
 
+ALTER TABLE tasks
+DROP CONSTRAINT IF EXISTS fk_tasks_id_team;
+
+ALTER TABLE tasks
+ADD CONSTRAINT fk_tasks_id_team
+FOREIGN KEY (id_team)
+REFERENCES teams(id_team) ON DELETE SET NULL;
+
 -- Foreign key from ID_DEPARTMENT column of DEFAULT_TASKS table to ID column from DEPARTMENTS table.
 ALTER TABLE default_tasks
 DROP CONSTRAINT IF EXISTS fk_default_tasks_id_department;
@@ -117,6 +127,13 @@ ALTER TABLE default_tasks
 ADD CONSTRAINT fk_default_tasks_id_department
 FOREIGN KEY (id_department)
 REFERENCES departments(id_department);
+
+ALTER TABLE tasks
+DROP CONSTRAINT IF EXISTS fk_tasks_id_department;
+ALTER TABLE tasks
+ADD CONSTRAINT fk_tasks_id_department
+FOREIGN KEY (id_department)
+REFERENCES departments(id_department) ON DELETE SET NULL;
 
 -- Foreign key from ID_USER_ROLE column of USERS table to ID column from USER_ROLES table.
 ALTER TABLE users
