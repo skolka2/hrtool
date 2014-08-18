@@ -3,7 +3,12 @@
 }
 
 .task-wrapper {
-	border: 2px solid;
+	border: 2px solid #91FF6C;
+	width: 1000px;
+}
+
+.task-wrapper-overflow {
+	border: 2px solid #FF4747;
 	width: 1000px;
 }
 
@@ -19,24 +24,24 @@
 
 .time-label {
 	float: right;
-	background-color: #91FF6C;
-}
-
-.time-label-overflow {
-	float: right;
-	background-color: #FF4747;
 }
 
 .description-wrapper {
 	height: 200px;
-	width: 300px;
+	width: 30%;
 	float: left;
 }
 
 .notes-wrapper {
 	height: 200px;
+    width: 69%;
 	border-left: 2px solid;
 	float: left;
+}
+
+.notes-text-area {
+	width: 95%;
+	height: 95%;
 }
 
 .footer-wrapper {
@@ -225,4 +230,12 @@
 
 #login-button{
     float: right;
+}
+
+.finish-task-bttn {
+	float: right;
+}
+
+.save-notes-bttn {
+	float: right;
 }

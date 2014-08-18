@@ -39,5 +39,20 @@ hrtool.actions = {
     getBuddyTaskDataNotCompleted: function (model) {
     	var mediator = new Mediator();
     	mediator.loadData('tasks/buddy/list/not-completed', {}, model);
-    }
+    },
+
+     getUserTaskData: function(model) {
+     	var mediator = new Mediator();
+     	mediator.loadData('tasks/user/list', {}, model);
+     },
+
+     updateUserTaskData: function(model, data) {
+     	var mediator = new Mediator();
+     	mediator.loadData('tasks/update', data, model);
+     },
+
+     finishUserTask: function(model, data) {
+     	var mediator = new Mediator();
+     	mediator.loadData('tasks/finish', data, model);
+     }
 }

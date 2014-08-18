@@ -10,6 +10,7 @@ var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
     this.super = ViewBase;
 }
+
 ViewTest.prototype = new ViewBase();
 ViewTest.prototype.constructor = ViewTest;
 
@@ -58,6 +59,13 @@ ViewTest.prototype.render = function(){
     //Fanda View END
 
     //Witz view___________________________________________________________________________
+
+    this.super.prototype.render.apply(this, arguments);
+    var mainWrapper = document.getElementById(this.super.mainWrapper);
+
+    this.component = new ComponentCheckBox("CheckBox");
+    var el = document.createElement('div');
+    el.innerHTML = 'This view contains component CheckBox.<br><br>';
     var body = document.getElementsByTagName('body')[0];
     var witzDiv = document.createElement('div');
     witzDiv.id = "witz-div"
@@ -74,6 +82,26 @@ ViewTest.prototype.render = function(){
 
     component.render(witzDiv);
     component2.render(witzDiv);
+
+
+
+
+
+
+	var viewWrapper = document.createElement('div');
+	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
+
+	mainWrapper.appendChild(viewWrapper);
+	var div = document.createElement("div");
+	var c = new ComponentCheckBox("CheckBox");
+    var d = new ComponentCheckBox("CheckBox");
+
+    div.appendChild(c.getElement());
+    div.appendChild(d.getElement());
+
+	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
+    b.render(viewWrapper);
     //___________________________________________________________________________
 
 
@@ -86,10 +114,9 @@ ViewTest.prototype.render = function(){
     titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
     divVladLaz.appendChild(titleVladLaz);
 
-    var buddyLists = new ComponentBuddyTasksListsInView();
-    buddyLists.render(divVladLaz);
+    var list = new ComponentListVladLaz();
+    list.render(divVladLaz);
 
     mainWrapper.appendChild(divVladLaz);
     //LAZ END
-
 };

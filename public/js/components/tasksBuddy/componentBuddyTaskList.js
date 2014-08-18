@@ -26,7 +26,7 @@ ComponentBuddyTaskList.prototype.onLoad = function(data) {
 			isFinished: taskData.completed
 		};
 
-		var task = new ComponentTaskDetail(taskDataModified);
+		var task = new ComponentBaseTaskDetail(taskDataModified);
 		this.addChild("buddyTask"+i, task, {'el': this.getElement()});
 
 		if(this.rendered) {

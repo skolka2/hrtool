@@ -13,6 +13,11 @@ var helper = module.exports = {
 			else {
 				return ("Can't get the percentage, input is not a number!");
 			}
+		},
+
+		getDate: function(date) {
+			var dateFormated = date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+			return dateFormated;
 		}
 	},
 
