@@ -21,7 +21,6 @@ app.listen(config.port);
 console.log('Server listens on port ' + config.port);
 
 
-
 passport.serializeUser(function(user, done) {
     return done(null, user);
 });
@@ -131,7 +130,6 @@ app.get('/auth/google/return',
     successRedirect: '/',
     failureRedirect: '/'
 }));
-
 
 
 //ROUTES
