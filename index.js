@@ -4,22 +4,34 @@ var epg             = require('easy-pg');
 var dbClient        = epg(config.conString);                                    //database client for sending queries
 var express         = require('express.io');
 var app             = express();
+app.http().io();
+/*init middleware */
+require('express.io-middleware')(app);
+/* middleware adding multiroute functionality*/
+app.io.use(function (req, next) {
+
+    if(typeof req.session.passport.user ==="undefined"){
+        debug("not logged in");
+        //you are not register
+         req.io.respond({error: "not logged in"});
+    } else {
+        next();
+    }
+});
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
-var dbController    = require('./lib/repositories/dbController')(dbClient);
 var bulk = {};
+
+var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
+require('./lib/routes/tasks-route')(router, tasksRepository );
+var userRepository = require('./lib/repositories/user-repository')(dbClient);
+require('./lib/routes/user-route')(router, userRepository);
 
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'SBKS_hrtool' }));
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
-
-
-app.http().io();
-app.listen(config.port);
-console.log('Server listens on port ' + config.port);
-
 
 passport.serializeUser(function(user, done) {
     return done(null, user);
@@ -30,8 +42,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-    returnURL: config.host + ':' + config.port + '/auth/google/return',
-    realm: config.host + ':' + config.port + '/'
+        returnURL: config.host + ':' + config.port + '/auth/google/return',
+        realm: config.host + ':' + config.port + '/'
     },
     function(identifier, profile, done) {                                   //finds a user in database if registred
         dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()],
@@ -105,14 +117,14 @@ app.get('/handshake', function (req, res) {
             if(!err){
                 bulk.hrBuddy = data;
                 dbClient.queryAll("SELECT id_team, is_admin FROM users_teams WHERE id_user=$1",
-                        [req.session.passport.user.id_user], function(err2, data2){
-                    if(!err2) {
-                        bulk.userTeams = data2;
-                        res.json(bulk);
-                        debug('handshake: bulk ok');
-                    }else
-                        debug('handshake: bulk error\n' + err);
-                });
+                    [req.session.passport.user.id_user], function(err2, data2){
+                        if(!err2) {
+                            bulk.userTeams = data2;
+                            res.json(bulk);
+                            debug('handshake: bulk ok');
+                        }else
+                            debug('handshake: bulk error\n' + err);
+                    });
             }else
                 debug('handshake: bulk error\n' + err);
         });
@@ -125,38 +137,20 @@ app.get('/handshake', function (req, res) {
 app.get('/auth/google', passport.authenticate('google'));
 
 // Google will redirect the user to this URL after authentication.  
-app.get('/auth/google/return', 
-  passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/'
-}));
+app.get('/auth/google/return',
+    passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/'
+    })
+);
 
-
-//ROUTES
-
-
-//All saved tasks will be sent to klient
-router.register('task:getAll', function(req, next){
-    dbController.getAllTasks(next);
-});
-
-//A new user is inserted to database
-router.register('user:insert', function(next){
-    dbController.insertUser(req, req.data, next);
-});
-
-//A new users are inserted to database from coma separated value format
-router.register('user:insertFromCSV', function(req, next){
-    dbController.insertUsersFromCSV(req.data, next);
-});
-
-//User data will be sent to client
-router.register('user:getInfo', function(req, next){
-    dbController.getUser(req.data, next);
-});
 
 
 //database error
 dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
 });
+
+
+app.listen(config.port);
+console.log('Server listens on port ' + config.port);
