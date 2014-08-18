@@ -25,15 +25,14 @@
     <script>
         (function(){
             $.get("/handshake",function(data, status){
-                window.console.log(data);
                 if(data.error){
                     //TODO zobrazit tlačítko login
                     document.getElementById('loginButton').style.display = 'block';
                 }else{
-                    //TODO app.init();
                     document.getElementById('loginButton').style.display = 'none';
                     var app = new App();
                     app.init();
+                    app.bulk = data;
                 }
             });
         })();
