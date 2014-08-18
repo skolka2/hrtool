@@ -110,7 +110,6 @@ app.get('/handshake', function (req, res) {
                         bulk.userTeams = data2;
                         res.json(bulk);
                         debug('handshake: bulk ok');
-                        console.log(bulk);
                     }else
                         debug('handshake: bulk error\n' + err);
                 });
