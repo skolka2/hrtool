@@ -93,7 +93,7 @@ app.get('/handshake', function (req, res) {
     if(!req.session.passport.user){
         res.json({error: 'not logged in'});
     }else{
-        //bulk.user = req.session.passport.user;
+        bulk.user = req.session.passport.user;
         dbClient.queryOne("SELECT * FROM users WHERE id_user=$1", [req.session.passport.user.id_buddy], function(err, data){
             if(!err){
                 bulk.hrBuddy = data;
@@ -103,6 +103,7 @@ app.get('/handshake', function (req, res) {
                         bulk.userTeams = data2;
                         res.json(bulk);
                         debug('handshake: bulk ok');
+                        console.log(bulk);
                     }else
                         debug('handshake: bulk error\n' + err);
                 });
