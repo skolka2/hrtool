@@ -132,7 +132,6 @@ app.get('/auth/google/return',
 }));
 
 
-
 //ROUTES
 
 
@@ -155,7 +154,6 @@ router.register('user:insertFromCSV', function(req, next){
 router.register('user:getInfo', function(req, next){
     dbController.getUser(req.data, next);
 });
-
 
 
 //database error
