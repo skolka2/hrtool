@@ -120,3 +120,36 @@
     padding: 20px;
 }
 
+.hide-comp {
+	float:left;
+	width:100%;
+}
+
+.hide-header {
+	float:left;
+	width:95%;
+	height:50px;
+}
+
+.hide-arrow {
+	float:left;
+	width:5%;
+	text-align:center;
+	height:50px;
+}
+
+.hide-head {
+	height:50px;
+	width:100%;
+	float:left;
+}
+
+
+.hide-content{
+	float:left;
+	width:100%;
+	display: block;
+}
+.hidden{
+	display: none;
+}

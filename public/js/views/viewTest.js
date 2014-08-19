@@ -29,4 +29,22 @@ ViewTest.prototype.render = function(){
     component.render(witzDiv);
     component2.render(witzDiv);
 
+
+	var mainWrapper = document.getElementById(this.super.mainWrapper);
+
+	var viewWrapper = document.createElement('div');
+	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
+
+	mainWrapper.appendChild(viewWrapper);
+	var div = document.createElement("div");
+	var c = new ComponentCheckBox("CheckBox");
+    var d = new ComponentCheckBox("CheckBox");
+
+    div.appendChild(c.getElement());
+    div.appendChild(d.getElement());
+
+	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
+    b.render(viewWrapper);
+
 };

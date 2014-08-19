@@ -1,8 +1,5 @@
-var helper;
-
 //helper containing formating and other functions
-
-helper = {
+var helper = {
 	format: {
 		//function for converting number (in parameter) to precentage representated by returning string
 		getPercentage: function(num) {
@@ -22,5 +19,37 @@ helper = {
 			var myElement = $(str);
 			return myElement[0];
 		}
+	},
+	//helper.bulk.getData(['user','id_user'])
+	bulk: {
+		getData: function(keys){
+			return helper.obj.getData(app.bulk, keys);
+		}
+	},
+	obj: {
+		getData: function(obj, keys){
+			var tmpBulk = obj;
+			for(var i = 0; i< keys.length; i++){
+                if(tmpBulk[keys[i]] != null){
+                    tmpBulk = tmpBulk[keys[i]];
+                }
+                else {
+                    helper.debugger('Error: parameter in bulk is null');
+                    return null;
+                }
+            }
+            return tmpBulk;
+		}
+	},
+	//helper.debugger('id', {data})
+	debugger: function(eventName, data){
+		if(Const.develop){
+			if(data != null){
+				console.log(eventName, data);
+			}
+			else{
+				console.log(eventName, "No data");
+			}
+		}
 	}
-}
+};
