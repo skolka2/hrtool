@@ -1,11 +1,13 @@
-var ViewTest = function() {
-    ViewBase.call(this);
+var ViewTest = function(){
+    ViewBase.call(this,null);
     this.super = ViewBase;
 }
 ViewTest.prototype = new ViewBase();
 ViewTest.prototype.constructor = ViewTest;
 
 ViewTest.prototype.render = function(){
+    var mainWrapper = document.getElementById(this.super.mainWrapper);
+
     //Neckar view___________________________________________________________________________
     this.componentTemplateList = new ComponentTemplateList();
     var neckarWrapper = document.createElement('div');
@@ -16,15 +18,39 @@ ViewTest.prototype.render = function(){
     bodyN.appendChild(neckarWrapper);
     this.componentTemplateList.render(neckarWrapper);
 
+    
+    //Fanda View START
+    
+    var fandaDiv = document.createElement('div');
+    fandaDiv.id = "fanda-div";
+    var nadpisF = document.createElement('h2');
+    nadpisF.innerHTML ='Fanda\'s view<br/>';
+    fandaDiv.appendChild(nadpisF);
+    var componentCh = new ComponentCheckBox("CheckBox");
+    var el = document.createElement('div');
+    el.innerHTML = 'CheckBox...<br><br>';
+    fandaDiv.appendChild(el);
+    el.appendChild(componentCh.getElement());
+    
+    var viewWrapper = document.createElement('div');
+    viewWrapper.innerHTML = "<br/><br/>ComponentHide...<br><br>";
+
+    fandaDiv.appendChild(viewWrapper);
+    var div = document.createElement("div");
+    var c = new ComponentCheckBox("CheckBox");
+    var d = new ComponentCheckBox("CheckBox");
+
+    div.appendChild(c.getElement());
+    div.appendChild(d.getElement());
+
+    var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
+    b.render(viewWrapper);
+
+    mainWrapper.appendChild(fandaDiv);
+    //Fanda View END
 
     //Witz view___________________________________________________________________________
-    this.component = new ComponentCheckBox("CheckBox");
-    var el = document.createElement('div');
-    el.innerHTML = 'This view contains component CheckBox.<br><br>';
     var body = document.getElementsByTagName('body')[0];
-    body.insertBefore(el, body.firstChild);
-    this.component.render();
-
     var witzDiv = document.createElement('div');
     witzDiv.id = "witz-div"
     witzDiv.innerHTML = '<br/><h2>Witz\'s view</h2>';
@@ -40,24 +66,6 @@ ViewTest.prototype.render = function(){
 
     component.render(witzDiv);
     component2.render(witzDiv);
-
-
-	var mainWrapper = document.getElementById(this.super.mainWrapper);
-
-	var viewWrapper = document.createElement('div');
-	viewWrapper.className = "view-wraper";
-	viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
-
-	mainWrapper.appendChild(viewWrapper);
-	var div = document.createElement("div");
-	var c = new ComponentCheckBox("CheckBox");
-    var d = new ComponentCheckBox("CheckBox");
-
-    div.appendChild(c.getElement());
-    div.appendChild(d.getElement());
-
-	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
-    b.render(viewWrapper);
     //___________________________________________________________________________
 
 

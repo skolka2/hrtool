@@ -2,13 +2,13 @@ var ComponentHide = function(header,content, closed){
     ComponentBase.call(this);
     this.super = ComponentBase;
 
-    //TODO content apend
+
     // Header element
-    this.headerText = header || "";
+    this.headlineEl  = header;
     // Is it closed?
     this.closed = !!closed;
-    this.header= this.content = this.arrow = null;
-    this.dataEl = content;
+    this.headTittle= this.arrow = null;
+   	this.contentEl = content;
 }
 
 ComponentHide.prototype = new ComponentBase();
@@ -22,78 +22,88 @@ ComponentHide.prototype.createDom = function(){
 	var head =  document.createElement("div");
 	head.className = "hide-head";
 
-	this.header = document.createElement("div");
-	this.header.className = "hide-header";
 
-	this.setHeader(this.headerText);
+	this.headTittle = document.createElement("div");
+	this.headTittle.className = "hide-tittle";
+
+	this.setHeader(this.headlineEl );
+
 	this.arrow = document.createElement("div");
 	this.arrow.className = "hide-arrow";
 
-	this.setArrow(this.closed);
 	this.arrow.addEventListener(ComponentBase.EventType.CLICK,this.handleHide.bind(this),false);
 
-	this.content = document.createElement("div");
-	this.content.id = 'hide-content'+this.componentId;
-	this.content.className = 'hide-content';
-	this.content.appendChild(this.dataEl);
-
-	head.appendChild(this.header);
+	head.appendChild(this.headTittle);
 	head.appendChild(this.arrow);
+
+	this.setContent(this.contentEl);
+
 
 	wrapper.appendChild(head);
 	wrapper.appendChild(this.content);
 
 	this.element = wrapper;
+
+	this.setVisibility(this.closed);
+	
 } 
 
 // Hides or shows childs.
 ComponentHide.prototype.handleHide = function(){
 	this.closed = !this.closed;
-	this.setArrow(this.closed);
 
-	if(this.closed){
-		this.hideContent();
+	this.setVisibility(this.closed);
+	if(this.closed){	
 		this.fire(ComponentHide.EventType.REMOVE,this.componentId);
 	}
 	else{
-		this.showContent();
 		this.fire(ComponentHide.EventType.RENDER,this.componentId);
 	}
 }
-// Hide childs 
-ComponentHide.prototype.hideContent = function(){
-	this.content.className = "hide-content hidden";
+// Changes visibility of content and changes arrow
+ComponentHide.prototype.setVisibility = function(show){
+	if(!show){
+		this.content.className = "hide-content";
+		this.arrow.innerHTML = "<span>HIDE</span><div>" + ComponentHide.Arrows.DOWN + "</div>";
+	}
+	else {
+		this.content.className = "hide-content hidden";
+		this.arrow.innerHTML = "<span>SHOW</span><div>" + ComponentHide.Arrows.UP + "</div>";
+	}
 }
-// Shows childs
-ComponentHide.prototype.showContent = function(){
-	this.content.className = "hide-content";	
+
+// Sets content
+ComponentHide.prototype.setContent = function(content){
+	if(this.content == null){
+		this.content = document.createElement("div");
+		this.content.className = 'hide-content';
+	}
+	else{
+		while(this.content.firstChild){
+		    this.content.removeChild(this.content.firstChild);
+		}
+	}
+	this.content.appendChild(content);
 }
 // Sets header of component
 ComponentHide.prototype.setHeader = function(header){
-	while(this.header.firstChild){
-	    this.header.removeChild(this.header.firstChild);
+	while(this.headTittle.firstChild){
+	    this.headTittle.removeChild(this.headTittle.firstChild);
 	}
-	this.header.appendChild(header);
+	this.headTittle.appendChild(header);
 } 
 // Gets wrapper for content
 ComponentHide.prototype.getContentWrapper = function(){
 	this.getElement();
 	return this.content;
-} 
-// Sets arrow of component
-ComponentHide.prototype.setArrow = function(down){
-	if(down){
-		this.arrow.innerHTML = "&#8744;";
-	}
-	else{
-		this.arrow.innerHTML = "&#8743;";
-	}
 }
+
+
 // Renders component, hides childs if they should be hidden.
 ComponentHide.prototype.render = function(wrapper){
 	this.super.prototype.render.call(this,wrapper);
 	if(this.closed){
-		this.hideContent();
+		this.setVisibility(this.closed);
 	}
 }
 // Event Types.
@@ -101,4 +111,9 @@ ComponentHide.EventType =
 {
 	REMOVE:"childsRemoved",
 	RENDER:"childsRendered"
+}
+
+ComponentHide.Arrows = {
+	UP: "&#8744;",
+	DOWN: "&#8743;"
 }

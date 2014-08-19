@@ -35,6 +35,7 @@ var helper = {
                 }
                 else {
                     helper.debugger('Error: parameter ' + keys[i] + ' in bulk is null');
+
                     return null;
                 }
             }
