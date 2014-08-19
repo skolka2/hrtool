@@ -23,11 +23,18 @@ var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
 var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
 require('./lib/routes/tasks-route')(router, tasksRepository );
+var bulk = {};
+
+var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
+require('./lib/routes/tasks-route')(router, tasksRepository );
+var userRepository = require('./lib/repositories/user-repository')(dbClient);
+require('./lib/routes/user-route')(router, userRepository);
 
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'SBKS_hrtool' }));
 app.use(passport.initialize());
 app.use(express.static(__dirname + '/public'));
+
 
 
 app.http().io();
@@ -43,8 +50,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-    returnURL: config.host + ':' + config.port + '/auth/google/return',
-    realm: config.host + ':' + config.port + '/'
+        returnURL: config.host + ':' + config.port + '/auth/google/return',
+        realm: config.host + ':' + config.port + '/'
     },
     function(identifier, profile, done) {                                   //finds a user in database if registred
         dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()],
@@ -117,14 +124,14 @@ app.get('/handshake', function (req, res) {
             if(!err){
                 bulk.hrBuddy = data;
                 dbClient.queryAll("SELECT id_team, is_admin FROM users_teams WHERE id_user=$1",
-                        [req.session.passport.user.id_user], function(err2, data2){
-                    if(!err2) {
-                        bulk.userTeams = data2;
-                        res.json(bulk);
-                        debug('handshake: bulk ok');
-                    }else
-                        debug('handshake: bulk error\n' + err);
-                });
+                    [req.session.passport.user.id_user], function(err2, data2){
+                        if(!err2) {
+                            bulk.userTeams = data2;
+                            res.json(bulk);
+                            debug('handshake: bulk ok');
+                        }else
+                            debug('handshake: bulk error\n' + err);
+                    });
             }else
                 debug('handshake: bulk error\n' + err);
         });
@@ -136,6 +143,7 @@ app.get('/handshake', function (req, res) {
 
 //redirect to a google login formular
 app.get('/auth/google', passport.authenticate('google'));
+
 
 // Google will redirect the user to this URL after authentication.
 app.get('/auth/google/return',
@@ -152,9 +160,9 @@ router.register('task:getAll', function(req, next){
 });
 
 //A new user is inserted to database
-router.register('user:insert', function(next) {
+router.register('user:insert', function(next){
     dbController.insertUser(req, req.data, next);
-}
+});
 
 
 
@@ -169,8 +177,9 @@ router.register('user:getInfo', function(req, next){
 });
 
 
+
+
 //database error
 dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
 });
-
