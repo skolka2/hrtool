@@ -31,8 +31,9 @@
                 }else{
                     document.getElementById('loginButton').style.display = 'none';
                     app = new App();
-                    app.init();
                     app.bulk = data;
+                    app.init();
+                    
                 }
             });
         })();

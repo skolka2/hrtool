@@ -1,12 +1,13 @@
-﻿var ComponentLoginBar = function () {
+﻿var ComponentNavBar = function () {
     this.super = ComponentBase;
     this.super.call(this);
     this.helper = helper;
+    this.LOGOUT_PAGE = "/logout";
 }
-ComponentLoginBar.prototype = new ComponentBase();
-ComponentLoginBar.prototype.constructor = ComponentLoginBar;
+ComponentNavBar.prototype = new ComponentBase();
+ComponentNavBar.prototype.constructor = ComponentNavBar;
 
-ComponentLoginBar.prototype.getUserData = function (userID) {
+ComponentNavBar.prototype.getUserData = function (userID) {
     var data = {
         id      : userID,
         firstName: "Jmeno",
@@ -19,20 +20,26 @@ ComponentLoginBar.prototype.getUserData = function (userID) {
     return data;
 }
 
-ComponentLoginBar.prototype.createDom = function () {
+ComponentNavBar.prototype.createDom = function () {
     var div = document.createElement("div");
     var userData = this.getUserData('012345');
     var elem;
-    div.id = "LoginBar";
+    div.id = "NavBar";
     
     //create ahref buddy 
-    elem = helper.elementsFunctions.getElement('<a id="loginBar_buddy" href="' + window.location + "User/user=" + userData.buddyId + '">' + userData.buddyFirstName + " " + userData.buddySurName + '</a>');
+    elem = this.helper.dom.createElement('<a id="NavBar_buddy" href="' + window.location + "User/user=" + app.bulk.user.id_buddy + '">' + app.bulk.hrBuddy.first_name + " " + app.bulk.hrBuddy.last_name + '</a>');
     div.appendChild(elem);
     //create ahref Login name
-    elem = helper.elementsFunctions.getElement('<a id="loginBar_name" href="' + window.location + "User/user=" + userData.id + '">' + userData.firstName + " " + userData.surName + '</a>');
+    elem = this.helper.dom.createElement('<a id="NavBar_name" href="' + window.location + "User/user=" + app.bulk.user.id_user + '">' + app.bulk.user.first_name + " " + app.bulk.user.last_name + '</a>');
     div.appendChild(elem);
     //create logout button
-    elem = helper.elementsFunctions.getElement('<button id="login_btn" type="button">Logout</button>');
+    elem = this.helper.dom.createElement('<button id="login_btn" type="button" ">Logout</button>');
+    elem.addEventListener('click', this.logout.bind(this));
     div.appendChild(elem);
     this.element = div;
 }
+
+ComponentNavBar.prototype.logout = function() {
+    window.location.href = this.LOGOUT_PAGE;
+}
+
