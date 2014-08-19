@@ -7,25 +7,10 @@
 ComponentNavBar.prototype = new ComponentBase();
 ComponentNavBar.prototype.constructor = ComponentNavBar;
 
-ComponentNavBar.prototype.getUserData = function (userID) {
-    var data = {
-        id      : userID,
-        firstName: "Jmeno",
-        surName: "Prijmeni",
-        buddy: "Your Buddy",
-        buddyId : "54321",
-        buddyFirstName: "BuddyJmeno",
-        buddySurName: "BuddyPrijmeni"
-    }
-    return data;
-}
-
 ComponentNavBar.prototype.createDom = function () {
     var div = document.createElement("div");
-    var userData = this.getUserData('012345');
     var elem;
     div.id = "NavBar";
-    
     //create ahref buddy 
     elem = this.helper.dom.createElement('<a id="NavBar_buddy" href="' + window.location + "User/user=" + app.bulk.user.id_buddy + '">' + app.bulk.hrBuddy.first_name + " " + app.bulk.hrBuddy.last_name + '</a>');
     div.appendChild(elem);
