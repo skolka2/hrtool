@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -31,6 +31,7 @@
                 }else{
                     document.getElementById('loginButton').style.display = 'none';
                     app = new App();
+                    console.log(data);
                     app.bulk = data;
                     app.init();
                 }
