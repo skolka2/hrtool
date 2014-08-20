@@ -144,8 +144,11 @@ app.get('/auth/google/return',
 
 
 
-
 //database error
 dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
 });
+
+
+app.listen(config.port);
+console.log('Server listens on port ' + config.port);
