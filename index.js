@@ -21,8 +21,11 @@ var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
 var bulk = {};
+
 var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
 require('./lib/routes/tasks-route')(router, tasksRepository );
+var userRepository = require('./lib/repositories/user-repository')(dbClient);
+require('./lib/routes/user-route')(router, userRepository);
 
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'SBKS_hrtool' }));
@@ -39,8 +42,8 @@ passport.deserializeUser(function (obj, done) {
 });
 
 passport.use(new GoogleStrategy({
-    returnURL: config.host + ':' + config.port + '/auth/google/return',
-    realm: config.host + ':' + config.port + '/'
+        returnURL: config.host + ':' + config.port + '/auth/google/return',
+        realm: config.host + ':' + config.port + '/'
     },
     function(identifier, profile, done) {                                   //finds a user in database if registred
         dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()],
@@ -113,14 +116,14 @@ app.get('/handshake', function (req, res) {
             if(!err){
                 bulk.hrBuddy = data;
                 dbClient.queryAll("SELECT id_team, is_admin FROM users_teams WHERE id_user=$1",
-                        [req.session.passport.user.id_user], function(err2, data2){
-                    if(!err2) {
-                        bulk.userTeams = data2;
-                        res.json(bulk);
-                        debug('handshake: bulk ok');
-                    }else
-                        debug('handshake: bulk error\n' + err);
-                });
+                    [req.session.passport.user.id_user], function(err2, data2){
+                        if(!err2) {
+                            bulk.userTeams = data2;
+                            res.json(bulk);
+                            debug('handshake: bulk ok');
+                        }else
+                            debug('handshake: bulk error\n' + err);
+                    });
             }else
                 debug('handshake: bulk error\n' + err);
         });
