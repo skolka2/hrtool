@@ -21,8 +21,6 @@ app.io.use(function (req, next) {
 var router          = require('./lib/router')(app);
 var passport        = require('passport');
 var GoogleStrategy  = require('passport-google').Strategy;
-var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
-require('./lib/routes/tasks-route')(router, tasksRepository );
 var bulk = {};
 
 var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
@@ -37,9 +35,6 @@ app.use(express.static(__dirname + '/public'));
 
 
 
-app.http().io();
-app.listen(config.port);
-console.log('Server listens on port ' + config.port);
 
 passport.serializeUser(function(user, done) {
     return done(null, user);
@@ -154,32 +149,13 @@ app.get('/auth/google/return',
 
 
 
-//All saved tasks will be sent to klient
-router.register('task:getAll', function(req, next){
-    dbController.getAllTasks(next);
-});
-
-//A new user is inserted to database
-router.register('user:insert', function(next){
-    dbController.insertUser(req, req.data, next);
-});
-
-
-
-//A new users are inserted to database from coma separated value format
-router.register('user:insertFromCSV', function(req, next){
-    dbController.insertUsersFromCSV(req.data, next);
-});
-
-//User data will be sent to client
-router.register('user:getInfo', function(req, next){
-    dbController.getUser(req.data, next);
-});
-
-
 
 
 //database error
 dbClient.on('error', function (err) {
     debug('>> Database error:\n' + err);
 });
+
+
+app.listen(config.port);
+console.log('Server listens on port ' + config.port);
