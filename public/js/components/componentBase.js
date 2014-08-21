@@ -1,7 +1,7 @@
 //Default constructor
 var ComponentBase = function(){
+	EventEmitter.apply(this);
 	this.super = EventEmitter;
-	this.super.prototype.constructor.apply(this);
 	this.childs = {};
 	this.element = null;
 	this.rendered = false;
@@ -116,5 +116,6 @@ ComponentBase.prototype.getWrapper = function(wrapper){
 
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {
-	CLICK: "click"
+	CLICK: "click",
+	CHANGE: "change"
 }
