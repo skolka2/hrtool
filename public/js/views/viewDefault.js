@@ -1,15 +1,15 @@
-var DefaultView = function(){
-	BaseView.call(this,null);
-	this.super = BaseView;
+var ViewDefault = function(){
+	ViewBase.call(this,null);
+	this.super = ViewBase;
 }
-DefaultView.prototype = new BaseView();
-DefaultView.prototype.constructor = DefaultView;
+ViewDefault.prototype = new ViewBase();
+ViewDefault.prototype.constructor = ViewDefault;
 
-DefaultView.prototype.render = function(){
+ViewDefault.prototype.render = function(){
 	this.super.prototype.render.apply(this, arguments);
 	var mainWrapper = document.getElementById(this.super.mainWrapper);
 	var div = document.createElement("div");
-	div.id = "DefaultView";
+	div.id = "ViewDefault";
 	div.innerText = "This is default view, you should not be seeing this (you should see other views instead).";
 	mainWrapper.appendChild(div);
 };
