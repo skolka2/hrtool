@@ -1,3 +1,46 @@
 .view-wrapper {
 	border: 2px solid;
 }
+
+.task-wrapper {
+	border: 2px solid;
+	width: 1000px;
+}
+
+.header-wrapper {
+	clear: none;
+	border-bottom: 2px solid;
+	height: 50px;
+}
+
+.buddy-label {
+	margin-right: 50px;
+}
+
+.time-label {
+	float: right;
+	background-color: #91FF6C;
+}
+
+.time-label-overflow {
+	float: right;
+	background-color: #FF4747;
+}
+
+.description-wrapper {
+	height: 200px;
+	width: 300px;
+	float: left;
+}
+
+.notes-wrapper {
+	height: 200px;
+	border-left: 2px solid;
+	float: left;
+}
+
+.footer-wrapper {
+	clear: both;
+	height: 50px;
+	border-top: 2px solid;
+}

@@ -3,15 +3,16 @@ Object, which contains HTML element for task detail and other properties and fun
 Also contains variables for storing data about the task. 
 */
 var ComponentTaskDetail = function(taskParams) {
+	ComponentBase.call(this);
 	this.super = ComponentBase;
-	this.super.call(this);
-	this.taskBuddy = taskParams.task_buddy; //String
-	this.taskTitle = taskParams.task_title; //String
-	this.dateFrom = new Date(taskParams.date_from); //Date
-	this.dateTo = new Date(taskParams.date_to); //Date
-	this.taskDescription = taskParams.task_description; //String
-	this.taskNotes = taskParams.task_notes; //String
-	this.isFinished = taskParams.task_finished; //Boolean
+	this.taskBuddy = taskParams.taskBuddy; //String
+	this.taskTitle = taskParams.taskTitle; //String
+	this.dateFrom = new Date(taskParams.dateFrom); //Date
+	this.dateTo = new Date(taskParams.dateTo); //Date
+	this.taskDescription = taskParams.taskDescription; //String
+	this.taskNotes = taskParams.taskNotes; //String
+	this.isFinished = taskParams.isFinished; //Boolean
+	this.timeInfo = null;
 }
 
 ComponentTaskDetail.prototype = new ComponentBase();
@@ -22,32 +23,40 @@ Overridden function from component BaseObject - it creates DOM, which will be re
 */
 ComponentTaskDetail.prototype.createDom = function() {
 
-	var color = this.setTimeColor();
+	var taskWrapper = document.createElement('div');
+	taskWrapper.className = "task-wrapper";
 
-	var taskWrapper = this.helper.dom.createElement('<div class="task-wrapper" style="border: 2px solid; width:1000px;"></div>');
+	var headerWrapper = document.createElement('div');
+	headerWrapper.className = "header-wrapper";
 
-	var headerWrapper = this.helper.dom.createElement('<div class="header-wrapper" clear="none" style="border-bottom: 2px solid; height:50px;"></div>');
-
-	var buddyLabel = this.helper.dom.createElement('<label class="task-label" style="margin-right:50px;">'+this.taskBuddy+'</label>');
+	var buddyLabel = this.helper.dom.createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
 	headerWrapper.appendChild(buddyLabel);
 
 	var titleLabel = this.helper.dom.createElement('<label class="task-label">'+this.taskTitle+'</label>');
 	headerWrapper.appendChild(titleLabel);
 
-	var timeLabel = this.helper.dom.createElement('<label class="time-label" style="background-color:'+color+'; float:right;"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+	var timeLabel = this.helper.dom.createElement('<label class="time-label"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+	this.timeInfo = timeLabel;
+	this.setDeadlineOverflowClass.bind(this);
+	/*if((this.dateTo < new Date()) && (this.isFinished === false)) {
+		this.timeInfo.className = "time-label-overflow";
+	}*/
 	headerWrapper.appendChild(timeLabel);
 
-	var descriptionWrapper = this.helper.dom.createElement('<div class="description-wrapper" style="height:200px; width:300px; float:left;"></div>');
+	var descriptionWrapper = document.createElement('div');
+	descriptionWrapper.className = "description-wrapper";
 
 	var descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</p>');
 	descriptionWrapper.appendChild(descriptionParagraph);
 
-	var notesWrapper = this.helper.dom.createElement('<div class="notes-wrapper" style="height:200px; border-left: 2px solid; float:left;"></div>');
+	var notesWrapper = document.createElement('div');
+	notesWrapper.className = "notes-wrapper";
 
 	var notesText = this.helper.dom.createElement('<p class="notes-text"> Task notes: '+this.taskNotes+'</p>');
 	notesWrapper.appendChild(notesText);
 
-	var footerWrapper = this.helper.dom.createElement('<div class="footer-wrapper" style="border-top: 2px solid; clear:both; height:50px;"></div>');
+	var footerWrapper = document.createElement('div');
+	footerWrapper.className = "footer-wrapper";
 
 	taskWrapper.appendChild(headerWrapper);
 	taskWrapper.appendChild(descriptionWrapper);
@@ -60,11 +69,9 @@ ComponentTaskDetail.prototype.createDom = function() {
 /*
 Function for setting up color of the label with time, so it can signalize if deadline on the task has been met.
 */
-ComponentTaskDetail.prototype.setTimeColor = function() {
+ComponentTaskDetail.prototype.setDeadlineOverflowClass = function() {
 	if((this.dateTo < new Date()) && (this.isFinished === false)) {
-		return "#FF704D";
-	}
-	else {
-		return "#99FF66";
+		//alert("cas vyprsel");
+		this.timeInfo.className = "time-label-overflow";
 	}
 }
