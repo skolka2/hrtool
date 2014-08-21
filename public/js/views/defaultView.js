@@ -1,12 +1,6 @@
-
-
-
-//BaseView = require("./baseView.js");
-
-
 var DefaultView = function(){
+	BaseView.call(this,null);
 	this.super = BaseView;
-	this.super.call(this,null);
 }
 DefaultView.prototype = new BaseView();
 DefaultView.prototype.constructor = DefaultView;
@@ -19,7 +13,3 @@ DefaultView.prototype.render = function(){
 	div.innerText = "This is default view, you should not be seeing this (you should see other views instead).";
 	mainWrapper.appendChild(div);
 };
-
-
-
-

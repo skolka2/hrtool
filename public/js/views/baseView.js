@@ -1,9 +1,7 @@
-
-
-//TODO get elements from helper
 var BaseView =	function(){
+
+	EventEmitter.apply(this);
 	this.super = EventEmitter;
-	this.super.prototype.constructor.apply(this);
 	this.helper = helper;
 }	
 
@@ -13,7 +11,7 @@ BaseView.prototype.constructor = BaseView;
 
 BaseView.prototype.render = function(){
 	this.base = document.getElementById(BaseView.mainWrapper);
-	if(typeof this.base != 'undefined'){ //checks if, in body, exists main-wrapper
+	if(this.base != null){ //checks if, in body, exists main-wrapper
 		while( this.base.childNodes.length > 0 ){
      		this.base.removeChild(this.base.childNodes[0])
 		}
