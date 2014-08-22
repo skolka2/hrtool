@@ -104,6 +104,24 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
+//ROUTES
+
+
+//All saved tasks will be sent to klient
+router.register('task:getAll', function(req, next){
+    dbController.getAllTasks(next);
+});
+
+//A new user is inserted to database
+router.register('user:insert', function(next){
+    dbController.insertUser(req, req.data, next);
+});
+
+//A new users are inserted to database from coma separated value format
+router.register('user:insertFromCSV', function(req, next){
+    dbController.insertUsersFromCSV(req.data, next);
+});
+
 
 
 //database error
