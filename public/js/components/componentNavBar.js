@@ -11,10 +11,10 @@ ComponentNavBar.prototype.createDom = function () {
     var div = document.createElement("div");
     div.id = ComponentNavBar.ID;
     //create ahref buddy 
-    var elem = this.helper.dom.createElement('<a id="NavBar_buddy" href="' + ComponentNavBar.USER_PAGE  + app.bulk.user.id_buddy + '">' + app.bulk.hrBuddy.first_name + " " + app.bulk.hrBuddy.last_name + '</a>');
+    var elem = this.helper.dom.createElement('<a id="NavBar_buddy" href="' + ComponentNavBar.USER_PAGE  + app.bulk.data.user.id_buddy + '">' + app.bulk.data.hrBuddy.first_name + " " + app.bulk.data.hrBuddy.last_name + '</a>');
     div.appendChild(elem);
     //create ahref Login name
-    elem = this.helper.dom.createElement('<a id="NavBar_name" href="' + ComponentNavBar.USER_PAGE + app.bulk.user.id_user + '">' + app.bulk.user.first_name + " " + app.bulk.user.last_name + '</a>');
+    elem = this.helper.dom.createElement('<a id="NavBar_name" href="' + ComponentNavBar.USER_PAGE + app.bulk.data.user.id_user + '">' + app.bulk.data.user.first_name + " " + app.bulk.data.user.last_name + '</a>');
     div.appendChild(elem);
     //create logout button
     elem = this.helper.dom.createElement('<button id="login_btn"">Logout</button>');
