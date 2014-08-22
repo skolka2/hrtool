@@ -15,15 +15,12 @@ ComponentCheckBox.prototype.constructor = ComponentCheckBox;
 
 ComponentCheckBox.prototype.createDom = function(){
 	var buddyCheckbox = document.createElement("div");	
-	buddyCheckbox.className =  "buddy-checkbox" + this.componentId;
+	buddyCheckbox.className =  "buddy-checkbox";
+	buddyCheckbox.id = "buddy-checkbox" + this.componentId;
 
 	this.checkChecked = document.createElement("div");
-	if(this.checked){
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.CHECKED;	
-	}
-	else{
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.NOTCHECKED;
-	}
+	
+	this._setCheckClass();
 
 	this.label = document.createElement("div");
 	this.label.className = "label";
@@ -44,6 +41,15 @@ ComponentCheckBox.prototype.createDom = function(){
 	</div>*/
 }
 
+ComponentCheckBox.prototype._setCheckClass = function(){
+	if(this.checked){
+		this.checkChecked.className = ComponentCheckBox._checkBoxClass.CHECKED;	
+	}
+	else{
+		this.checkChecked.className = ComponentCheckBox._checkBoxClass.NOTCHECKED;
+	}
+}
+
 //Tells what happens when we click on CheckBox
 ComponentCheckBox.prototype.handleOnClick = function(){
 	this.setChecked(!this.checked);
@@ -59,20 +65,15 @@ ComponentCheckBox.prototype.setCheckBoxTittle = function(tittle){
 // Changes CheckBox 
 ComponentCheckBox.prototype.setChecked = function(checked){
 	this.checked = checked;
-	if(this.checked){
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.CHECKED;		
-	}
-	else{
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.NOTCHECKED;
-	}
+	this._setCheckClass();
 	this.fire(ComponentCheckBox.EventType.CHANGE,this.checked);
 }
 
-ComponentCheckBox._checkBoxClass = {
-	CHECKED:"check.Checked",
-	NOTCHECKED:"check.notChecked"
+ComponentCheckBox.checkBoxClass = {
+	CHECKED:"check.checked",
+	NOTCHECKED:"check.not-checked"
 }
 
 ComponentCheckBox.EventType = {
-	CHANGE: "CheckBoxChange"
+	CHANGE: "check-box-change"
 }
