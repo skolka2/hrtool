@@ -11,5 +11,4 @@ ViewHome.prototype.render = function () {
     body.appendChild(el);
     this.componentNavBar.render();
     this.component.render(body);
-
 }
