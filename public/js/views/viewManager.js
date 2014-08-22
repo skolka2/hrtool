@@ -1,21 +1,18 @@
-var ViewHome = function() {
+var ViewManager = function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
-	this.taskList = new ComponentTaskList();
 }
 
-ViewHome.prototype = new ViewBase();
-ViewHome.prototype.constructor = ViewHome;
+ViewManager.prototype = new ViewBase();
+ViewManager.prototype.constructor = ViewManager;
 
-ViewHome.prototype.render = function() {
+ViewManager.prototype.render = function() {
 
 	this.super.prototype.render.apply(this, arguments);
 	var mainWrapper = document.getElementById(this.super.mainWrapper);
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
-
-	this.taskList.render(viewWrapper);
 
 	mainWrapper.appendChild(viewWrapper);
 }
