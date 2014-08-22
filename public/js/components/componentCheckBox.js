@@ -1,6 +1,6 @@
 var ComponentCheckBox = function(labelText,checked){
+	ComponentBase.apply(this);
 	this.super = ComponentBase;
-	this.super.apply(this);
 	this.labelText =  "DefaultText";
 	
 
@@ -43,10 +43,10 @@ ComponentCheckBox.prototype.createDom = function(){
 
 ComponentCheckBox.prototype._setCheckClass = function(){
 	if(this.checked){
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.CHECKED;	
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.CHECKED;	
 	}
 	else{
-		this.checkChecked.className = ComponentCheckBox._checkBoxClass.NOTCHECKED;
+		this.checkChecked.className = ComponentCheckBox.checkBoxClass.NOTCHECKED;
 	}
 }
 
@@ -66,14 +66,10 @@ ComponentCheckBox.prototype.setCheckBoxTittle = function(tittle){
 ComponentCheckBox.prototype.setChecked = function(checked){
 	this.checked = checked;
 	this._setCheckClass();
-	this.fire(ComponentCheckBox.EventType.CHANGE,this.checked);
+	this.fire(ComponentBase.EventType.CHANGE,this.checked);
 }
 
 ComponentCheckBox.checkBoxClass = {
 	CHECKED:"check.checked",
 	NOTCHECKED:"check.not-checked"
-}
-
-ComponentCheckBox.EventType = {
-	CHANGE: "check-box-change"
 }
