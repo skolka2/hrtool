@@ -64,6 +64,7 @@ ComponentCheckBox.prototype.setCheckBoxTittle = function(tittle){
 
 // Changes CheckBox 
 ComponentCheckBox.prototype.setChecked = function(checked){
+	this.getElement();
 	this.checked = checked;
 	this._setCheckClass();
 	this.fire(ComponentBase.EventType.CHANGE,this.checked);
