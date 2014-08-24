@@ -12,7 +12,6 @@ var ComponentTaskDetail = function(taskParams) {
 	this.taskDescription = taskParams.taskDescription; //String
 	this.taskNotes = taskParams.taskNotes; //String
 	this.isFinished = taskParams.isFinished; //Boolean
-	this.timeInfo = null;
 }
 
 ComponentTaskDetail.prototype = new ComponentBase();
@@ -35,12 +34,15 @@ ComponentTaskDetail.prototype.createDom = function() {
 	var titleLabel = this.helper.dom.createElement('<label class="task-label">'+this.taskTitle+'</label>');
 	headerWrapper.appendChild(titleLabel);
 
-	var timeLabel = this.helper.dom.createElement('<label class="time-label"> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
-	this.timeInfo = timeLabel;
-	this.setDeadlineOverflowClass.bind(this);
-	/*if((this.dateTo < new Date()) && (this.isFinished === false)) {
-		this.timeInfo.className = "time-label-overflow";
-	}*/
+	var timeLabel = this.helper.dom.createElement('<label> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+
+	if((this.dateTo < new Date()) && (this.isFinished === false)) {
+		timeLabel.className = "time-label-overflow";
+	}
+	else {
+		timeLabel.className = "time-label";
+	}
+
 	headerWrapper.appendChild(timeLabel);
 
 	var descriptionWrapper = document.createElement('div');
@@ -64,14 +66,4 @@ ComponentTaskDetail.prototype.createDom = function() {
 	taskWrapper.appendChild(footerWrapper);
 
 	this.element = taskWrapper; //saving all DOM elements in the element of this object
-}
-
-/*
-Function for setting up color of the label with time, so it can signalize if deadline on the task has been met.
-*/
-ComponentTaskDetail.prototype.setDeadlineOverflowClass = function() {
-	if((this.dateTo < new Date()) && (this.isFinished === false)) {
-		//alert("cas vyprsel");
-		this.timeInfo.className = "time-label-overflow";
-	}
 }
