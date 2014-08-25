@@ -4,6 +4,11 @@ var epg             = require('easy-pg');
 var dbClient        = epg(config.conString);                                    //database client for sending queries
 var express         = require('express.io');
 var app             = express();
+
+dbClient.on('error', function (e) {
+  console.error(e);
+});
+
 app.http().io();
 /*init middleware */
 require('express.io-middleware')(app);
