@@ -13,6 +13,6 @@ RouterConfig.prototype.setView = function(data) {
         case 'taskAdmin':
             return curView = new ViewTaskAdmin();
         default:
-            return new ViewHome();
+            return new ViewDefault();
     }
 }
