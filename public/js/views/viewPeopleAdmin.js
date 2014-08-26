@@ -13,6 +13,7 @@ ViewPeopleAdmin.prototype.render = function() {
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "People Admin View";
 
 	mainWrapper.appendChild(viewWrapper);
 }
