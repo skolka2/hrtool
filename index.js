@@ -5,10 +5,6 @@ var dbClient        = epg(config.conString);                                    
 var express         = require('express.io');
 var app             = express();
 
-dbClient.on('error', function (e) {
-  console.error(e);
-});
-
 app.http().io();
 /*init middleware */
 require('express.io-middleware')(app);
@@ -50,24 +46,8 @@ passport.use(new GoogleStrategy({
         returnURL: config.host + ':' + config.port + '/auth/google/return',
         realm: config.host + ':' + config.port + '/'
     },
-    function(identifier, profile, done) {                                   //finds a user in database if registred
-        dbClient.queryOne('SELECT * FROM users WHERE email=$1', [profile.emails[0].value.toString()],
-            function(err, user){
-                if(err){
-                    debug('google login: database error: ' + err);
-                    return done(err);
-                }
-                if(user){
-                    //user is registred
-                    debug('google login: ' + profile.emails[0].value + ' is logged in\n');
-                    return done(null, user);
-                }else{
-                    //user is not registred
-                    debug('google login: ' + profile.emails[0].value + ' is NOT registred and therefore cannot be logged in\n');
-                    return done(null, false, { message: 'This user is not registred!' });
-                }
-            }
-        );
+    function(identifier, profile, done) {
+        userRepository.getUser(profile.emails[0].value.toString(), done);
     }
 ));
 
