@@ -43,3 +43,12 @@
 	clear: both;
 	height: 50px;
 	border-top: 2px solid;
+}
+
+.check-not-checked {
+	color: red;
+}
+
+.check-checked {
+	color: green;
+}
