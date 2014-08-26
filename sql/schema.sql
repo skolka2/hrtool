@@ -34,7 +34,7 @@ CREATE TABLE users
 	last_name CHARACTER VARYING (128) NOT NULL,
 	email TEXT NOT NULL UNIQUE,
 	id_user_role INTEGER,
-	id_buddy INTEGER
+	id_buddy INTEGER NOT NULL
 );
 
 DROP TABLE IF EXISTS user_roles CASCADE;
