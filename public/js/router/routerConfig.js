@@ -12,8 +12,8 @@ RouterConfig.prototype.setView = function(data) {
             return curView = new ViewPeopleAdmin();
         case 'taskAdmin':
             return curView = new ViewTaskAdmin();
-        case 'checkbox':
-            return curView = new ViewTestCheckBox();
+        case 'test':
+            return curView = new ViewTest();
         default:
             return new ViewDefault();
     }
