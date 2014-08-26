@@ -47,7 +47,7 @@ passport.use(new GoogleStrategy({
         realm: config.host + ':' + config.port + '/'
     },
     function(identifier, profile, done) {
-        userRepository.getUser(profile.emails[0].value, done);
+        userRepository.verifyUser(profile.emails[0].value, done);
     }
 ));
 

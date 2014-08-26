@@ -13,6 +13,7 @@ ViewTaskAdmin.prototype.render = function() {
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "Task Admin View";
 
 	mainWrapper.appendChild(viewWrapper);
 }

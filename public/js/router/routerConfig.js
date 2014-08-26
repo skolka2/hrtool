@@ -6,8 +6,8 @@ RouterConfig.prototype.setView = function(data) {
     switch (data.view) {
         case 'home':
             return curView = new ViewHome();
-        case 'manager':
-            return curView = new ViewManager();
+        case 'departmentAdmin':
+            return curView = new ViewDepartmentAdmin();
         case 'peopleAdmin':
             return curView = new ViewPeopleAdmin();
         case 'taskAdmin':

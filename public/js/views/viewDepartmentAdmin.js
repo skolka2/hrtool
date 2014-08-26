@@ -1,18 +1,19 @@
-var ViewManager = function() {
+var ViewDepartmentAdmin = function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
 }
 
-ViewManager.prototype = new ViewBase();
-ViewManager.prototype.constructor = ViewManager;
+ViewDepartmentAdmin.prototype = new ViewBase();
+ViewDepartmentAdmin.prototype.constructor = ViewDepartmentAdmin;
 
-ViewManager.prototype.render = function() {
+ViewDepartmentAdmin.prototype.render = function() {
 
 	this.super.prototype.render.apply(this, arguments);
 	var mainWrapper = document.getElementById(this.super.mainWrapper);
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "Department Admin View";
 
 	mainWrapper.appendChild(viewWrapper);
 }

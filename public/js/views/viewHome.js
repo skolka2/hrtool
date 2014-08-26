@@ -1,7 +1,6 @@
 var ViewHome = function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
-	this.taskList = new ComponentTaskList();
 }
 
 ViewHome.prototype = new ViewBase();
@@ -14,8 +13,7 @@ ViewHome.prototype.render = function() {
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
-
-	this.taskList.render(viewWrapper);
+	viewWrapper.innerHTML = "Home View";
 
 	mainWrapper.appendChild(viewWrapper);
 }
