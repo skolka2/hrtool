@@ -4,7 +4,7 @@
 DELETE FROM user_roles;
 DELETE FROM departments;
 DELETE FROM teams;
-DELETE FROM default_tasks;
+DELETE FROM task_templates;
 DELETE FROM users;
 DELETE FROM users_teams;
 DELETE FROM tasks;
@@ -25,8 +25,8 @@ VALUES
 ('Products team 1', (SELECT id_department FROM departments WHERE title='Products')),
 ('Products team 2', (SELECT id_department FROM departments WHERE title='Products'));
 
--- Data for DEFAULT_TASKS table.
-INSERT INTO default_tasks (title, description, id_team, id_department)
+-- Data for TASK_TEMPLATES table.
+INSERT INTO task_templates (title, description, id_team, id_department)
 VALUES 
 ('Zalozit si e-mail', 'akjdaskdnadnaln', null, null),
 ('Zalozit si Podio ucet', 'akjdaskdnadnaln', null, null),
@@ -71,13 +71,13 @@ INSERT INTO tasks (title, description, notes, date_from, date_to, id_user, id_bu
 VALUES 
 ('Create DB schema', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'), (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'), (SELECT id_team FROM teams WHERE title='Development team 2'), (SELECT id_department FROM departments WHERE title='Development')),
 ('Create test data', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'), (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 2'), (SELECT id_department FROM departments WHERE title='Development')),
-('helpers', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'), null, (SELECT id_team FROM teams WHERE title='Development team 1'), (SELECT id_department FROM departments WHERE title='Development')),
-('Implementovat express.io', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'), null, (SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('Nasadit Easy-Pg a vytvorit config.json', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'), null, (SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('mediator', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('base model', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('core', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('router', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('helpers', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'), (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), (SELECT id_team FROM teams WHERE title='Development team 1'), (SELECT id_department FROM departments WHERE title='Development')),
+('Implementovat express.io', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'), (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), (SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('Nasadit Easy-Pg a vytvorit config.json', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='karel.zibar@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'), (SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('mediator', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('base model', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('core', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('router', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='vladimir.neckar@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
 ('base component', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com'), (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('view base', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
-('observer', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='lukas.witz@socialbakers.com'), null,(SELECT id_team FROM teams WHERE title='Products team 2'),(SELECT id_department FROM departments WHERE title='Products'));
+('view base', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='frantisek.kolenak@socialbakers.com'), (SELECT id_user FROM users WHERE email='lukas.witz@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Development team 1'),(SELECT id_department FROM departments WHERE title='Development')),
+('observer', 'slkfjskdfsldfmsldfmkskld', 'adkjfasdjkfndkjas', '2014-08-01', '2014-08-05', (SELECT id_user FROM users WHERE email='lukas.witz@socialbakers.com'), (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'),(SELECT id_team FROM teams WHERE title='Products team 2'),(SELECT id_department FROM departments WHERE title='Products'));

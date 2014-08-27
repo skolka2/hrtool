@@ -11,15 +11,15 @@ CREATE TABLE tasks
 	date_from DATE NOT NULL,
 	date_to DATE NOT NULL,
 	id_user INTEGER NOT NULL,
-	id_buddy INTEGER,
-  id_team INTEGER,
+	id_buddy INTEGER NOT NULL DEFAULT 1,
+    id_team INTEGER,
 	id_department INTEGER
 );
 
-DROP TABLE IF EXISTS default_tasks CASCADE;
-CREATE TABLE default_tasks
+DROP TABLE IF EXISTS task_templates CASCADE;
+CREATE TABLE task_templates
 (
-	id_default_task SERIAL PRIMARY KEY,
+	id_task_template SERIAL PRIMARY KEY,
 	title TEXT NOT NULL,
 	description TEXT,
 	id_team INTEGER,
@@ -34,7 +34,7 @@ CREATE TABLE users
 	last_name CHARACTER VARYING (128) NOT NULL,
 	email TEXT NOT NULL UNIQUE,
 	id_user_role INTEGER,
-	id_buddy INTEGER NOT NULL
+	id_buddy INTEGER
 );
 
 DROP TABLE IF EXISTS user_roles CASCADE;
@@ -102,12 +102,12 @@ ADD CONSTRAINT fk_tasks_id_buddy
 FOREIGN KEY (id_buddy)
 REFERENCES users(id_user);
 
--- Foreign key from ID_TEAM column of DEFAULT_TASKS table to ID column from TEAMS table.
-ALTER TABLE default_tasks
-DROP CONSTRAINT IF EXISTS fk_default_tasks_id_team;
+-- Foreign key from ID_TEAM column of TASK_TEMPLATES table to ID column from TEAMS table.
+ALTER TABLE task_templates
+DROP CONSTRAINT IF EXISTS fk_task_templates_id_team;
 
-ALTER TABLE default_tasks
-ADD CONSTRAINT fk_default_tasks_id_team
+ALTER TABLE task_templates
+ADD CONSTRAINT fk_task_templates_id_team
 FOREIGN KEY (id_team)
 REFERENCES teams(id_team);
 
@@ -119,12 +119,12 @@ ADD CONSTRAINT fk_tasks_id_team
 FOREIGN KEY (id_team)
 REFERENCES teams(id_team) ON DELETE SET NULL;
 
--- Foreign key from ID_DEPARTMENT column of DEFAULT_TASKS table to ID column from DEPARTMENTS table.
-ALTER TABLE default_tasks
-DROP CONSTRAINT IF EXISTS fk_default_tasks_id_department;
+-- Foreign key from ID_DEPARTMENT column of TASK_TEMPLATES table to ID column from DEPARTMENTS table.
+ALTER TABLE task_templates
+DROP CONSTRAINT IF EXISTS fk_task_templates_id_department;
 
-ALTER TABLE default_tasks
-ADD CONSTRAINT fk_default_tasks_id_department
+ALTER TABLE task_templates
+ADD CONSTRAINT fk_task_templates_id_department
 FOREIGN KEY (id_department)
 REFERENCES departments(id_department);
 
