@@ -50,17 +50,17 @@ VALUES
 -- Data for USERS table.
 INSERT INTO users (first_name, last_name, email,started_at, id_user_role,id_department_role)
 VALUES 
-('Jan', 'Koren', 'jan.koren@socialbakers.com','01/25/12', (SELECT id_user_role FROM user_roles WHERE title='Team manager'), (SELECT id_department_role FROM department_roles WHERE title='product owner')),
-('David', 'Moravek', 'david.moravek@socialbakers.com','01/25/14', (SELECT id_user_role FROM user_roles WHERE title='Administrator'),(SELECT id_department_role FROM department_roles WHERE title='scrum master')),
-('Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend')),
-('Marek', 'Simunek', 'marek.simunek@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='backend')),
-('Vladimir', 'Neckar', 'vladimir.neckar@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend')),
-('Frantisek', 'Kolenak', 'frantisek.kolenak@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'));
+('Jan', 'Koren', 'jan.koren@socialbakers.com','2012-01-02', (SELECT id_user_role FROM user_roles WHERE title='Team manager'), (SELECT id_department_role FROM department_roles WHERE title='product owner')),
+('David', 'Moravek', 'david.moravek@socialbakers.com','2014-02-14', (SELECT id_user_role FROM user_roles WHERE title='Administrator'),(SELECT id_department_role FROM department_roles WHERE title='scrum master')),
+('Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend')),
+('Marek', 'Simunek', 'marek.simunek@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='backend')),
+('Vladimir', 'Neckar', 'vladimir.neckar@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend')),
+('Frantisek', 'Kolenak', 'frantisek.kolenak@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'));
 
 INSERT INTO users (first_name, last_name, email,started_at, id_user_role, id_buddy, id_department_role)
 VALUES
-('Karel', 'Zibar', 'karel.zibar@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'), (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'),(SELECT id_department_role FROM department_roles WHERE title='backend')),
-('Lukas', 'Witz', 'lukas.witz@socialbakers.com','07/14/14', (SELECT id_user_role FROM user_roles WHERE title='User'), (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),(SELECT id_department_role FROM department_roles WHERE title='frontend'));
+('Karel', 'Zibar', 'karel.zibar@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'), (SELECT id_user FROM users WHERE email='marek.simunek@socialbakers.com'),(SELECT id_department_role FROM department_roles WHERE title='backend')),
+('Lukas', 'Witz', 'lukas.witz@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'), (SELECT id_user FROM users WHERE email='vladimir.laznicka@socialbakers.com'),(SELECT id_department_role FROM department_roles WHERE title='frontend'));
 
 -- Data for USERS_TEAMS table.
 INSERT INTO users_teams (id_user, id_team, is_admin)
