@@ -27,6 +27,8 @@ var tasksRepository = require('./lib/repositories/tasks-repository')(dbClient);
 require('./lib/routes/tasks-route')(router, tasksRepository );
 var userRepository = require('./lib/repositories/user-repository')(dbClient);
 require('./lib/routes/user-route')(router, userRepository);
+var templateRepository = require('./lib/repositories/template-repository')(dbClient);
+require('./lib/routes/template-route')(router, templateRepository);
 
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'SBKS_hrtool' }));
