@@ -3,8 +3,7 @@
 Router.prototype.init = function () {
     var path = this.getPath();
     this.routerConfig = new RouterConfig();
-    this.view = this.routerConfig.setView(path);
-    this.view.render();
+    this.changeView(path);
 
 }
 Router.prototype.getPath = function () {
@@ -34,3 +33,8 @@ Router.prototype.getPath = function () {
     else return { view: "", parameters: "" };
 }
 
+Router.prototype.changeView = function(){
+    document.getElementById(ViewBase.mainWrapper).innerHTML = '';
+    this.view = this.routerConfig.setView(this.getPath());
+    this.view.render();
+};

@@ -34,38 +34,44 @@
     <script src="/js/components/componentFilter.js"></script>
     <script src="/js/components/componentHide.js"></script>
     <script>
-        (function(){
-        
-            $.get("/handshake",function(data){
-                if(data.error){
-                   
-                    document.getElementById('loginButton').style.display = 'block';
-                }else{
-                   
-                    document.getElementById('loginButton').style.display = 'none';
+        (function() {
+
+            $.get("/handshake", function (data) {
+                if (!data.error) {
                     app = new App();
                     app.bulk = data.data;
                     app.init();
-                    
+
                 }
             });
-            
-      
-        })();        
-            /*for testing user tasks list  */
 
-          var socket = io.connect();
-        
-       socket.emit('tasks/user/list', function (data) {
-        window.console.log(data.data)});
+            if ("onhashchange" in window) { // event supported?
+                window.onhashchange = function () {
+                    app.router.changeView(window.location.hash);
+                }
+            }
+            else { // event not supported:
+                var storedHash = window.location.hash;
+                window.setInterval(function () {
+                    if (window.location.hash != storedHash) {
+                        app.router.changeView(window.location.hash);
+                    }
+                }, 100);
+            }
+        })();
 
+        /*for testing user tasks list  */
+        /*var socket = io.connect();
+        socket.emit('tasks/get-all', function (data) {
+            window.console.log(data.data);
+        });*/
 
 
     </script>
 </head>
 <body>
+    <div id="navbar"><a href="/auth/google" id="login-button">Login</a></div>
     <div id="main-wrapper"></div>
-    <a href="/auth/google" id="loginButton">Sign In with Google</a>
 </body>
 
 </html>

@@ -10,6 +10,9 @@ ViewBase.prototype.constructor = ViewBase;
 
 
 ViewBase.prototype.render = function(){
+    var navBar = new ComponentNavBar();
+    navBar.render();
+
 	this.base = document.getElementById(ViewBase.mainWrapper);
 	if(this.base != null){ //checks if, in body, exists main-wrapper
 		while( this.base.childNodes.length > 0 ){
