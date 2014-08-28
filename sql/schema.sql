@@ -46,6 +46,7 @@ CREATE TABLE users
 	first_name CHARACTER VARYING (128) NOT NULL,
 	last_name CHARACTER VARYING (128) NOT NULL,
 	email TEXT NOT NULL UNIQUE,
+	started_at DATE,
 	id_user_role INTEGER,
 	id_department_role INTEGER NOT NULL,
 	id_buddy INTEGER
