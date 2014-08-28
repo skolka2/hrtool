@@ -1,7 +1,7 @@
 var ComponentCheckBox = function(labelText,checked){
 	ComponentBase.apply(this);
 	this.super = ComponentBase;
-	this.labelText =  "DefaultText";
+	this.labelText =  "";
 	
 
 	if(!!labelText){
@@ -23,20 +23,20 @@ ComponentCheckBox.prototype.createDom = function(){
 	this._setCheckClass();
 
 	this.label = document.createElement("div");
-	this.label.className = "label";
+	this.label.className = "checkbox-label";
 
 	this.label.innerText = this.labelText;
 
-	this.checkChecked.appendChild(this.label);
 	buddyCheckbox.appendChild(this.checkChecked);
+	buddyCheckbox.appendChild(this.label);
 
 	this.element = buddyCheckbox;
 
 	this.element.addEventListener(ComponentBase.EventType.CLICK ,this.handleOnClick.bind(this),false);
 	/*<div class=buddy-checkbox1>
 		<div class=check.Checked/>
-			<div class="label">checkbox label
-			</div>
+		</div>
+		<div class="label">checkbox label
 		</div>
 	</div>*/
 }
@@ -71,6 +71,6 @@ ComponentCheckBox.prototype.setChecked = function(checked){
 }
 
 ComponentCheckBox.checkBoxClass = {
-	CHECKED:"check-checked",
-	NOTCHECKED:"check-not-checked"
+	CHECKED:"checkbox-ch",
+	NOTCHECKED:"checkbox-nch"
 }

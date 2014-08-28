@@ -45,10 +45,23 @@
 	border-top: 2px solid;
 }
 
-.check-not-checked {
-	color: red;
+.checkbox-nch {
+	background-color: red;
+	width: 20px;
+	height: 20px;
+	float: left;
 }
 
-.check-checked {
-	color: green;
+.checkbox-ch {
+	background-color: green;
+	width:20px;
+	height: 20px;
+	float: left;
 }
+
+.checkbox-label {
+	width:100px;
+	height: 20px;
+	float: left;
+}
+
