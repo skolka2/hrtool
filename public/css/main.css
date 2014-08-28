@@ -45,14 +45,14 @@
 	border-top: 2px solid;
 }
 
-.checkbox-nch {
+.checkbox {
 	background-color: red;
 	width: 20px;
 	height: 20px;
 	float: left;
 }
 
-.checkbox-ch {
+.checked {
 	background-color: green;
 	width:20px;
 	height: 20px;

@@ -71,6 +71,6 @@ ComponentCheckBox.prototype.setChecked = function(checked){
 }
 
 ComponentCheckBox.checkBoxClass = {
-	CHECKED:"checkbox-ch",
-	NOTCHECKED:"checkbox-nch"
+	CHECKED:"checkbox checked",
+	NOTCHECKED:"checkbox"
 }
