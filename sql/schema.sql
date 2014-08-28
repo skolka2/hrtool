@@ -12,7 +12,7 @@ CREATE TABLE tasks
 	date_to DATE NOT NULL,
 	id_user INTEGER NOT NULL,
 	id_buddy INTEGER NOT NULL DEFAULT 1,
-    id_team INTEGER,
+        id_team INTEGER,
 	id_department INTEGER
 );
 
@@ -26,6 +26,19 @@ CREATE TABLE task_templates
 	id_department INTEGER
 );
 
+DROP TABLE IF EXISTS tasks_implicit CASCADE;
+CREATE TABLE tasks_implicit
+(
+	id_task_implicit SERIAL PRIMARY KEY,
+	start_day INTEGER NOT NULL,
+	duration INTEGER NOT NULL,
+	id_task_template INTEGER NOT NULL,
+	id_team INTEGER,
+	id_department INTEGER,
+	id_department_role INTEGER 
+);
+
+
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users
 (
@@ -34,6 +47,7 @@ CREATE TABLE users
 	last_name CHARACTER VARYING (128) NOT NULL,
 	email TEXT NOT NULL UNIQUE,
 	id_user_role INTEGER,
+	id_department_role INTEGER NOT NULL,
 	id_buddy INTEGER
 );
 
@@ -128,6 +142,39 @@ ADD CONSTRAINT fk_task_templates_id_department
 FOREIGN KEY (id_department)
 REFERENCES departments(id_department);
 
+ALTER TABLE tasks_implicit
+DROP CONSTRAINT IF EXISTS fk_tasks_implicit_id_department;
+
+ALTER TABLE tasks_implicit
+ADD CONSTRAINT fk_tasks_implicit_id_department
+FOREIGN KEY (id_department)
+REFERENCES departments(id_department);
+
+ALTER TABLE tasks_implicit
+DROP CONSTRAINT IF EXISTS fk_tasks_implicit_id_team;
+
+ALTER TABLE tasks_implicit
+ADD CONSTRAINT fk_tasks_implicit_id_team
+FOREIGN KEY (id_team)
+REFERENCES teams(id_team);
+
+
+ALTER TABLE tasks_implicit
+DROP CONSTRAINT IF EXISTS fk_tasks_implicit_id_task_template;
+
+ALTER TABLE tasks_implicit
+ADD CONSTRAINT fk_tasks_implicit_id_task_template
+FOREIGN KEY (id_task_template)
+REFERENCES task_templates(id_task_template);
+
+ALTER TABLE tasks_implicit
+DROP CONSTRAINT IF EXISTS fk_tasks_implicit_id_department_role;
+
+ALTER TABLE tasks_implicit
+ADD CONSTRAINT fk_tasks_implicit_id_department_role
+FOREIGN KEY (id_department_role)
+REFERENCES department_roles(id_department_role);
+
 ALTER TABLE tasks
 DROP CONSTRAINT IF EXISTS fk_tasks_id_department;
 ALTER TABLE tasks
@@ -143,6 +190,14 @@ ALTER TABLE users
 ADD CONSTRAINT fk_users_id_role
 FOREIGN KEY (id_user_role)
 REFERENCES user_roles(id_user_role);
+
+ALTER TABLE users
+DROP CONSTRAINT IF EXISTS fk_departments_id_role;
+
+ALTER TABLE users
+ADD CONSTRAINT fk_departments_id_role
+FOREIGN KEY (id_department_role)
+REFERENCES department_roles(id_department_role);
 
 -- Foreign key from ID_BUDDY column of USERS table to ID column from USERS table.
 ALTER TABLE users
@@ -188,3 +243,6 @@ ALTER TABLE department_roles
 ADD CONSTRAINT fk_department_roles_id_department
 FOREIGN KEY (id_department)
 REFERENCES departments(id_department);
+
+
+DROP TABLE IF EXISTS default_tasks;

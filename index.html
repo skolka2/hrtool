@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -49,10 +49,10 @@
             
         })();        
             /*for testing user tasks list  */
-          /*var socket = io.connect();
+          var socket = io.connect();
         
-       socket.emit('tasks/get-all', function (data) {
-        window.console.log(data.data)});*/
+       socket.emit('tasks/user/list', function (data) {
+        window.console.log(data.data)});
 
 
 
