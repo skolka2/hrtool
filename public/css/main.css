@@ -45,6 +45,10 @@
 	border-top: 2px solid;
 }
 
+.buddy-checkbox {
+    cursor: pointer;
+}
+
 .checkbox {
 	background-color: red;
 	width: 20px;
