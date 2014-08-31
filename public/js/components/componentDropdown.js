@@ -5,77 +5,119 @@
  * clicking on an item of the list (this item is accessible in this.selected
  * now) or by clicking anywhere else in the body (this.selected remains
  * unchanged).
- * @param {object} data 
+ * @param {object} data
  * @returns {ComponentDropdown}
  */
 var ComponentDropdown = function(data) {
+    ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
-    this.super.call(this);
     this.selected = "";
-    
-    this._selectedTextElement = document.createElement('span');
+    this._enabled = true;
 
-    this._list = document.createElement('ul');
-    this._list.className = 'dropDownButton';
-    this._list.id = 'dropDownList_' + this.componentId;
-    this._list.style.visibility = 'hidden';
+    this._map = [];
 
-    this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._openList.bind(this), false);
+    this._selectedTextElement = document.createElement('div');
+    this._selectedTextElement.className = 'dropdown-button ' + ComponentDropdown.State.ENABLED;
+
+    this._listEl = document.createElement('ul');
+    this._listEl.className = 'dropDownButton';
+    this._listEl.style.visibility = 'hidden';
+
+    this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._handleListOpen.bind(this), false);
     this.changeData(data);
 };
 
 
 ComponentDropdown.prototype = new ComponentBase();
 ComponentDropdown.prototype.constructor = ComponentDropdown;
-ComponentDropdown.EventType = ComponentDropdown.EventType || {};
-ComponentDropdown.EventType.CHANGE = 'change';
+
+ComponentDropdown.EventType = {
+    CHANGE: 'change'
+};
+
+ComponentDropdown.State = {
+    ENABLED: 'dropdown',
+    DISABLED: 'dropdown disabled'
+};
 
 /**
  * Shows the list of items provided in data object
  * @returns {undefined}
  */
-ComponentDropdown.prototype._openList = function () {
-    if(this._list.style.visibility === 'visible') {
-        this._list.style.visibility = 'hidden';
+ComponentDropdown.prototype._handleListOpen = function () {
+    if(this._enabled) {
+        if (this._listEl.style.visibility === 'visible') {
+            this._listEl.style.visibility = 'hidden';
             return;
-    }
-    /*Close list on click in body (outside of span)*/
-    this._list.style.visibility = 'visible';
-    var onClick;
-    onClick = function (ev) {
-        if (ev.target.className === 'dropDownItem') {
-            this._makeSelection(ev);
         }
-        if(ev.target !== this._list && ev.target !== this._selectedTextElement) {
-            this._list.style.visibility = 'hidden';
-            document.body.removeEventListener('click', onClick, false);
-        }
-    }.bind(this);
 
-    document.body.addEventListener(ComponentBase.EventType.CLICK, onClick, false);
+        /*Close list on click in body (outside of span)*/
+        this._listEl.style.visibility = 'visible';
+        var onClick;
+        onClick = function (ev) {
+            if (this.getElement() === ev.target || this.getElement().contains(ev.target)) {
+                this._makeSelection(ev, onClick);
+            }
+            else {
+                this._listEl.style.visibility = 'hidden';
+                document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
+            }
+        }.bind(this);
+
+        document.body.addEventListener(ComponentBase.EventType.CLICK, onClick, false);
+    }
 };
 
 /**
- * 
+ *
  * @param {object} data Object containing data with keys 'selected' and 'items',
  * where items is an object or array with items to be shown as options.
  * @returns {undefined}
  */
 ComponentDropdown.prototype._fillWithData = function(data) {
-    if(data.selected) {
-        this.selected = data.selected;
-        this._selectedTextElement.textContent = this.selected;
-    }
+    this._map = [];
 
-    for(var item in data.items) {
+    var li = document.createElement('li');
+    li.className = 'dropDownItem';
+    var empty = {value: "", id: -1};
+    this._map.push({
+        el: li,
+        value: empty
+    });
+
+    var text = document.createTextNode("");
+    li.appendChild(text);
+
+    this._listEl.appendChild(li);
+    this.setSelection(empty);
+
+    for(var i = 0; i < data.length; i++) {
         var li = document.createElement('li');
         li.className = 'dropDownItem';
-        
-        var text = document.createTextNode(data.items[item]);
-        
+        this._map.push({el: li, value: data[i]});
+
+        var text = document.createTextNode(data[i].value);
         li.appendChild(text);
-        this._list.appendChild(li);
-    };
+
+        this._listEl.appendChild(li);
+
+        if(data[i].selected) {
+            this.setSelection(data[i]);
+        }
+    }
+};
+
+/**
+ * Sets new label and saves selected item into this.selected
+ */
+ComponentDropdown.prototype.setSelection = function(selectedItem) {
+    this.selected = selectedItem;
+    if(selectedItem.value === "") {
+        this._selectedTextElement.innerHTML = "Select..";
+    }
+    else {
+        this._selectedTextElement.innerHTML = selectedItem.value;
+    }
 };
 
 /**
@@ -86,10 +128,10 @@ ComponentDropdown.prototype._fillWithData = function(data) {
  * @returns {undefined}
  */
 ComponentDropdown.prototype.changeData = function (data) {
-    if(data !== undefined && data.items) {
+    if(data !== null && data !== undefined) {
         var item;
-        while(item = this._list.children.item()) {
-            this._list.removeChild(item);
+        while(item = this._listEl.children.item()) {
+            this._listEl.removeChild(item);
         }
         this._fillWithData(data);
     }
@@ -97,14 +139,22 @@ ComponentDropdown.prototype.changeData = function (data) {
 
 /**
  * When an option is clicked, this function changes selected item
- * @param {type} src
+ * @param {element} src source of event ComponentBase.EventType.CLICK
+ * @param {function} onClick function to remove from eventListener binded on body
  * @returns {undefined}
  */
-ComponentDropdown.prototype._makeSelection = function (src) {
-    this.selected = src.target.textContent;
-    this._selectedTextElement.innerHTML = this.selected;
-    
-    this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+ComponentDropdown.prototype._makeSelection = function (src, onClick) {
+    var selection = this._map.filter(function(item){
+        return item.el === src.target}
+    );
+
+    if(selection.length > 0) {
+        this.setSelection(selection[0].value);
+
+        this._listEl.style.visibility = 'hidden';
+        document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
+        this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+    }
 };
 
 /**
@@ -114,8 +164,35 @@ ComponentDropdown.prototype._makeSelection = function (src) {
 ComponentDropdown.prototype.createDom = function() {
     this.element = document.createElement("div");
     this.element.className = 'dropDownDiv';
-    this.element.id = 'dropDownDiv_' + this.componentId;
-    
+
     this.element.appendChild(this._selectedTextElement);
-    this.element.appendChild(this._list);
+    this.element.appendChild(this._listEl);
+};
+
+/**
+ * Sets dropdown's property enabled (it is clickable if true)
+ * @param enabled true/false - enabled/disabled
+ */
+ComponentDropdown.prototype.setEnabled = function(enabled) {
+    if(typeof(enabled === "boolean")) {
+        this._enabled = enabled;
+        var selection = this._selectedTextElement.classList;
+
+        if(enabled) {
+            selection.remove("disabled");
+        }
+        else {
+            if(!selection.contains("disabled")) {
+                selection.add("disabled");
+            }
+        }
+    }
+};
+
+/**
+ * Returns true if enabled, false otherwise
+ * @returns {boolean|*}
+ */
+ComponentDropdown.prototype.isEnabled = function() {
+    return this._enabled;
 };
