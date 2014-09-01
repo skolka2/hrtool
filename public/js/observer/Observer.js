@@ -37,14 +37,9 @@ Observer.prototype.fire = function (type, data, src) {
     while(parents.length > 0) {
         var id = parents.pop();
         if(this._subscribers[type] && this._subscribers[type][id]) {
-            this._subscribers[type][id](data);
+            this._subscribers[type][id](data, src);
         }
     }
-    
-    /*var itemType = this._subscribers[type];
-    for(var subsc in itemType) {
-        itemType[subsc](data);
-    };*/
 };
 
 /**

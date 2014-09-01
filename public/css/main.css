@@ -70,3 +70,16 @@
 	float: left;
 }
 
+.dropDownDiv {
+    margin-right: 10px;
+    float: left;
+}
+
+.dropdown-button.dropdown {
+    display: inline-block;
+    background-color: lightgray;
+}
+.dropdown-button.dropdown.disabled {
+    background-color: lightcoral;
+}
+
