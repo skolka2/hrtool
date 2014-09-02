@@ -73,6 +73,14 @@
 .dropDownDiv {
     margin-right: 10px;
     float: left;
+    cursor: pointer;
+}
+
+.dropDownDiv ul {
+    list-style-type: none;
+    position: absolute;
+    margin: 0;
+    padding: 0;
 }
 
 .dropDownDiv ul {
