@@ -1,4 +1,5 @@
 var Model =  function(eventType) {
+    EventEmitter.call(this);
     this.super = EventEmitter;
     this.eventType = eventType;
     this.data = null;
