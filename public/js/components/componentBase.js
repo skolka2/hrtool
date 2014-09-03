@@ -118,6 +118,15 @@ ComponentBase.prototype.getWrapper = function(wrapper){
     return wrapper;
 };
 
+ComponentBase.prototype.setModel = function(model, eventType) {
+	this.model = model;
+	this.listen(eventType, model, this.onLoad);
+}
+
+ComponentBase.prototype.onLoad = function(data) {
+
+}
+
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {
 	CLICK: "click",

@@ -15,6 +15,6 @@ RouterConfig.prototype.setView = function(data) {
         case 'test':
             return curView = new ViewTest();
         default:
-            return new ViewDefault();
+            return new ViewHome();
     }
 }

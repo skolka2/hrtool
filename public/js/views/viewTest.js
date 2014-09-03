@@ -60,4 +60,20 @@ ViewTest.prototype.render = function(){
     b.render(viewWrapper);
     //___________________________________________________________________________
 
+
+    //LAZ START
+    var divVladLaz = document.createElement("div");
+    divVladLaz.id = "VladLaz";
+
+    var titleVladLaz = document.createElement("h2");
+    titleVladLaz.id = "VladLazTitle";
+    titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
+    divVladLaz.appendChild(titleVladLaz);
+
+    var buddyLists = new ComponentBuddyTasksListsInView();
+    buddyLists.render(divVladLaz);
+
+    mainWrapper.appendChild(divVladLaz);
+    //LAZ END
+
 };

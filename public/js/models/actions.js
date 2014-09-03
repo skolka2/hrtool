@@ -22,5 +22,20 @@ hrtool.actions = {
     deleteDefaultTaskData: function (model,data) {
         var mediator = new Mediator();
         mediator.loadData('template/delete', data, model);
+     },
+
+    getBuddyTaskData: function (model) {
+    	var mediator = new Mediator();
+    	mediator.loadData('tasks/buddy/list', {}, model);
+    },
+
+    getBuddyTaskDataCompleted: function (model) {
+    	var mediator = new Mediator();
+    	mediator.loadData('tasks/buddy/list/completed', {}, model);
+    },
+
+    getBuddyTaskDataNotCompleted: function (model) {
+    	var mediator = new Mediator();
+    	mediator.loadData('tasks/buddy/list/notCompleted', {}, model);
     }
 }
