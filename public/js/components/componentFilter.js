@@ -82,7 +82,7 @@ ComponentFilter.prototype.createDom = function() {
     mainDiv.class = "filtrable-task";
 
     for(var i = 0; i < this._dropdowns.length; i++) {
-        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {'el': mainDiv});
+        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {el: mainDiv});
     }
 
     this.element = mainDiv;

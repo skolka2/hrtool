@@ -34,7 +34,7 @@ var helper = {
                     tmpBulk = tmpBulk[keys[i]];
                 }
                 else {
-                    helper.debugger('Error: parameter in bulk is null');
+                    helper.debugger('Error: parameter ' + keys[i] + ' in bulk is null');
                     return null;
                 }
             }
