@@ -66,7 +66,7 @@ ComponentFilter.prototype._filterData = function(selected, src) {
 ComponentFilter.prototype._getSelection = function(depth) {
     var selection = '';
     for(var i = 0; i < depth; i++) {
-        var oneSelected = this._dropdowns[i].selected.id;
+        var oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
         selection += oneSelected === -1 ? 'global' : oneSelected;
         selection += '-';
     }
@@ -82,7 +82,7 @@ ComponentFilter.prototype.createDom = function() {
     mainDiv.class = "filtrable-task";
 
     for(var i = 0; i < this._dropdowns.length; i++) {
-        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {el: mainDiv});
+        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {'el': mainDiv});
     }
 
     this.element = mainDiv;
