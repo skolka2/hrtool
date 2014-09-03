@@ -1,18 +1,15 @@
-var ComponentFiltrableTask = function(data) {
+var ComponentFilter = function(data) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
 
     this._status = [];
     this._data = data;
     this._dropdowns = [];
-    this._empty = [{value: "", id: -1}];
 
     for(var i = 0; i < data.length; i++) {
         var initData = this._initData(i);
         var newDropdown = new ComponentDropdown(initData);
 
-        if(initData === this._empty)
-            newDropdown.setEnabled(false);
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
 
@@ -20,10 +17,10 @@ var ComponentFiltrableTask = function(data) {
     }
 };
 
-ComponentFiltrableTask.prototype = new ComponentBase();
-ComponentFiltrableTask.constructor = ComponentFiltrableTask;
+ComponentFilter.prototype = new ComponentBase();
+ComponentFilter.constructor = ComponentFilter;
 
-ComponentFiltrableTask.prototype._initData = function(i) {
+ComponentFilter.prototype._initData = function(i) {
     var data = this._data[i];
     var keys = Object.keys(data);
     var key = keys.length > 0 ? keys[0] : '';
@@ -39,34 +36,34 @@ ComponentFiltrableTask.prototype._initData = function(i) {
     if(global.length > 0)
         global = global.substring(0, global.length - 1);
 
-    var items = data[global] !== undefined ? data[global] : this._empty;
+    var items = data[global] || ComponentDropdown.EmptyOption;
     return items;
 };
 
-ComponentFiltrableTask.prototype.getStatus = function () {
+ComponentFilter.prototype.getStatus = function () {
     return this._status;
 };
 
-ComponentFiltrableTask.prototype._filterData = function(selected, src) {
+ComponentFilter.prototype._filterData = function(selected, src) {
     for(var i = 0; i < this._dropdowns.length; i++) {
         var dropdown = this._dropdowns[i];
         if(src < dropdown.componentId ) {
             var selection = this._getSelection(i);
             var data = this._data[i][selection];
-            data = data ? data : this._empty;
+            data = data ? data : ComponentDropdown.EmptyOption;
             dropdown.changeData(data);
-            dropdown.setSelection(this._empty[0]);
+            dropdown.setSelection(ComponentDropdown.EmptyOption);
             this._status[i] = dropdown.selected;
-            dropdown.setEnabled(data !== this._empty);
+            dropdown.setEnabled(data !== ComponentDropdown.EmptyOption);
         } else if(src === dropdown.componentId) {
             this._status[i] = selected;
         }
     }
 
-    this.fire(ComponentFiltrableTask.EventType.UPDATED, this.getStatus());
+    this.fire(ComponentFilter.EventType.UPDATED, this.getStatus());
 };
 
-ComponentFiltrableTask.prototype._getSelection = function(depth) {
+ComponentFilter.prototype._getSelection = function(depth) {
     var selection = '';
     for(var i = 0; i < depth; i++) {
         var oneSelected = this._dropdowns[i].selected.id;
@@ -80,16 +77,17 @@ ComponentFiltrableTask.prototype._getSelection = function(depth) {
     return selection;
 };
 
-ComponentFiltrableTask.prototype.createDom = function() {
-    var mainDiv = this.helper.dom.createElement('<div id="filtrable-task-' + this.componentId +  '" class="filtrable-task"></div>');
+ComponentFilter.prototype.createDom = function() {
+    var mainDiv = document.createElement('div');
+    mainDiv.class = "filtrable-task";
 
     for(var i = 0; i < this._dropdowns.length; i++) {
-        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], mainDiv);
+        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {'el': mainDiv});
     }
 
     this.element = mainDiv;
 };
 
-ComponentFiltrableTask.EventType = {
+ComponentFilter.EventType = {
     UPDATED: 'new_selection'
 };

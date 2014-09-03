@@ -124,6 +124,14 @@
     color: purple;
 }
 
+.dropDownItem.deselector {
+    background-color: darkslateblue;
+}
+
+.dropDownItem.deselector:hover {
+    background-color:  darkgray;
+}
+
 .filtrable-task {
     padding: 20px;
 }

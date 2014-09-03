@@ -77,8 +77,10 @@ ComponentDropdown.prototype._handleListOpen = function () {
 ComponentDropdown.prototype._fillWithData = function(data) {
     this._map = [];
 
+    if(data === ComponentDropdown.EmptyOption)
+        this.setEnabled(false);
     var li = document.createElement('li');
-    li.className = 'dropDownItem';
+    li.className = 'dropDownItem deselector';
     var empty = {value: "", id: -1};
     this._map.push({
         el: li,
@@ -94,7 +96,10 @@ ComponentDropdown.prototype._fillWithData = function(data) {
     for(var i = 0; i < data.length; i++) {
         var li = document.createElement('li');
         li.className = 'dropDownItem';
-        this._map.push({el: li, value: data[i]});
+        this._map.push({
+            el: li,
+            value: data[i]
+        });
 
         var text = document.createTextNode(data[i].value);
         li.appendChild(text);
@@ -128,15 +133,12 @@ ComponentDropdown.prototype.setSelection = function(selectedItem) {
  * @returns {undefined}
  */
 ComponentDropdown.prototype.changeData = function (data) {
-    if(data !== null && data !== undefined) {
-        var item;
-        while(item = this._listEl.children.item()) {
-            this._listEl.removeChild(item);
-        }
-        this._fillWithData(data);
+    var item;
+    while (item = this._listEl.children.item()) {
+        this._listEl.removeChild(item);
     }
+    this._fillWithData(data);
 };
-
 /**
  * When an option is clicked, this function changes selected item
  * @param {element} src source of event ComponentBase.EventType.CLICK
@@ -174,25 +176,26 @@ ComponentDropdown.prototype.createDom = function() {
  * @param enabled true/false - enabled/disabled
  */
 ComponentDropdown.prototype.setEnabled = function(enabled) {
-    if(typeof(enabled === "boolean")) {
-        this._enabled = enabled;
-        var selection = this._selectedTextElement.classList;
-
-        if(enabled) {
-            selection.remove("disabled");
-        }
-        else {
-            if(!selection.contains("disabled")) {
-                selection.add("disabled");
-            }
+    this._enabled = enabled;
+    var selection = this._selectedTextElement.classList;
+    if (enabled) {
+        selection.remove("disabled");
+    }
+    else {
+        if (!selection.contains("disabled")) {
+            selection.add("disabled");
         }
     }
 };
-
 /**
  * Returns true if enabled, false otherwise
  * @returns {boolean|*}
  */
-ComponentDropdown.prototype.isEnabled = function() {
+ComponentDropdown.prototype.getIsEnabled = function() {
     return this._enabled;
+};
+
+ComponentDropdown.EmptyOption = {
+    value: "",
+    id: -1
 };
