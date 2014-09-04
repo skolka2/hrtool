@@ -3,11 +3,9 @@ var ComponentBase = require('../components/componentBase');
 var ComponentCheckBox = require('../components/features/componentCheckBox');
 var ComponentTaskImplicit = require('../components/features/addTask/componentTaskImplicit');
 var ComponentHide = require('../components/features/componentHide');
-var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
 var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
-var ComponentListVladLaz = require('../components/componentListVladLaz');
 var ComponentNotificationCenter = require('../components/componentNotificationCenter');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
@@ -15,6 +13,8 @@ var ComponentDropdown = require('../components/features/componentDropdown');
 var CoffeeTest = require('../coffee_test/test.js');
 var ComponentPopup = require('../components/componentPopup');
 var ComponentPopupFactory = require('../components/componentPopupFactory');
+var ComponentTaskListFactory = require('../components/tasks/componentTaskListFactory');
+var ComponentTaskListsInView = require('../components/tasks/componentTaskListsInView');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -166,20 +166,13 @@ ViewTest.prototype.render = function(){
     titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
     divVladLaz.appendChild(titleVladLaz);
 
-    var listLabel = document.createElement("h3");
-    listLabel.innerText = "Showcase of userTaskDetail components:";
-    divVladLaz.appendChild(listLabel);
+    var myUserLists = new ComponentTaskListsInView("Your tasks:", ComponentTaskListFactory.UserTaskList.createCompleted, ComponentTaskListFactory.UserTaskList.createNotCompleted);
+    var myBuddyLists = new ComponentTaskListsInView("Tasks, for which you are buddy:", ComponentTaskListFactory.BuddyTaskList.createCompleted, ComponentTaskListFactory.BuddyTaskList.createNotCompleted);
+    var myManagerLists = new ComponentTaskListsInView("Tasks of people from your departments/teams:", ComponentTaskListFactory.ManagerTaskList.createCompleted, ComponentTaskListFactory.ManagerTaskList.createNotCompleted, true);
 
-    var list = new ComponentListVladLaz();
-    list.render(divVladLaz);
-
-    var dropLabel = document.createElement("h3");
-    dropLabel.innerText = "Showcase of amazing inputable dropdown... behold!";
-    divVladLaz.appendChild(dropLabel);
-
-    var myDropData = [{value: "Lukáš", id: 1}, {value: "Vláďa", id: 2}, {value: "Franta", id: 3}, {value: "Marek", id: 4}, {value: "Žluťoučký Koníček", id: 5}];
-    var myDrop = new ComponentDropdown(myDropData, true);
-    myDrop.render(divVladLaz);
+    myUserLists.render(divVladLaz);
+    myBuddyLists.render(divVladLaz);
+    myManagerLists.render(divVladLaz);
 
     mainWrapper.appendChild(divVladLaz);
     //LAZ END

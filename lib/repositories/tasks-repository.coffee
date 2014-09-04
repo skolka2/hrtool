@@ -15,11 +15,15 @@ module.exports = (dbClient) ->
 				  LEFT JOIN users u3 ON u3.id_user=t.id_buddy", [userId], next
 
 		getUserTasks: (userId, completed, next) ->
-			sql = 'SELECT t.*, u.email AS buddy_email, u.last_name AS buddy_last_name, u.first_name AS buddy_first_name
-						  FROM tasks t
-						  LEFT JOIN users u ON u.id_user= t.id_buddy
-						  WHERE t.id_user=$1';
-			params = [userId];
+			sql = 'SELECT t.* ,
+				u1.first_name AS user_first_name, u1.last_name AS user_last_name, u1.email AS user_email,
+				u2.first_name AS buddy_first_name, u2.last_name AS buddy_last_name, u2.email AS buddy_email
+				FROM tasks AS t
+				INNER JOIN users u1 ON u1.id_user=t.id_user
+				INNER JOIN users u2 ON u2.id_user=t.id_buddy
+				WHERE t.id_user=$1'
+
+			params = [userId]
 
 			if next is null
 				next = completed
@@ -30,13 +34,16 @@ module.exports = (dbClient) ->
 
 			dbClient.queryAll sql, params, next
 
-		getBuddyTasks : (userId, completed, next) ->
-			sql = 'SELECT t.*, u.*
-				  FROM tasks t
-				  JOIN users u ON u.id_user = t.id_user
-				  WHERE t.id_buddy = $1';
+		getBuddyTasks: (userId, completed, next) ->
+			sql = 'SELECT t.* ,
+				u1.first_name AS user_first_name, u1.last_name AS user_last_name, u1.email AS user_email,
+				u2.first_name AS buddy_first_name, u2.last_name AS buddy_last_name, u2.email AS buddy_email
+				FROM tasks AS t
+				INNER JOIN users u1 ON u1.id_user=t.id_user
+				INNER JOIN users u2 ON u2.id_user=t.id_buddy
+				WHERE t.id_buddy=$1'
 
-			params = [userId];
+			params = [userId]
 
 			if next is null
 				next = completed
@@ -44,6 +51,34 @@ module.exports = (dbClient) ->
 			else
 				sql += ' AND t.completed = $2'
 				params.push completed
+
+			dbClient.queryAll sql, params, next
+
+		getTeamTasks: (userId, completed, id_department, id_team, is_hr, next) ->
+			sql = 'SELECT t.* ,
+				u1.first_name AS user_first_name, u1.last_name AS user_last_name, u1.email AS user_email,
+				u2.first_name AS buddy_first_name, u2.last_name AS buddy_last_name, u2.email AS buddy_email
+				FROM tasks AS t'
+
+			sql += ' JOIN users_teams ut ON ut.id_team = t.id_team' unless is_hr
+
+			sql += ' INNER JOIN users u1 ON u1.id_user=t.id_user
+				INNER JOIN users u2 ON u2.id_user=t.id_buddy
+				WHERE t.id_user<>$1 AND t.completed = $2'
+
+			sql += ' AND ut.id_user=$1 AND ut.is_admin' unless is_hr
+
+			params = [userId, completed]
+
+			if id_department isnt -1
+				sql += ' AND t.id_department = $3'
+				params.push id_department
+			else if id_team isnt -1 and id_department is -1
+				sql += ' AND t.id_team = $3'
+				params.push id_team
+			if id_team isnt -1 and id_department isnt -1
+				sql += ' AND t.id_team = $4'
+				params.push id_team
 
 			dbClient.queryAll sql, params, next
 
@@ -59,5 +94,4 @@ module.exports = (dbClient) ->
 
 		insertNewTask : (taskData, next) ->
 			dbClient.insertOne 'tasks', taskData, next
-
 	}

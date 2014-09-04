@@ -1,12 +1,13 @@
 var ViewBase =  require('./viewBase');
-var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
 var Const = require('../helpers/constants');
 var helper = require('../helpers/helpers');
+var ComponentTaskListsInView = require('../components/tasks/componentTaskListsInView');
+var ComponentTaskListFactory = require('../components/tasks/componentTaskListFactory');
+
 
 var ViewHome = module.exports =  function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
-	this.buddyTaskLists = new ComponentBuddyTasksListsInView();
 }
 
 ViewHome.prototype = new ViewBase();
@@ -21,12 +22,16 @@ ViewHome.prototype.render = function() {
 	viewWrapper.className = "view-wraper";
 	viewWrapper.innerHTML = "Home View";
 
-    this.buddyTaskLists.render(viewWrapper);
+	var userTaskLists = new ComponentTaskListsInView("Your tasks:", ComponentTaskListFactory.UserTaskList.createCompleted, ComponentTaskListFactory.UserTaskList.createNotCompleted);
+	userTaskLists.render(viewWrapper);
 
-    //TODO: tasklist
+	var buddyTaskLists = new ComponentTaskListsInView("Tasks, for which you are buddy:", ComponentTaskListFactory.BuddyTaskList.createCompleted, ComponentTaskListFactory.BuddyTaskList.createNotCompleted);
+	buddyTaskLists.render(viewWrapper);
+
     if(userRole == Const.TEAM_MANAGER || userRole == Const.ADMINISTRATOR)
     {
-        //TODO: manager tasklist
+        var managerTaskLists = new ComponentTaskListsInView("Tasks of people from your departments/teams:", ComponentTaskListFactory.ManagerTaskList.createCompleted, ComponentTaskListFactory.ManagerTaskList.createNotCompleted, true);
+    	managerTaskLists.render(viewWrapper);
     }
 
     mainWrapper.appendChild(viewWrapper);
