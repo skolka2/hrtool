@@ -103,8 +103,16 @@ ViewTest.prototype.render = function(){
 
 	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
     b.render(viewWrapper);
-    //___________________________________________________________________________
 
+//Zibby:
+    body.appendChild(document.createElement('br'));
+    var zibbyDiv = document.createElement('div');
+    zibbyDiv.innerHTML = '<h3>Zibby div</h3>';
+    var component = new ComponentTasksTemplate();
+    component.render(zibbyDiv);
+    body.appendChild(zibbyDiv);
+
+//Zibby END
 
     //LAZ START
     var divVladLaz = document.createElement("div");

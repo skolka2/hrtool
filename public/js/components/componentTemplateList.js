@@ -10,7 +10,7 @@ var ComponentTemplateList =  module.exports  = function () {
     this.dropdowns = {};
     this.model = new Model(ComponentTemplateList.EventType.DATA_LOAD);
     this.listen(ComponentTemplateList.EventType.DATA_LOAD, this.model, this.onLoad);
-    hrtool.actions.getDefaultTaskData(this.model);
+    hrtool.actions.getTemplatesData(this.model);
 };
 ComponentTemplateList.prototype = new ComponentBase();
 ComponentTemplateList.prototype.constructor = ComponentTemplateList;

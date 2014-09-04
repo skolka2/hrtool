@@ -24,6 +24,12 @@
 
 .time-label {
 	float: right;
+	background-color: #91FF6C;
+}
+
+.time-label-overflow {
+	float: right;
+	background-color: #FF4747;
 }
 
 .description-wrapper {
@@ -100,7 +106,7 @@
     background-color: rgb(200,155,187);
     padding: 2px;
     color: rgb(30, 30, 30);
-    min-width: 60px;
+    width: auto;
     font: 16px arial;
 }
 .dropdown-button.dropdown.disabled {
@@ -121,7 +127,7 @@
     color: white;
     font: 12px arial;
     border-bottom: solid 1px black;
-    min-width: 44px;
+    width: auto;
 }
 
 .dropDownItem:hover {

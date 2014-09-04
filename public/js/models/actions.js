@@ -11,9 +11,9 @@ hrtool.actions = {
     getTaskData: function (model) {
             var mediator = new Mediator();
             //        mediator.loadData('test-data',{},model);
-            mediator.loadData('task:getAll', {}, model);
+            mediator.loadData('tasks/get-all', {}, model);
     },
-    getDefaultTaskData: function (model) {
+    getTemplatesData : function(model){
         var mediator = new Mediator();
         mediator.loadData('template/get-all', {}, model);
     },
