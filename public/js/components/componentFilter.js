@@ -22,11 +22,17 @@ ComponentFilter.constructor = ComponentFilter;
 
 ComponentFilter.prototype._initData = function(i) {
     var data = this._data[i];
+    var selection = this._getSelection(i);
+
+    if(data[selection]) {
+        return data[selection];
+    }
+
     var keys = Object.keys(data);
     var key = keys.length > 0 ? keys[0] : '';
 
     var keyLength = key.split('-').length;
-    keyLength = keyLength === 1 ? 0 : keyLength;
+    keyLength = keyLength === 1 && key.length === 0 ? 0 : keyLength;
     var global = '';
 
     for(var i = 0; i < keyLength; i++) {

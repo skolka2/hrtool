@@ -166,8 +166,19 @@
 	width:100%;
 	display: block;
 }
-.hidden{
-	display: none;
+
+.hidden {
+    display: none;
+}
+
+.row div {
+    display: inline-block;
+}
+
+
+.template-header div{
+    display: inline-block;
+    margin-right: 10%;
 }
 
 #navbar{

@@ -1,11 +1,23 @@
-var ViewTest = function(){
-	ViewBase.call(this,null);
-	this.super = ViewBase;
+var ViewTest = function() {
+    ViewBase.call(this);
+    this.super = ViewBase;
 }
 ViewTest.prototype = new ViewBase();
 ViewTest.prototype.constructor = ViewTest;
 
 ViewTest.prototype.render = function(){
+    //Neckar view___________________________________________________________________________
+    this.componentTemplateList = new ComponentTemplateList();
+    var neckarWrapper = document.createElement('div');
+    var bodyN = document.getElementsByTagName('body')[0];
+    var NWrapper = document.getElementById(this.super.mainWrapper);
+    neckarWrapper.className = "neckar-wraper";
+    neckarWrapper.innerHTML = "Neckar view";
+    bodyN.appendChild(neckarWrapper);
+    this.componentTemplateList.render(neckarWrapper);
+
+
+    //Witz view___________________________________________________________________________
     this.component = new ComponentCheckBox("CheckBox");
     var el = document.createElement('div');
     el.innerHTML = 'This view contains component CheckBox.<br><br>';
@@ -46,5 +58,6 @@ ViewTest.prototype.render = function(){
 
 	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
     b.render(viewWrapper);
+    //___________________________________________________________________________
 
 };

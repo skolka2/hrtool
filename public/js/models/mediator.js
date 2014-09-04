@@ -23,7 +23,7 @@ Mediator.prototype.loadData = function (endpoint, params, model, transform) {
     var self = this;
     this.getSocket().emit(endpoint, params, function (resp) {
         if (resp.error) {
-            console.log("error", err);
+            console.log("error", resp.error);
         } else {
             if (transform != null) {
                 resp.data = transform(resp.data);
