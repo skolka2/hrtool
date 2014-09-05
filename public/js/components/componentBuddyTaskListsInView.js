@@ -1,8 +1,8 @@
 var ComponentBuddyTasksListsInView = function() {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
-	this.listNotFinished = new ComponentBuddyTaskList.Factory.createBuddyTaskList(false);
-	this.listFinished = new ComponentBuddyTaskList.Factory.createBuddyTaskList(true);
+	this.listNotFinished = ComponentBuddyTaskListFactory.createNotCompleted();
+	this.listFinished = ComponentBuddyTaskListFactory.createCompleted();
 }
 
 ComponentBuddyTasksListsInView.prototype = new ComponentBase();

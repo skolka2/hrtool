@@ -2,9 +2,6 @@ var ComponentBuddyTaskList = function() {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
 	this.data = null;
-	//this.model = new Model (ComponentBuddyTaskList.EventType.DATA_LOAD);
-	//this.listen(ComponentBuddyTaskList.EventType.DATA_LOAD, this.model, this.onLoad);
-	//hrtool.actions.getBuddyTaskData(this.model);
 }
 
 ComponentBuddyTaskList.prototype = new ComponentBase();
@@ -45,30 +42,5 @@ ComponentBuddyTaskList.prototype.createDom = function() {
 ComponentBuddyTaskList.EventType = {
 	DATA_LOAD: 'tasks/buddy/list',
 	DATA_LOAD_COMPLETED: 'tasks/buddy/list/completed',
-	DATA_LOAD_NOT_COMPLETED: 'tasks/buddy/list/notCompleted'
-};
-
-ComponentBuddyTaskList.Factory = {
-
-	createBuddyTaskList: function(finishedTasks) {
-		var buddyList = new ComponentBuddyTaskList();
-
-		if(finishedTasks == true) {
-			var buddyListModel = new Model(ComponentBuddyTaskList.EventType.DATA_LOAD_COMPLETED);
-			buddyList.setModel(buddyListModel, ComponentBuddyTaskList.EventType.DATA_LOAD_COMPLETED);
-			hrtool.actions.getBuddyTaskDataCompleted(buddyList.model);
-		}
-		else if(finishedTasks == false) {
-			var buddyListModel = new Model(ComponentBuddyTaskList.EventType.DATA_LOAD_NOT_COMPLETED);
-			buddyList.setModel(buddyListModel, ComponentBuddyTaskList.EventType.DATA_LOAD_NOT_COMPLETED);
-			hrtool.actions.getBuddyTaskDataNotCompleted(buddyList.model);
-		}
-		else {
-			var buddyListModel = new Model(ComponentBuddyTaskList.EventType.DATA_LOAD);
-			buddyList.setModel(buddyListModel, ComponentBuddyTaskList.EventType.DATA_LOAD);
-			hrtool.actions.getBuddyTaskData(buddyList.model);
-		}
-		
-		return buddyList;
-	}
-};
+	DATA_LOAD_NOT_COMPLETED: 'tasks/buddy/list/not-completed'
+}
