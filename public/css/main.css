@@ -95,7 +95,7 @@
     background-color: rgb(200,155,187);
     padding: 2px;
     color: rgb(30, 30, 30);
-    width: 60px;
+    min-width: 60px;
     font: 16px arial;
 }
 .dropdown-button.dropdown.disabled {
@@ -116,7 +116,7 @@
     color: white;
     font: 12px arial;
     border-bottom: solid 1px black;
-    width: 44px;
+    min-width: 44px;
 }
 
 .dropDownItem:hover {

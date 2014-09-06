@@ -81,7 +81,8 @@ ComponentDropdown.prototype._fillWithData = function(data) {
         this.setEnabled(false);
     var li = document.createElement('li');
     li.className = 'dropDownItem deselector';
-    var empty = {value: "", id: -1};
+    li.innerHTML = "Clear...";
+    var empty = ComponentDropdown.EmptyOption;
     this._map.push({
         el: li,
         value: empty
@@ -118,7 +119,7 @@ ComponentDropdown.prototype._fillWithData = function(data) {
 ComponentDropdown.prototype.setSelection = function(selectedItem) {
     this.selected = selectedItem;
     if(selectedItem.value === "") {
-        this._selectedTextElement.innerHTML = "Select..";
+        this._selectedTextElement.innerHTML = "Select...";
     }
     else {
         this._selectedTextElement.innerHTML = selectedItem.value;
@@ -134,7 +135,7 @@ ComponentDropdown.prototype.setSelection = function(selectedItem) {
  */
 ComponentDropdown.prototype.changeData = function (data) {
     var item;
-    while (item = this._listEl.children.item(0)) {
+    while (item = this._listEl.lastChild) {
         this._listEl.removeChild(item);
     }
     this._fillWithData(data);
@@ -182,9 +183,7 @@ ComponentDropdown.prototype.setEnabled = function(enabled) {
         selection.remove("disabled");
     }
     else {
-        if (!selection.contains("disabled")) {
-            selection.add("disabled");
-        }
+        selection.add("disabled");
     }
 };
 /**
