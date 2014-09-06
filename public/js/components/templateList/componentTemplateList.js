@@ -1,16 +1,14 @@
-﻿var ComponentBase = require('./componentBase');
-var Model = require('../models/model');
-var ComponentFilter = require('./features/componentFilter');
-var hrtool = require('../models/actions');
-var helper = require('../helpers/helpers');
+﻿var ComponentBase = require('./../componentBase');
+var Model = require('../../models/model');
+var ComponentFilter = require('./../features/componentFilter');
+var helper = require('../../helpers/helpers');
+var ComponentFilterFormatter = require('./../features/componentFilterFormatter');
 
 var ComponentTemplateList =  module.exports  = function () {
     this.super = ComponentBase;
     this.super.call(this);
     this.data = null;
     this.dropdowns = {};
-    this.setModel(new Model(ComponentTemplateList.EventType.DATA_LOAD),ComponentTemplateList.EventType.DATA_LOAD);
-    hrtool.actions.getTemplatesData(this.model);
 };
 ComponentTemplateList.prototype = new ComponentBase();
 ComponentTemplateList.prototype.constructor = ComponentTemplateList;
@@ -24,7 +22,7 @@ ComponentTemplateList.prototype.createDom = function() {
 ComponentTemplateList.prototype.onLoad = function (data) {
     this.element.innerHTML = "";
     this.data = data;
-    var dropDownData = this.parseToDropdown();
+    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
     //Creating header titles and append to the div
     this.createHeader(this.getElement());
     //add eventlistener onClick
@@ -43,7 +41,7 @@ ComponentTemplateList.prototype.addRow = function (data) {
     var divsName = ComponentTemplateList.TemplateListDivs;
     task.className = "row";
     task.setAttribute("data-template-id", id);
-    var dropdown = new ComponentFilter(data.dd);
+    var dropdown = new ComponentFilter(data.dd, ['department', 'teams']);
     this.dropdowns[id] = dropdown;
     this.getElement().appendChild(task); //because I need addChild to exist div
 
@@ -74,8 +72,8 @@ ComponentTemplateList.prototype.addRow = function (data) {
     div = document.createElement("div");
     div.className = divsName.id_department;
     task.appendChild(div);
-    this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
     dropdown.render(div);
+    this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
 
     //create save button
     div = document.createElement("div");
@@ -111,39 +109,6 @@ ComponentTemplateList.prototype.createHeader = function (div) {
         elDivHead.appendChild(elem);
         div.appendChild(elDivHead);
     }
-};
-
-ComponentTemplateList.prototype.parseToDropdown = function () {
-//Departments dropdown:
-    var departments = this.helper.bulk.getData(['departments']);
-    var departmentsData = {};
-    departmentsData[''] = [];
-    var item = {};
-    for (var i in departments) {
-        var item = {
-            value: departments[i].title,
-            id: departments[i].id_department
-        };
-        departmentsData[''].push(item);
-    }
-//Teams dropdown:
-    var teams = this.helper.bulk.getData(['teams']);
-    var map = this.helper.bulk.getData(['map']);
-    var teamsData = {};
-    //teamsData["global"] = [];
-    for (var i in map) {
-        for (var j = 0; j < map[i].length; j++) {     //for all teams in department with id === i
-            item = {
-                value: teams[map[i][j]].title,
-                id: teams[map[i][j]].id_team
-            };
-            teamsData[i] = teamsData[i] || [];
-            teamsData[i].push(item);
-            //teamsData["global"].push(item)
-        }
-    }
-//Tasks dropdown:
-    return [departmentsData, teamsData];
 };
 
 ComponentTemplateList.prototype._getSelectedItem = function (data, dropDownData) {

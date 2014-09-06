@@ -4,4 +4,4 @@ config.json
 .ntvs_analysis.dat
 .idea/*
 .ntvs_analysis.dat.tmp
-./public/main.js
+.public/main.js

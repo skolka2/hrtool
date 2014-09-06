@@ -138,6 +138,8 @@ ComponentBase.prototype.onLoad = function(data) {
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {
 	CLICK: "click",
-	CHANGE: "change"
+	CHANGE: "change",
+    ONKEYPRESS: "keypress",
+    BLUR: "blur",
+    DOMContentLoaded: "DOMContentLoaded"
 };
-

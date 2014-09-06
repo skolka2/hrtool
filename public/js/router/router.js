@@ -1,6 +1,7 @@
-﻿var RouterConfig  = require('./routerConfig');
-var ViewBase  = require('../views/viewBase');
-var Router = module.exports = function () { }
+﻿var RouterConfig = require('./routerConfig');
+var ViewBase = require('../views/viewBase');
+var Router = module.exports = function () {
+}
 
 Router.prototype.init = function () {
     var path = this.getPath();
@@ -9,7 +10,7 @@ Router.prototype.init = function () {
 
 }
 Router.prototype.getPath = function () {
-    
+
     var url = window.location.hash;
     if (url != "") {
         var map = {};
@@ -35,8 +36,22 @@ Router.prototype.getPath = function () {
     else return { view: "", parameters: "" };
 }
 
-Router.prototype.changeView = function(){
-    document.getElementById(ViewBase.mainWrapper).innerHTML = '';
+Router.prototype.changeView = function () {
+
     this.view = this.routerConfig.setView(this.getPath());
-    this.view.render();
+    var _this = this;
+    var mainWrapper = document.getElementById(ViewBase.mainWrapper);
+    if (mainWrapper != null) {
+        mainWrapper.innerHTML = '';
+        this.view.render();
+    }
+    else {
+        document.addEventListener(CompoenntBase.EventType.DOMContentLoaded, function () {
+            document.removeEventListener(CompoenntBase.EventType.DOMContentLoaded, arguments.callee, false);
+            if (mainWrapper != null) {
+                mainWrapper.innerHTML = '';
+                _this.view.render();
+            }
+        }, false);
+    }
 };

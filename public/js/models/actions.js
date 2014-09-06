@@ -40,7 +40,10 @@ hrtool.actions = {
     	var mediator = new Mediator();
     	mediator.loadData('tasks/buddy/list/not-completed', {}, model);
     },
-
+    saveImplicitTaskData: function (model,data) {
+        var mediator = new Mediator();
+        mediator.loadData('tasks/implicit/insert', data, model);
+    },
      getUserTaskData: function(model) {
      	var mediator = new Mediator();
      	mediator.loadData('tasks/user/list', {}, model);
@@ -55,4 +58,4 @@ hrtool.actions = {
      	var mediator = new Mediator();
      	mediator.loadData('tasks/finish', data, model);
      }
-}
+};
