@@ -134,10 +134,7 @@ ComponentDropdown.prototype.setSelection = function(selectedItem) {
  * @returns {undefined}
  */
 ComponentDropdown.prototype.changeData = function (data) {
-    var item;
-    while (item = this._listEl.lastChild) {
-        this._listEl.removeChild(item);
-    }
+    this._listEl.innerText = "";
     this._fillWithData(data);
 };
 /**
