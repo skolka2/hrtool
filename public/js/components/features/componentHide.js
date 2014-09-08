@@ -1,4 +1,6 @@
-var ComponentHide = function(header,content, closed){
+var ComponentBase = require('../componentBase');
+
+var ComponentHide  = module.exports = function(header,content, closed){
     ComponentBase.call(this);
     this.super = ComponentBase;
 

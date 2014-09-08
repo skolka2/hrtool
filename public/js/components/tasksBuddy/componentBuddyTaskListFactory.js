@@ -1,4 +1,7 @@
-var ComponentBuddyTaskListFactory = {
+var ComponentBuddyTaskList = require('./componentBuddyTaskList');
+var Model = require('../../models/model');
+var hrtool = require('../../models/actions');
+var ComponentBuddyTaskListFactory = module.exports = {
 
 	createCompleted: function() {
 		var buddyTaskList = new ComponentBuddyTaskList();

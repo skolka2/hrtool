@@ -1,4 +1,11 @@
-﻿var RouterConfig = function () { }
+﻿var ViewHome = require('../views/viewHome');
+var ViewDepartmentAdmin = require('../views/viewDepartmentAdmin');
+var ViewPeopleAdmin = require('../views/viewPeopleAdmin');
+var ViewTaskAdmin = require('../views/viewTaskAdmin');
+var ViewTest =require('../views/viewTest');
+var ViewDefault =require('../views/viewDefault');
+
+var RouterConfig = module.exports = function () { }
 
 RouterConfig.prototype.setView = function(data) {
     var curView;

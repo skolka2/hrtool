@@ -1,4 +1,6 @@
-var hrtool = hrtool || {}
+var Mediator = require('./mediator');
+
+var hrtool = module.exports = hrtool || {}
 
 hrtool.actions = {
     getTestData: function(model){

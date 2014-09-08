@@ -1,5 +1,5 @@
 
-var Mediator =  function() {
+var Mediator =  module.exports = function() {
 
 }
 

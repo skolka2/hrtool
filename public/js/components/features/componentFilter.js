@@ -1,4 +1,8 @@
-var ComponentFilter = function(data) {
+var ComponentBase = require('../componentBase');
+var ComponentDropdown = require('./componentDropdown');
+var helper = require('../../helpers/helpers');
+
+var ComponentFilter  =  module.exports =  function(data) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
 

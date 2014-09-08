@@ -1,4 +1,12 @@
-var ViewTest = function(){
+var ViewBase =  require('./viewBase');
+var ComponentCheckBox = require('../components/features/componentCheckBox');
+var ComponentTemplateList = require('../components/componentTemplateList');
+var ComponentHide = require('../components/features/componentHide');
+var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
+var helper = require('../helpers/helpers');
+var ComponentFilter = require('../components/features/componentFilter');
+
+var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
     this.super = ViewBase;
 }

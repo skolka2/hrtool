@@ -1,9 +1,13 @@
-var ViewBase =	function(){
+var EventEmitter = require('../observer/ObservableComponent');
+var helper = require('../helpers/helpers');
+var ComponentNavBar = require('../components/componentNavBar');
+
+var ViewBase = module.exports =	function(){
 
 	EventEmitter.apply(this);
 	this.super = EventEmitter;
 	this.helper = helper;
-}	
+};	
 
 ViewBase.prototype = new EventEmitter();
 ViewBase.prototype.constructor = ViewBase;

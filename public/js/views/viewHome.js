@@ -1,4 +1,7 @@
-var ViewHome = function() {
+var ViewBase =  require('./viewBase');
+var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
+
+var ViewHome = module.exports =  function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
 

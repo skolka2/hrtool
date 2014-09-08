@@ -1,4 +1,7 @@
-var ComponentTest = function () {
+var ComponentBase = require('./componentBase');
+var Model = require('../models/model');
+
+var ComponentTest =  module.exports = function () {
     this.super = ComponentBase;
     this.super.call(this);
     this.model = new Model(ComponentTest.EventType.DATA_LOAD);

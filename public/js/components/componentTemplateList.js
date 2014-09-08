@@ -1,4 +1,9 @@
-﻿var ComponentTemplateList = function () {
+﻿var ComponentBase = require('./componentBase');
+var Model = require('../models/model');
+var ComponentFilter = require('./features/componentFilter');
+var hrtool = require('../models/actions');
+
+var ComponentTemplateList =  module.exports  = function () {
     this.super = ComponentBase;
     this.super.call(this);
     this.data = null;

@@ -19,7 +19,7 @@
  *                        |----function to call {function}
  * @returns {Observer}
  */
-var Observer = function () {
+var Observer = module.exports = function () {
     this._subscribers = {};
     this.mapOfComponents = {};
 };

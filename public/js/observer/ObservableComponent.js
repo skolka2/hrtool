@@ -1,9 +1,11 @@
+var Observer = require('./Observer');
+
 /**
  * Constructor of Observable component: creates new component
  * and provides it with a new ID.
  * @returns {EventEmitter}
  */
-var EventEmitter = function() {
+var EventEmitter = module.exports = function() {
     this.componentId = ++EventEmitter._componentId;
 };
 

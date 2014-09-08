@@ -1,4 +1,4 @@
-var Const = 
+var Const = module.exports  = 
 {
 	"develop": true
 }

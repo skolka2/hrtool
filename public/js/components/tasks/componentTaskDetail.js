@@ -1,8 +1,13 @@
+var ComponentBase = require('../componentBase');
+var helper = require('../../helpers/helpers');
+
+
+
 /*
 Object, which contains HTML element for task detail and other properties and functions inherrited from ComponentBase object.
 Also contains variables for storing data about the task. 
 */
-var ComponentTaskDetail = function(taskParams) {
+var ComponentTaskDetail =  module.exports = function(taskParams) {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
 	this.taskBuddy = taskParams.taskBuddy; //String

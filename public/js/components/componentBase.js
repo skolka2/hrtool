@@ -1,5 +1,9 @@
+var EventEmitter =require('../observer/ObservableComponent');
+var helper = require('../helpers/helpers');
+
+
 //Default constructor
-var ComponentBase = function(){
+var ComponentBase = module.exports = function(){
 	EventEmitter.apply(this);
 	this.super = EventEmitter;
 	this.childs = {};
@@ -132,3 +136,4 @@ ComponentBase.EventType = {
 	CLICK: "click",
 	CHANGE: "change"
 }
+

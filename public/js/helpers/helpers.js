@@ -1,5 +1,8 @@
+var Const = require('./constants');
+var app = require('../app');
+
 //helper containing formating and other functions
-var helper = {
+var helper = module.exports = {
 	format: {
 		//function for converting number (in parameter) to precentage representated by returning string
 		getPercentage: function(num) {
@@ -22,6 +25,7 @@ var helper = {
 	},
 	//helper.bulk.getData(['user','id_user'])
 	bulk: {
+
 		getData: function(keys){
 			return helper.obj.getData(app.bulk, keys);
 		}
@@ -30,16 +34,16 @@ var helper = {
 		getData: function(obj, keys){
 			var tmpBulk = obj;
 			for(var i = 0; i< keys.length; i++){
-                if(tmpBulk[keys[i]] != null){
-                    tmpBulk = tmpBulk[keys[i]];
-                }
-                else {
-                    helper.debugger('Error: parameter ' + keys[i] + ' in bulk is null');
+				if(tmpBulk[keys[i]] != null){
+					tmpBulk = tmpBulk[keys[i]];
+				}
+				else {
+					helper.debugger('Error: parameter ' + keys[i] + ' in bulk is null');
 
-                    return null;
-                }
-            }
-            return tmpBulk;
+					return null;
+				}
+			}
+			return tmpBulk;
 		}
 	},
 	//helper.debugger('id', {data})
@@ -53,4 +57,5 @@ var helper = {
 			}
 		}
 	}
+
 };

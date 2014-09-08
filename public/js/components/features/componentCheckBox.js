@@ -1,4 +1,6 @@
-var ComponentCheckBox = function(labelText,checked){
+var ComponentBase = require('../componentBase');
+
+var ComponentCheckBox = module.exports =  function(labelText,checked){
 	ComponentBase.apply(this);
 	this.super = ComponentBase;
 	this.labelText =  "";

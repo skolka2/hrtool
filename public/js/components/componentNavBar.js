@@ -1,4 +1,7 @@
-﻿var ComponentNavBar = function () {
+﻿var ComponentBase = require('./componentBase');
+var app = require('../app');
+
+var ComponentNavBar =  module.exports =  function () {
     this.super.call(this);
     this.super = ComponentBase;
     this.data = {

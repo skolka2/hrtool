@@ -1,4 +1,6 @@
-﻿var Router = function () { }
+﻿var RouterConfig  = require('./routerConfig');
+var ViewBase  = require('../views/viewBase');
+var Router = module.exports = function () { }
 
 Router.prototype.init = function () {
     var path = this.getPath();

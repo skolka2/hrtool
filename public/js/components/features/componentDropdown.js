@@ -1,3 +1,4 @@
+var ComponentBase = require('../componentBase');
 /**
  * DropDown class: creates clickable span contaning selected item and
  * a list (ul - with visibility set on 'hidden' by default) of selectable items.
@@ -8,7 +9,7 @@
  * @param {object} data
  * @returns {ComponentDropdown}
  */
-var ComponentDropdown = function(data) {
+var ComponentDropdown = module.exports = function(data) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
     this.selected = "";

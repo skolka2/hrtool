@@ -1,4 +1,6 @@
-var ViewTaskAdmin = function() {
+var ViewBase =  require('./viewBase');
+
+var ViewTaskAdmin =  module.exports = function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
 }

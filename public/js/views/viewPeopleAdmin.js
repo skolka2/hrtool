@@ -1,4 +1,6 @@
-var ViewPeopleAdmin = function() {
+var ViewBase =  require('./viewBase');
+
+var ViewPeopleAdmin = module.exports = function() {
 	ViewBase.call(this);
 	this.super = ViewBase;
 }

@@ -1,4 +1,5 @@
-var Model =  function(eventType) {
+var EventEmitter =require('../observer/ObservableComponent');
+var Model =   module.exports = function(eventType) {
     EventEmitter.call(this);
     this.super = EventEmitter;
     this.eventType = eventType;

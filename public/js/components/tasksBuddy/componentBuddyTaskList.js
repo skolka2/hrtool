@@ -1,4 +1,7 @@
-var ComponentBuddyTaskList = function() {
+var ComponentBase = require('../componentBase');
+var ComponentTaskDetail = require('../tasks/componentTaskDetail');
+
+var ComponentBuddyTaskList = module.exports = function() {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
 	this.data = null;

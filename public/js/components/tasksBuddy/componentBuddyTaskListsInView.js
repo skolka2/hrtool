@@ -1,4 +1,8 @@
-var ComponentBuddyTasksListsInView = function() {
+var ComponentBase = require('../componentBase');
+var ComponentBuddyTaskListFactory = require('./componentBuddyTaskListFactory');
+var ComponentHide = require('../features/componentHide');
+
+var ComponentBuddyTasksListsInView  = module.exports = function() {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
 	this.listNotFinished = ComponentBuddyTaskListFactory.createNotCompleted();

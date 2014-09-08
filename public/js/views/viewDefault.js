@@ -1,4 +1,6 @@
-var ViewDefault = function(){
+var ViewBase =  require('./viewBase');
+
+var ViewDefault =  module.exports = function(){
 	ViewBase.call(this,null);
 	this.super = ViewBase;
 }
