@@ -29,6 +29,8 @@ var userRepository = require('./lib/repositories/user-repository')(dbClient);
 require('./lib/routes/user-route')(router, userRepository);
 var templateRepository = require('./lib/repositories/template-repository')(dbClient);
 require('./lib/routes/template-route')(router, templateRepository);
+var roleRepository = require('./lib/repositories/role-repository')(dbClient);
+require('./lib/routes/role-route')(router, roleRepository);
 
 app.use(express.cookieParser());
 app.use(express.session({ secret: 'SBKS_hrtool' }));
