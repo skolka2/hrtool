@@ -1,16 +1,21 @@
+var ComponentBase = require('../componentBase');
+var ComponentBaseTaskDetail = require('./componentBaseTaskDetail');
+var Model = require('../../models/model');
+var hrtool = require('../../models/actions');
+
 /*
 Object, which contains HTML element for user task detail and other properties and functions inherrited from ComponentTaskDetail object.
 Also has variables for storing certain HTML elements that are used in functions of the object. 
 */
-var ComponentUserTaskDetail = function(taskParams) {
+var ComponentUserTaskDetail = module.exports = function(taskParams) {
 	ComponentBaseTaskDetail.call(this, taskParams);
 	this.super = ComponentBaseTaskDetail;
 	this.taskId = taskParams.taskId;
 	this.textArea = null;
-	this.saveNotesB = null;
-	this.finishTaskB = null;
-	this.finishTaskBNo = null;
-	this.finishTaskBYes = null;
+	this.saveNotesBttn = null;
+	this.finishTaskBttn = null;
+	this.finishTaskBttnNo = null;
+	this.finishTaskBttnYes = null;
 	this.notifications = null;
 }
 
@@ -33,31 +38,31 @@ ComponentUserTaskDetail.prototype.createDom = function() {
 
 	this.footerWrapper.appendChild(this.buddyLabel);
 
-	this.finishTaskBNo = document.createElement('button');
-	this.finishTaskBNo.className = "finish-task-bttn";
-	this.finishTaskBNo.innerHTML = "No";
-	this.finishTaskBNo.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskCanceled.bind(this));
-	this.finishTaskBNo.style.display = "none";
-	this.footerWrapper.appendChild(this.finishTaskBNo);
+	this.finishTaskBttnNo = document.createElement('button');
+	this.finishTaskBttnNo.className = "finish-task-bttn";
+	this.finishTaskBttnNo.innerHTML = "No";
+	this.finishTaskBttnNo.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskCanceled.bind(this));
+	this.finishTaskBttnNo.style.display = "none";
+	this.footerWrapper.appendChild(this.finishTaskBttnNo);
 
-	this.finishTaskBYes = document.createElement('button');
-	this.finishTaskBYes.className = "finish-task-bttn";
-	this.finishTaskBYes.innerHTML = "Yes";
-	this.finishTaskBYes.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskConfirmed.bind(this));
-	this.finishTaskBYes.style.display = "none";
-	this.footerWrapper.appendChild(this.finishTaskBYes);
+	this.finishTaskBttnYes = document.createElement('button');
+	this.finishTaskBttnYes.className = "finish-task-bttn";
+	this.finishTaskBttnYes.innerHTML = "Yes";
+	this.finishTaskBttnYes.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskConfirmed.bind(this));
+	this.finishTaskBttnYes.style.display = "none";
+	this.footerWrapper.appendChild(this.finishTaskBttnYes);
 
-	this.finishTaskB = document.createElement('button');
-	this.finishTaskB.className = "finish-task-bttn";
-	this.finishTaskB.innerHTML = "Finish task";
-	this.finishTaskB.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTask.bind(this));
-	this.footerWrapper.appendChild(this.finishTaskB);
+	this.finishTaskBttn = document.createElement('button');
+	this.finishTaskBttn.className = "finish-task-bttn";
+	this.finishTaskBttn.innerHTML = "Finish task";
+	this.finishTaskBttn.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTask.bind(this));
+	this.footerWrapper.appendChild(this.finishTaskBttn);
 
-	this.saveNotesB = document.createElement('button');
-	this.saveNotesB.className = "save-notes-bttn";
-	this.saveNotesB.innerHTML = "Save notes";
-	this.saveNotesB.addEventListener(ComponentBase.EventType.CLICK, this.handleSaveNotes.bind(this));
-	this.footerWrapper.appendChild(this.saveNotesB);
+	this.saveNotesBttn = document.createElement('button');
+	this.saveNotesBttn.className = "save-notes-bttn";
+	this.saveNotesBttn.innerHTML = "Save notes";
+	this.saveNotesBttn.addEventListener(ComponentBase.EventType.CLICK, this.handleSaveNotes.bind(this));
+	this.footerWrapper.appendChild(this.saveNotesBttn);
 
 	this.notifications = document.createElement('div');
 	this.notifications.className = "notification-div";
@@ -75,7 +80,7 @@ ComponentUserTaskDetail.prototype.handleSaveNotes = function() {
 		//alert("Nothing has been changed.");
 	}
 	else {
-		this.saveNotesB.disabled = true;
+		this.saveNotesBttn.disabled = true;
 		this.textArea.readonly = true;
 		this.taskNotes = this.textArea.value;
 
@@ -84,9 +89,9 @@ ComponentUserTaskDetail.prototype.handleSaveNotes = function() {
 		 	notes: this.taskNotes
 		 };
 
-		this.model = new Model (ComponentUserTaskDetail.EventType.DATA_UPDATE);
-		this.listen(ComponentUserTaskDetail.EventType.DATA_UPDATE, this.model, this.saveNotesConfirmed);
-		hrtool.actions.updateUserTaskData(this.model, dataToSend);
+		var model = new Model (ComponentUserTaskDetail.EventType.DATA_UPDATE);
+		this.listen(ComponentUserTaskDetail.EventType.DATA_UPDATE, model, this.saveNotesConfirmed);
+		hrtool.actions.updateUserTaskData(model, dataToSend);
 	}
 }
 
@@ -94,7 +99,7 @@ ComponentUserTaskDetail.prototype.handleSaveNotes = function() {
 Function, which will be executed, when saving notes operation is succesfully completed.
 */
 ComponentUserTaskDetail.prototype.saveNotesConfirmed = function() {
-	this.saveNotesB.disabled = false;
+	this.saveNotesBttn.disabled = false;
 	this.notifications.innerHTML = "Save succesfull.";
 	//alert("Save succesfull.");
 }
@@ -108,9 +113,7 @@ ComponentUserTaskDetail.prototype.handleFinishTask = function() {
 		//alert("Already completed.");
 	}
 	else {
-		this.finishTaskB.style.display = "none";
-		this.finishTaskBYes.style.display = "initial";
-		this.finishTaskBNo.style.display = "initial";
+		this.setButtonsDisplay(true);
 	}
 }
 
@@ -118,26 +121,24 @@ ComponentUserTaskDetail.prototype.handleFinishTask = function() {
 Function, which handles behavior of the button for confirm the finish of the task.
 */
 ComponentUserTaskDetail.prototype.handleFinishTaskConfirmed = function() {
-	this.finishTaskBYes.disabled = true;
-	this.finishTaskBNo.disabled = true;
+	this.finishTaskBttnYes.disabled = true;
+	this.finishTaskBttnNo.disabled = true;
 
 	var dataToSend = {id_task: this.taskId};
 
-	this.model = new Model (ComponentUserTaskDetail.EventType.TASK_FINISH);
-	this.listen(ComponentUserTaskDetail.EventType.TASK_FINISH, this.model, this.finishTaskOk);
-	hrtool.actions.finishUserTask(this.model, dataToSend);
+	model = new Model (ComponentUserTaskDetail.EventType.TASK_FINISH);
+	this.listen(ComponentUserTaskDetail.EventType.TASK_FINISH, model, this.finishTaskOk);
+	hrtool.actions.finishUserTask(model, dataToSend);
 }
 
 /*
 Function, which will be executed, when finishing operation is succesfully completed.
 */
 ComponentUserTaskDetail.prototype.finishTaskOk = function() {
-	this.finishTaskBYes.disabled = false;
-	this.finishTaskBNo.disabled = false;
+	this.finishTaskBttnYes.disabled = false;
+	this.finishTaskBttnNo.disabled = false;
 
-	this.finishTaskB.style.display = "initial";
-	this.finishTaskBYes.style.display = "none";
-	this.finishTaskBNo.style.display = "none";
+	this.setButtonsDisplay(false);
 
 	this.notifications.innerHTML = "Task has been completed.";
 	//alert("Task has been completed.");
@@ -150,9 +151,23 @@ ComponentUserTaskDetail.prototype.finishTaskOk = function() {
 Function, which handles behavior of the button for cancel the finish of the task.
 */
 ComponentUserTaskDetail.prototype.handleFinishTaskCanceled = function() {
-	this.finishTaskB.style.display = "initial";
-	this.finishTaskBYes.style.display = "none";
-	this.finishTaskBNo.style.display = "none";
+	this.setButtonsDisplay(false);
+}
+
+ComponentUserTaskDetail.prototype.setButtonsDisplay = function(display) {
+	var a = 'none'
+    var b = 'initial'
+
+    if(display == true) {
+    	this.finishTaskBttn.style.display = a;
+    	this.finishTaskBttnYes.style.display = b;
+    	this.finishTaskBttnNo.style.display = b;
+    }
+    else {
+    	this.finishTaskBttn.style.display = b;
+    	this.finishTaskBttnYes.style.display = a;
+    	this.finishTaskBttnNo.style.display = a;
+    }  
 }
 
 /*

@@ -5,6 +5,7 @@ var ComponentHide = require('../components/features/componentHide');
 var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
 var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
+var ComponentListVladLaz = require('../components/componentListVladLaz');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);

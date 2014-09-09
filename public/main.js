@@ -59,9 +59,9 @@
 	__webpack_require__(14);
 	__webpack_require__(15);
 	__webpack_require__(16);
-	__webpack_require__(2);
 	__webpack_require__(17);
 	__webpack_require__(18);
+	__webpack_require__(2);
 	__webpack_require__(19);
 	__webpack_require__(20);
 	__webpack_require__(21);
@@ -73,7 +73,9 @@
 	__webpack_require__(27);
 	__webpack_require__(28);
 	__webpack_require__(29);
-	module.exports = __webpack_require__(30);
+	__webpack_require__(30);
+	__webpack_require__(31);
+	module.exports = __webpack_require__(32);
 
 
 /***/ },
@@ -88,7 +90,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var app = __webpack_require__(1);
-	var Router = __webpack_require__(22);
+	var Router = __webpack_require__(24);
 	var router;
 
 	(function(){
@@ -134,8 +136,8 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter =__webpack_require__(20);
-	var helper = __webpack_require__(16);
+	var EventEmitter =__webpack_require__(22);
+	var helper = __webpack_require__(18);
 
 
 	//Default constructor
@@ -280,6 +282,62 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
+	var ComponentUserTaskDetail = __webpack_require__(13);
+	var Model = __webpack_require__(21);
+	var hrtool = __webpack_require__(19);
+
+	var ComponentListVladLaz = module.exports = function() {
+		ComponentBase.call(this);
+		this.super = ComponentBase;
+		this.data = null;
+		this.model = new Model (ComponentListVladLaz.EventType.DATA_LOAD);
+		this.listen(ComponentListVladLaz.EventType.DATA_LOAD, this.model, this.onLoad);
+		hrtool.actions.getUserTaskData(this.model);
+	}
+
+	ComponentListVladLaz.prototype = new ComponentBase();
+	ComponentListVladLaz.prototype.constructor = ComponentListVladLaz;
+
+	ComponentListVladLaz.prototype.onLoad = function(data) {
+		this.data = data;
+
+		for(var i = 0; i < this.data.length; i++) {
+			var taskData = this.data[i];
+
+			var taskDataModified = {
+				taskId: taskData.id_task,
+				taskBuddy: taskData.email,
+				taskTitle: taskData.title,
+				dateFrom: taskData.date_from,
+				dateTo: taskData.date_to,
+				taskDescription: taskData.description,
+				taskNotes: taskData.notes,
+				isFinished: taskData.completed
+			};
+			
+			var task = new ComponentUserTaskDetail(taskDataModified);
+			this.addChild("userTask"+i, task, this.getElement());
+
+			if(this.rendered) {
+				this.getElement().appendChild(task.getElement());
+			}
+		}
+	}
+
+	ComponentListVladLaz.prototype.createDom = function() {
+		var wrapper = document.createElement('div');
+		wrapper.className = "vladlaz-task-list";
+		this.element = wrapper;
+	}
+
+	ComponentListVladLaz.EventType = {DATA_LOAD: 'tasks/user/list'};
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ComponentBase = __webpack_require__(3);
 	var app = __webpack_require__(1);
 
 	var ComponentNavBar =  module.exports =  function () {
@@ -363,13 +421,13 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(19);
-	var ComponentFilter = __webpack_require__(9);
-	var hrtool = __webpack_require__(17);
+	var Model = __webpack_require__(21);
+	var ComponentFilter = __webpack_require__(10);
+	var hrtool = __webpack_require__(19);
 
 	var ComponentTemplateList =  module.exports  = function () {
 	    this.super = ComponentBase;
@@ -631,11 +689,11 @@
 	};
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(19);
+	var Model = __webpack_require__(21);
 
 	var ComponentTest =  module.exports = function () {
 	    this.super = ComponentBase;
@@ -670,7 +728,7 @@
 	}
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -753,7 +811,7 @@
 	}
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -893,7 +951,7 @@
 	 * @returns {undefined}
 	 */
 	ComponentDropdown.prototype.changeData = function (data) {
-	    this._listEl.innerText = "";
+	    this._listEl.innerHTML = "";
 	    this._fillWithData(data);
 	};
 	/**
@@ -956,12 +1014,12 @@
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentDropdown = __webpack_require__(8);
-	var helper = __webpack_require__(16);
+	var ComponentDropdown = __webpack_require__(9);
+	var helper = __webpack_require__(18);
 
 	var ComponentFilter  =  module.exports =  function(data) {
 	    ComponentBase.prototype.constructor.call(this);
@@ -1036,7 +1094,10 @@
 
 	ComponentFilter.prototype._getSelection = function(depth) {
 	    var selection = '';
-	    for(var i = 0; i < depth; i++) {
+	    var randomKey = Object.keys(this._data[depth])[0];
+	    var length = randomKey === '' ? 0 : randomKey.split("-").length;
+
+	    for(var i = 0; i < length; i++) {
 	        var oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
 	        selection += oneSelected === -1 ? 'global' : oneSelected;
 	        selection += '-';
@@ -1059,13 +1120,19 @@
 	    this.element = mainDiv;
 	};
 
+	ComponentFilter.prototype.unselectAll = function() {
+	    var firstDropdown = this._dropdowns[0];
+	    firstDropdown.setSelection(ComponentDropdown.EmptyOption);
+	    this._filterData(ComponentDropdown.EmptyOption, firstDropdown.componentId);
+	};
+
 	ComponentFilter.EventType = {
 	    UPDATED: 'new_selection'
 	};
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -1191,19 +1258,16 @@
 	}
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var helper = __webpack_require__(16);
-
-
 
 	/*
 	Object, which contains HTML element for task detail and other properties and functions inherrited from ComponentBase object.
 	Also contains variables for storing data about the task. 
 	*/
-	var ComponentTaskDetail =  module.exports = function(taskParams) {
+	var ComponentBaseTaskDetail = module.exports = function(taskParams) {
 		ComponentBase.call(this);
 		this.super = ComponentBase;
 		this.taskBuddy = taskParams.taskBuddy; //String
@@ -1213,68 +1277,263 @@
 		this.taskDescription = taskParams.taskDescription; //String
 		this.taskNotes = taskParams.taskNotes; //String
 		this.isFinished = taskParams.isFinished; //Boolean
+		this.taskWrapper = null;
+		this.headerWrapper = null;
+		this.buddyLabel = null;
+		this.titleLabel = null;
+		this.timeLabel = null;
+		this.descriptionWrapper = null;
+		this.descriptionParagraph = null;
+		this.notesWrapper = null;
+		this.notesText = null;
+		this.footerWrapper = null;
 	}
 
-	ComponentTaskDetail.prototype = new ComponentBase();
-	ComponentTaskDetail.prototype.constructor = ComponentTaskDetail;
+	ComponentBaseTaskDetail.prototype = new ComponentBase();
+	ComponentBaseTaskDetail.prototype.constructor = ComponentBaseTaskDetail;
 
 	/*
 	Overridden function from component BaseObject - it creates DOM, which will be rendered by other function (render) inherrited from ComponentBase.
 	*/
-	ComponentTaskDetail.prototype.createDom = function() {
+	ComponentBaseTaskDetail.prototype.createDom = function() {
 
-		var taskWrapper = document.createElement('div');
-		taskWrapper.className = "task-wrapper";
-
-		var headerWrapper = document.createElement('div');
-		headerWrapper.className = "header-wrapper";
-
-		var buddyLabel = this.helper.dom.createElement('<label class="buddy-label">'+this.taskBuddy+'</label>');
-		headerWrapper.appendChild(buddyLabel);
-
-		var titleLabel = this.helper.dom.createElement('<label class="task-label">'+this.taskTitle+'</label>');
-		headerWrapper.appendChild(titleLabel);
-
-		var timeLabel = this.helper.dom.createElement('<label> Timerange: '+this.dateFrom.getDate()+'.'+(this.dateFrom.getMonth()+1)+'.'+this.dateFrom.getFullYear()+' - '+this.dateTo.getDate()+'.'+(this.dateTo.getMonth()+1)+'.'+this.dateTo.getFullYear()+'</label>');
+		this.taskWrapper = document.createElement('div');
+		this.taskWrapper.className = "task-wrapper";
 
 		if((this.dateTo < new Date()) && (this.isFinished === false)) {
-			timeLabel.className = "time-label-overflow";
+			this.taskWrapper.className = "task-wrapper-overflow";
 		}
 		else {
-			timeLabel.className = "time-label";
+			this.taskWrapper.className = "task-wrapper";
 		}
 
-		headerWrapper.appendChild(timeLabel);
+		this.headerWrapper = document.createElement('div');
+		this.headerWrapper.className = "header-wrapper";
 
-		var descriptionWrapper = document.createElement('div');
-		descriptionWrapper.className = "description-wrapper";
+		this.buddyLabel = this.helper.dom.createElement('<span class="buddy-label">'+this.taskBuddy+'</span>');
+		this.headerWrapper.appendChild(this.buddyLabel);
 
-		var descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</p>');
-		descriptionWrapper.appendChild(descriptionParagraph);
+		this.titleLabel = this.helper.dom.createElement('<span class="task-label">'+this.taskTitle+'</span>');
+		this.headerWrapper.appendChild(this.titleLabel);
 
-		var notesWrapper = document.createElement('div');
-		notesWrapper.className = "notes-wrapper";
+		this.timeLabel = this.helper.dom.createElement('<span> Timerange: '+this.helper.format.getDate(this.dateFrom)+' - '+this.helper.format.getDate(this.dateTo)+'</span>');
+		this.timeLabel.className = "time-label-overflow";
+		this.headerWrapper.appendChild(this.timeLabel);
 
-		var notesText = this.helper.dom.createElement('<p class="notes-text"> Task notes: '+this.taskNotes+'</p>');
-		notesWrapper.appendChild(notesText);
+		this.descriptionWrapper = document.createElement('div');
+		this.descriptionWrapper.className = "description-wrapper";
 
-		var footerWrapper = document.createElement('div');
-		footerWrapper.className = "footer-wrapper";
+		this.descriptionParagraph = this.helper.dom.createElement('<p class="description-paragraph">Task description: '+this.taskDescription+'</p>');
+		this.descriptionWrapper.appendChild(this.descriptionParagraph);
 
-		taskWrapper.appendChild(headerWrapper);
-		taskWrapper.appendChild(descriptionWrapper);
-		taskWrapper.appendChild(notesWrapper);
-		taskWrapper.appendChild(footerWrapper);
+		this.notesWrapper = document.createElement('div');
+		this.notesWrapper.className = "notes-wrapper";
 
-		this.element = taskWrapper; //saving all DOM elements in the element of this object
+		this.notesText = this.helper.dom.createElement('<p class="notes-text"> Task notes: '+this.taskNotes+'</p>');
+		this.notesWrapper.appendChild(this.notesText);
+
+		this.footerWrapper = document.createElement('div');
+		this.footerWrapper.className = "footer-wrapper";
+
+		this.taskWrapper.appendChild(this.headerWrapper);
+		this.taskWrapper.appendChild(this.descriptionWrapper);
+		this.taskWrapper.appendChild(this.notesWrapper);
+		this.taskWrapper.appendChild(this.footerWrapper);
+
+		this.element = this.taskWrapper; //saving all DOM elements in the element of this object
 	}
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentTaskDetail = __webpack_require__(11);
+	var ComponentBaseTaskDetail = __webpack_require__(12);
+	var Model = __webpack_require__(21);
+	var hrtool = __webpack_require__(19);
+
+	/*
+	Object, which contains HTML element for user task detail and other properties and functions inherrited from ComponentTaskDetail object.
+	Also has variables for storing certain HTML elements that are used in functions of the object. 
+	*/
+	var ComponentUserTaskDetail = module.exports = function(taskParams) {
+		ComponentBaseTaskDetail.call(this, taskParams);
+		this.super = ComponentBaseTaskDetail;
+		this.taskId = taskParams.taskId;
+		this.textArea = null;
+		this.saveNotesBttn = null;
+		this.finishTaskBttn = null;
+		this.finishTaskBttnNo = null;
+		this.finishTaskBttnYes = null;
+		this.notifications = null;
+	}
+
+	ComponentUserTaskDetail.prototype = Object.create(ComponentBaseTaskDetail.prototype);
+	ComponentUserTaskDetail.prototype.constructor = ComponentUserTaskDetail;
+
+	/*
+	Overridden function from component BaseObject - it creates DOM, which will be rendered by other function (render) inherrited from ComponentBase.
+	*/
+	ComponentUserTaskDetail.prototype.createDom = function() {
+		this.super.prototype.createDom.apply(this);
+
+		this.headerWrapper.removeChild(this.buddyLabel);
+		this.notesWrapper.removeChild(this.notesText);
+
+		this.textArea = this.helper.dom.createElement('<textArea class="notes-text-area">'+this.taskNotes+'</textArea>');
+		this.textArea.addEventListener(ComponentBase.EventType.CLICK, this.handleTextAreaEnable.bind(this));
+		this.textArea.readonly = true;
+		this.notesWrapper.appendChild(this.textArea);
+
+		this.footerWrapper.appendChild(this.buddyLabel);
+
+		this.finishTaskBttnNo = document.createElement('button');
+		this.finishTaskBttnNo.className = "finish-task-bttn";
+		this.finishTaskBttnNo.innerHTML = "No";
+		this.finishTaskBttnNo.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskCanceled.bind(this));
+		this.finishTaskBttnNo.style.display = "none";
+		this.footerWrapper.appendChild(this.finishTaskBttnNo);
+
+		this.finishTaskBttnYes = document.createElement('button');
+		this.finishTaskBttnYes.className = "finish-task-bttn";
+		this.finishTaskBttnYes.innerHTML = "Yes";
+		this.finishTaskBttnYes.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTaskConfirmed.bind(this));
+		this.finishTaskBttnYes.style.display = "none";
+		this.footerWrapper.appendChild(this.finishTaskBttnYes);
+
+		this.finishTaskBttn = document.createElement('button');
+		this.finishTaskBttn.className = "finish-task-bttn";
+		this.finishTaskBttn.innerHTML = "Finish task";
+		this.finishTaskBttn.addEventListener(ComponentBase.EventType.CLICK, this.handleFinishTask.bind(this));
+		this.footerWrapper.appendChild(this.finishTaskBttn);
+
+		this.saveNotesBttn = document.createElement('button');
+		this.saveNotesBttn.className = "save-notes-bttn";
+		this.saveNotesBttn.innerHTML = "Save notes";
+		this.saveNotesBttn.addEventListener(ComponentBase.EventType.CLICK, this.handleSaveNotes.bind(this));
+		this.footerWrapper.appendChild(this.saveNotesBttn);
+
+		this.notifications = document.createElement('div');
+		this.notifications.className = "notification-div";
+		this.footerWrapper.appendChild(this.notifications);
+
+		this.element = this.taskWrapper; //saving all DOM elements in the element of this object
+	}
+
+	/*
+	Function, which handles behavior of the button for saving task notes.
+	*/
+	ComponentUserTaskDetail.prototype.handleSaveNotes = function() {
+		if(this.textArea.value === this.taskNotes) {
+			this.notifications.innerHTML = "Nothing has been changed.";
+			//alert("Nothing has been changed.");
+		}
+		else {
+			this.saveNotesBttn.disabled = true;
+			this.textArea.readonly = true;
+			this.taskNotes = this.textArea.value;
+
+			var dataToSend = {
+				id_task: this.taskId,
+			 	notes: this.taskNotes
+			 };
+
+			var model = new Model (ComponentUserTaskDetail.EventType.DATA_UPDATE);
+			this.listen(ComponentUserTaskDetail.EventType.DATA_UPDATE, model, this.saveNotesConfirmed);
+			hrtool.actions.updateUserTaskData(model, dataToSend);
+		}
+	}
+
+	/*
+	Function, which will be executed, when saving notes operation is succesfully completed.
+	*/
+	ComponentUserTaskDetail.prototype.saveNotesConfirmed = function() {
+		this.saveNotesBttn.disabled = false;
+		this.notifications.innerHTML = "Save succesfull.";
+		//alert("Save succesfull.");
+	}
+
+	/*
+	Function, which handles behavior of the button for finishing task.
+	*/
+	ComponentUserTaskDetail.prototype.handleFinishTask = function() {
+		if(this.isFinished) {
+			this.notifications.innerHTML = "Already completed.";
+			//alert("Already completed.");
+		}
+		else {
+			this.setButtonsDisplay(true);
+		}
+	}
+
+	/*
+	Function, which handles behavior of the button for confirm the finish of the task.
+	*/
+	ComponentUserTaskDetail.prototype.handleFinishTaskConfirmed = function() {
+		this.finishTaskBttnYes.disabled = true;
+		this.finishTaskBttnNo.disabled = true;
+
+		var dataToSend = {id_task: this.taskId};
+
+		model = new Model (ComponentUserTaskDetail.EventType.TASK_FINISH);
+		this.listen(ComponentUserTaskDetail.EventType.TASK_FINISH, model, this.finishTaskOk);
+		hrtool.actions.finishUserTask(model, dataToSend);
+	}
+
+	/*
+	Function, which will be executed, when finishing operation is succesfully completed.
+	*/
+	ComponentUserTaskDetail.prototype.finishTaskOk = function() {
+		this.finishTaskBttnYes.disabled = false;
+		this.finishTaskBttnNo.disabled = false;
+
+		this.setButtonsDisplay(false);
+
+		this.notifications.innerHTML = "Task has been completed.";
+		//alert("Task has been completed.");
+
+		this.isFinished = true;
+		this.fire(ComponentBase.EventType.CHANGE, this.isFinished); //function for notifying the parrent list of this task detail about finishing
+	}
+
+	/*
+	Function, which handles behavior of the button for cancel the finish of the task.
+	*/
+	ComponentUserTaskDetail.prototype.handleFinishTaskCanceled = function() {
+		this.setButtonsDisplay(false);
+	}
+
+	ComponentUserTaskDetail.prototype.setButtonsDisplay = function(display) {
+		var a = 'none'
+	    var b = 'initial'
+
+	    if(display == true) {
+	    	this.finishTaskBttn.style.display = a;
+	    	this.finishTaskBttnYes.style.display = b;
+	    	this.finishTaskBttnNo.style.display = b;
+	    }
+	    else {
+	    	this.finishTaskBttn.style.display = b;
+	    	this.finishTaskBttnYes.style.display = a;
+	    	this.finishTaskBttnNo.style.display = a;
+	    }  
+	}
+
+	/*
+	Function, which handles property read-only of the text area for task description.
+	*/
+	ComponentUserTaskDetail.prototype.handleTextAreaEnable = function() {
+		this.textArea.readonly = false;
+	}
+
+	ComponentUserTaskDetail.EventType = {DATA_UPDATE: 'tasks/update', TASK_FINISH: 'tasks/finish'};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ComponentBase = __webpack_require__(3);
+	var ComponentBaseTaskDetail = __webpack_require__(12);
 
 	var ComponentBuddyTaskList = module.exports = function() {
 		ComponentBase.call(this);
@@ -1301,7 +1560,7 @@
 				isFinished: taskData.completed
 			};
 
-			var task = new ComponentTaskDetail(taskDataModified);
+			var task = new ComponentBaseTaskDetail(taskDataModified);
 			this.addChild("buddyTask"+i, task, {'el': this.getElement()});
 
 			if(this.rendered) {
@@ -1324,12 +1583,12 @@
 	}
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ComponentBuddyTaskList = __webpack_require__(12);
-	var Model = __webpack_require__(19);
-	var hrtool = __webpack_require__(17);
+	var ComponentBuddyTaskList = __webpack_require__(14);
+	var Model = __webpack_require__(21);
+	var hrtool = __webpack_require__(19);
 	var ComponentBuddyTaskListFactory = module.exports = {
 
 		createCompleted: function() {
@@ -1358,12 +1617,12 @@
 	}
 
 /***/ },
-/* 14 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentBuddyTaskListFactory = __webpack_require__(13);
-	var ComponentHide = __webpack_require__(10);
+	var ComponentBuddyTaskListFactory = __webpack_require__(15);
+	var ComponentHide = __webpack_require__(11);
 
 	var ComponentBuddyTasksListsInView  = module.exports = function() {
 		ComponentBase.call(this);
@@ -1406,7 +1665,7 @@
 	}
 
 /***/ },
-/* 15 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Const = module.exports  = 
@@ -1415,10 +1674,10 @@
 	}
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Const = __webpack_require__(15);
+	var Const = __webpack_require__(17);
 	var app = __webpack_require__(1);
 
 	//helper containing formating and other functions
@@ -1433,6 +1692,11 @@
 				else {
 					return ("Can't get the percentage, input is not a number!");
 				}
+			},
+
+			getDate: function(date) {
+				var dateFormated = date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+				return dateFormated;
 			}
 		},
 
@@ -1482,10 +1746,10 @@
 
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mediator = __webpack_require__(18);
+	var Mediator = __webpack_require__(20);
 
 	var hrtool = module.exports = hrtool || {}
 
@@ -1526,11 +1790,26 @@
 	    getBuddyTaskDataNotCompleted: function (model) {
 	    	var mediator = new Mediator();
 	    	mediator.loadData('tasks/buddy/list/not-completed', {}, model);
-	    }
+	    },
+
+	     getUserTaskData: function(model) {
+	     	var mediator = new Mediator();
+	     	mediator.loadData('tasks/user/list', {}, model);
+	     },
+
+	     updateUserTaskData: function(model, data) {
+	     	var mediator = new Mediator();
+	     	mediator.loadData('tasks/update', data, model);
+	     },
+
+	     finishUserTask: function(model, data) {
+	     	var mediator = new Mediator();
+	     	mediator.loadData('tasks/finish', data, model);
+	     }
 	}
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -1593,10 +1872,10 @@
 
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter =__webpack_require__(20);
+	var EventEmitter =__webpack_require__(22);
 	var Model =   module.exports = function(eventType) {
 	    EventEmitter.call(this);
 	    this.super = EventEmitter;
@@ -1622,10 +1901,10 @@
 
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Observer = __webpack_require__(21);
+	var Observer = __webpack_require__(23);
 
 	/**
 	 * Constructor of Observable component: creates new component
@@ -1692,7 +1971,7 @@
 
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1797,11 +2076,11 @@
 
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var RouterConfig  = __webpack_require__(23);
-	var ViewBase  = __webpack_require__(24);
+	var RouterConfig  = __webpack_require__(25);
+	var ViewBase  = __webpack_require__(26);
 	var Router = module.exports = function () { }
 
 	Router.prototype.init = function () {
@@ -1845,15 +2124,15 @@
 
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewHome = __webpack_require__(27);
-	var ViewDepartmentAdmin = __webpack_require__(26);
-	var ViewPeopleAdmin = __webpack_require__(28);
-	var ViewTaskAdmin = __webpack_require__(29);
-	var ViewTest =__webpack_require__(30);
-	var ViewDefault =__webpack_require__(25);
+	var ViewHome = __webpack_require__(29);
+	var ViewDepartmentAdmin = __webpack_require__(28);
+	var ViewPeopleAdmin = __webpack_require__(30);
+	var ViewTaskAdmin = __webpack_require__(31);
+	var ViewTest =__webpack_require__(32);
+	var ViewDefault =__webpack_require__(27);
 
 	var RouterConfig = module.exports = function () { }
 
@@ -1871,18 +2150,22 @@
 	            return curView = new ViewTaskAdmin();
 	        case 'test':
 	            return curView = new ViewTest();
+	        case 'checkbox':
+	            return curView = new ViewTestCheckBox();
+	        case 'test':
+	            return curView = new ViewTest();
 	        default:
 	            return new ViewHome();
 	    }
 	}
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter = __webpack_require__(20);
-	var helper = __webpack_require__(16);
-	var ComponentNavBar = __webpack_require__(4);
+	var EventEmitter = __webpack_require__(22);
+	var helper = __webpack_require__(18);
+	var ComponentNavBar = __webpack_require__(5);
 
 	var ViewBase = module.exports =	function(){
 
@@ -1917,10 +2200,10 @@
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
+	var ViewBase =  __webpack_require__(26);
 
 	var ViewDefault =  module.exports = function(){
 		ViewBase.call(this,null);
@@ -1939,10 +2222,10 @@
 	};
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
+	var ViewBase =  __webpack_require__(26);
 
 	var ViewDepartmentAdmin =  module.exports = function() {
 		ViewBase.call(this);
@@ -1965,11 +2248,11 @@
 	}
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
-	var ComponentBuddyTasksListsInView = __webpack_require__(14);
+	var ViewBase =  __webpack_require__(26);
+	var ComponentBuddyTasksListsInView = __webpack_require__(16);
 
 	var ViewHome = module.exports =  function() {
 		ViewBase.call(this);
@@ -1996,10 +2279,10 @@
 	}
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
+	var ViewBase =  __webpack_require__(26);
 
 	var ViewPeopleAdmin = module.exports = function() {
 		ViewBase.call(this);
@@ -2022,10 +2305,10 @@
 	}
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
+	var ViewBase =  __webpack_require__(26);
 
 	var ViewTaskAdmin =  module.exports = function() {
 		ViewBase.call(this);
@@ -2048,21 +2331,23 @@
 	}
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(24);
-	var ComponentCheckBox = __webpack_require__(7);
-	var ComponentTemplateList = __webpack_require__(5);
-	var ComponentHide = __webpack_require__(10);
-	var ComponentBuddyTasksListsInView = __webpack_require__(14);
-	var helper = __webpack_require__(16);
-	var ComponentFilter = __webpack_require__(9);
+	var ViewBase =  __webpack_require__(26);
+	var ComponentCheckBox = __webpack_require__(8);
+	var ComponentTemplateList = __webpack_require__(6);
+	var ComponentHide = __webpack_require__(11);
+	var ComponentBuddyTasksListsInView = __webpack_require__(16);
+	var helper = __webpack_require__(18);
+	var ComponentFilter = __webpack_require__(10);
+	var ComponentListVladLaz = __webpack_require__(4);
 
 	var ViewTest =  module.exports = function(){
 	    ViewBase.call(this,null);
 	    this.super = ViewBase;
 	}
+
 	ViewTest.prototype = new ViewBase();
 	ViewTest.prototype.constructor = ViewTest;
 
@@ -2111,6 +2396,13 @@
 	    //Fanda View END
 
 	    //Witz view___________________________________________________________________________
+
+	    this.super.prototype.render.apply(this, arguments);
+	    var mainWrapper = document.getElementById(this.super.mainWrapper);
+
+	    this.component = new ComponentCheckBox("CheckBox");
+	    var el = document.createElement('div');
+	    el.innerHTML = 'This view contains component CheckBox.<br><br>';
 	    var body = document.getElementsByTagName('body')[0];
 	    var witzDiv = document.createElement('div');
 	    witzDiv.id = "witz-div"
@@ -2127,6 +2419,26 @@
 
 	    component.render(witzDiv);
 	    component2.render(witzDiv);
+
+
+
+
+
+
+		var viewWrapper = document.createElement('div');
+		viewWrapper.className = "view-wraper";
+		viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
+
+		mainWrapper.appendChild(viewWrapper);
+		var div = document.createElement("div");
+		var c = new ComponentCheckBox("CheckBox");
+	    var d = new ComponentCheckBox("CheckBox");
+
+	    div.appendChild(c.getElement());
+	    div.appendChild(d.getElement());
+
+		var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
+	    b.render(viewWrapper);
 	    //___________________________________________________________________________
 
 
@@ -2139,12 +2451,11 @@
 	    titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
 	    divVladLaz.appendChild(titleVladLaz);
 
-	    var buddyLists = new ComponentBuddyTasksListsInView();
-	    buddyLists.render(divVladLaz);
+	    var list = new ComponentListVladLaz();
+	    list.render(divVladLaz);
 
 	    mainWrapper.appendChild(divVladLaz);
 	    //LAZ END
-
 	};
 
 /***/ }

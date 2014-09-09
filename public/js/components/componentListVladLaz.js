@@ -1,4 +1,9 @@
-var ComponentListVladLaz = function() {
+var ComponentBase = require('./componentBase');
+var ComponentUserTaskDetail = require('./taskDetails/componentUserTaskDetail');
+var Model = require('../models/model');
+var hrtool = require('../models/actions');
+
+var ComponentListVladLaz = module.exports = function() {
 	ComponentBase.call(this);
 	this.super = ComponentBase;
 	this.data = null;
