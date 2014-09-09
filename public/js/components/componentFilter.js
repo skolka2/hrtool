@@ -71,7 +71,10 @@ ComponentFilter.prototype._filterData = function(selected, src) {
 
 ComponentFilter.prototype._getSelection = function(depth) {
     var selection = '';
-    for(var i = 0; i < depth; i++) {
+    var randomKey = Object.keys(this._data[depth])[0];
+    var length = randomKey === '' ? 0 : randomKey.split("-").length;
+
+    for(var i = 0; i < length; i++) {
         var oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
         selection += oneSelected === -1 ? 'global' : oneSelected;
         selection += '-';
@@ -92,6 +95,12 @@ ComponentFilter.prototype.createDom = function() {
     }
 
     this.element = mainDiv;
+};
+
+ComponentFilter.prototype.unselectAll = function() {
+    var firstDropdown = this._dropdowns[0];
+    firstDropdown.setSelection(ComponentDropdown.EmptyOption);
+    this._filterData(ComponentDropdown.EmptyOption, firstDropdown.componentId);
 };
 
 ComponentFilter.EventType = {
