@@ -11,7 +11,7 @@ var ComponentBase = module.exports = function(){
 	this.rendered = false;
 
 	this.helper = helper;
-}
+};
 
 ComponentBase.prototype = new EventEmitter();
 ComponentBase.prototype.constructor = ComponentBase;
@@ -33,7 +33,7 @@ ComponentBase.prototype.addChild = function (name, component, wraper){
 		};
 		this.setAsChild(this.childs[name].component);
 	}
-}
+};
 
 //Remove child component
 ComponentBase.prototype.removeChild = function (name){
@@ -43,7 +43,7 @@ ComponentBase.prototype.removeChild = function (name){
 	else {
 		console.log("Component with name: " + name + " is not parrent of this component.");
 	}
-}
+};
 
 ComponentBase.prototype.removeFromDOM = function (){
 	//check if its rendered
@@ -56,7 +56,7 @@ ComponentBase.prototype.removeFromDOM = function (){
 		this.rendered = false;
 	}
 	
-}
+};
 
 //Delete elements of component including listeners
 ComponentBase.prototype.destroy = function (){
@@ -70,12 +70,12 @@ ComponentBase.prototype.destroy = function (){
 		
 	}
 	
-}
+};
 
 // Prepare element
 ComponentBase.prototype.createDom = function (){
 	this.element = document.createElement("div");
-}
+};
 
 // Returns element
 ComponentBase.prototype.getElement = function (){
@@ -83,7 +83,7 @@ ComponentBase.prototype.getElement = function (){
 		this.createDom();
 	}
 	return this.element;
-}
+};
 
 // Renders and insert component into dom (including child)
 ComponentBase.prototype.render = function (parrent){
@@ -112,7 +112,11 @@ ComponentBase.prototype.render = function (parrent){
         child.component.render(parrentOfChild);
 
     }
-}
+};
+
+ComponentBase.prototype.addNotification = function(contentEl, duration, type) {
+
+};
 
 //Check if wrapper exists. If wrapper doesnt exists create general wrapper
 ComponentBase.prototype.getWrapper = function(wrapper){
@@ -125,15 +129,15 @@ ComponentBase.prototype.getWrapper = function(wrapper){
 ComponentBase.prototype.setModel = function(model, eventType) {
 	this.model = model;
 	this.listen(eventType, model, this.onLoad);
-}
+};
 
 ComponentBase.prototype.onLoad = function(data) {
 
-}
+};
 
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {
 	CLICK: "click",
 	CHANGE: "change"
-}
+};
 
