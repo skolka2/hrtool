@@ -71,6 +71,13 @@ var ComponentFilterFormatter = {
         return data;
     },
     factory : {
+        /**
+         * Function will create data for componentFilter using functions transform and format
+         * @param departments - data for first dropdown
+         * @param teams - data for second dropdown
+         * @param templates - data for third dropdown
+         * @returns {*} - data for componentFilter
+         */
         createTemplateDropdowns : function(departments, teams, templates){
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
