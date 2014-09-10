@@ -6,6 +6,7 @@ var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/component
 var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var ComponentListVladLaz = require('../components/componentListVladLaz');
+var ComponentTasksTemplate = require('../components/features/addTask/componentTasksTemplate');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -105,12 +106,11 @@ ViewTest.prototype.render = function(){
     b.render(viewWrapper);
 
 //Zibby:
-    body.appendChild(document.createElement('br'));
     var zibbyDiv = document.createElement('div');
     zibbyDiv.innerHTML = '<h3>Zibby div</h3>';
     var component = new ComponentTasksTemplate();
     component.render(zibbyDiv);
-    body.appendChild(zibbyDiv);
+    mainWrapper.appendChild(zibbyDiv);
 
 //Zibby END
 

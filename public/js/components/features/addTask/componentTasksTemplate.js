@@ -1,10 +1,15 @@
+var ComponentBase = require('../../componentBase');
+var ComponentFilterFormatter = require('../componentFilterFormatter');
+var ComponentFilter = require('../componentFilter');
+var hrtool = require('../../../models/actions');
+var Model = require('../../../models/model');
+
 var ComponentTasksTemplate = function() {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
     this._visible = false;
     this._componentFilter = null;
-    this.model = new Model(ComponentTasksTemplate.EventType.GET_DATA);
-    this.listen(ComponentTasksTemplate.EventType.GET_DATA, this.model, this.onLoad);
+    this.setModel(new Model(ComponentTasksTemplate.EventType.GET_DATA), ComponentTasksTemplate.EventType.GET_DATA);
     hrtool.actions.getTemplatesData(this.model);
 };
 
@@ -16,17 +21,9 @@ ComponentTasksTemplate.constructor = ComponentTasksTemplate;
 ComponentTasksTemplate.prototype.onLoad = function(templates){
     var departments = this.helper.bulk.getData(['departments']);
     var teams = this.helper.bulk.getData(['teams']);
-    /*var data = ComponentFilterFormater.Factory.formatForTripleDropdown(departments, teams, templates,
-        {idKey: 'id_department', valueKey: 'title'},
-        {idKey: 'id_team', valueKey: 'title', drop1DependencyKey: 'id_department'},
-        {idKey: 'id_task_template', valueKey: 'title', drop1DependencyKey: 'id_department', drop2DependencyKey: 'id_team'}
-    );*/
-    var data = ComponentFilterFormater.Factory.format([
-        ComponentFilterFormater.Factory.transform(departments, 'id_department', 'title'),
-        ComponentFilterFormater.Factory.transform(teams, 'id_team', 'title', ['id_department']),
-        ComponentFilterFormater.Factory.transform(templates, 'id_task_template', 'title', ['id_department', 'id_team'])
-    ]);
-    this._componentFilter = new ComponentFilter(data);
+    var data = ComponentFilterFormatter.factory.createTemplateDropdowns(departments, teams, templates);
+
+    this._componentFilter = new ComponentFilter(data, ['department', 'team', 'template']);
     this._componentFilter.render(this.element);
     this.addChild('componentFilter', this._componentFilter, {el: this.element});
 };
@@ -66,3 +63,5 @@ ComponentTasksTemplate.prototype.setVisible = function(visible){
 ComponentTasksTemplate.DIV_CLASS = 'task-template-div';
 ComponentTasksTemplate.HEADLINE_CLASS = 'task-template-headline';
 ComponentTasksTemplate.EventType = {GET_DATA: 'template/get-all'};
+
+module.exports = ComponentTasksTemplate;

@@ -2,17 +2,19 @@ var ComponentBase = require('../componentBase');
 var ComponentDropdown = require('./componentDropdown');
 var helper = require('../../helpers/helpers');
 
-var ComponentFilter  =  module.exports =  function(data) {
+var ComponentFilter  =  module.exports =  function(data, keys) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
 
+    this._keys = keys;
     this._status = [];
     this._data = data;
     this._dropdowns = [];
-
+    var initData;
+    var newDropdown;
     for(var i = 0; i < data.length; i++) {
-        var initData = this._initData(i);
-        var newDropdown = new ComponentDropdown(initData);
+        initData = this._initData(i);
+        newDropdown = new ComponentDropdown(initData);
 
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
@@ -51,15 +53,23 @@ ComponentFilter.prototype._initData = function(i) {
 };
 
 ComponentFilter.prototype.getStatus = function () {
-    return this._status;
+    if(!this._keys)
+        return this._status;
+    var res = {};
+    for(var i = 0; i < this._keys.length; i++){
+        res[this._keys[i]] = this._status[i];
+    }
+    return res;
 };
 
 ComponentFilter.prototype._filterData = function(selected, src) {
     for(var i = 0; i < this._dropdowns.length; i++) {
         var dropdown = this._dropdowns[i];
+        var data;
+        var selection;
         if(src < dropdown.componentId ) {
-            var selection = this._getSelection(i);
-            var data = this._data[i][selection];
+            selection = this._getSelection(i);
+            data  = this._data[i][selection];
             data = data ? data : ComponentDropdown.EmptyOption;
             dropdown.changeData(data);
             dropdown.setSelection(ComponentDropdown.EmptyOption);
@@ -69,7 +79,6 @@ ComponentFilter.prototype._filterData = function(selected, src) {
             this._status[i] = selected;
         }
     }
-
     this.fire(ComponentFilter.EventType.UPDATED, this.getStatus());
 };
 
@@ -77,9 +86,9 @@ ComponentFilter.prototype._getSelection = function(depth) {
     var selection = '';
     var randomKey = Object.keys(this._data[depth])[0];
     var length = randomKey === '' ? 0 : randomKey.split("-").length;
-
+    var oneSelected;
     for(var i = 0; i < length; i++) {
-        var oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
+        oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
         selection += oneSelected === -1 ? 'global' : oneSelected;
         selection += '-';
     }
