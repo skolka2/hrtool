@@ -41,11 +41,13 @@ ComponentAddTask.prototype.onLoad = function(data){
     var id;
     for(var i = 0; i < data.length; i++){
         id = this.helper.obj.getData(data[i], ['id_user']);
+        id += '-' + this.helper.obj.getData(data[i], ['id_team']);
         users[id] = data[i];
         if(!this.helper.obj.getData(data[i], ['is_hr'])){
             notBuddies[id] = data[i];
         }
     }
+    console.log(users);
     var data2 = ComponentFilterFormatter.factory.createNewTaskDropdowns(departments, teams, users, notBuddies);
     this._componentFilter = new ComponentFilter(data2, ['department', 'team', 'user', 'buddy']);
     this.addChild('componentFilter', this._componentFilter, {el:     this._personWrapper    });
