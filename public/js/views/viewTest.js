@@ -12,6 +12,7 @@ var ComponentTemplateList = require('../components/templateList/componentTemplat
 var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
 
+
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
     this.super = ViewBase;
@@ -143,4 +144,12 @@ ViewTest.prototype.render = function(){
 
     mainWrapper.appendChild(divVladLaz);
     //LAZ END
+
+
+     //simunek cool view_____________________________________
+     //example of jade template 
+     mainWrapper.appendChild(helper.tpl.create("example",{label:"testfunguje"}));
+
+     //simunek view piece out_____________________________________
+
 };

@@ -36,6 +36,13 @@ var helper = module.exports = {
             return null;
         }
 	},
+	tpl:{
+		create: function(name,params){
+			var template = require("jade!../../templates/"+name+".jade");
+
+ 		  return helper.dom.createElement(template(params));
+ 		}
+ 	},
 	//helper.bulk.getData(['user','id_user'])
 	bulk: {
 
@@ -59,6 +66,7 @@ var helper = module.exports = {
 			return tmpBulk;
 		}
 	},
+	
 	//helper.debugger('id', {data})
 	debugger: function(eventName, data){
 		if(Const.develop){
