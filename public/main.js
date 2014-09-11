@@ -149,7 +149,7 @@
 		this.rendered = false;
 
 		this.helper = helper;
-	}
+	};
 
 	ComponentBase.prototype = new EventEmitter();
 	ComponentBase.prototype.constructor = ComponentBase;
@@ -171,7 +171,7 @@
 			};
 			this.setAsChild(this.childs[name].component);
 		}
-	}
+	};
 
 	//Remove child component
 	ComponentBase.prototype.removeChild = function (name){
@@ -181,7 +181,7 @@
 		else {
 			console.log("Component with name: " + name + " is not parrent of this component.");
 		}
-	}
+	};
 
 	ComponentBase.prototype.removeFromDOM = function (){
 		//check if its rendered
@@ -194,7 +194,7 @@
 			this.rendered = false;
 		}
 		
-	}
+	};
 
 	//Delete elements of component including listeners
 	ComponentBase.prototype.destroy = function (){
@@ -208,12 +208,12 @@
 			
 		}
 		
-	}
+	};
 
 	// Prepare element
 	ComponentBase.prototype.createDom = function (){
 		this.element = document.createElement("div");
-	}
+	};
 
 	// Returns element
 	ComponentBase.prototype.getElement = function (){
@@ -221,7 +221,7 @@
 			this.createDom();
 		}
 		return this.element;
-	}
+	};
 
 	// Renders and insert component into dom (including child)
 	ComponentBase.prototype.render = function (parrent){
@@ -250,7 +250,11 @@
 	        child.component.render(parrentOfChild);
 
 	    }
-	}
+	};
+
+	ComponentBase.prototype.addNotification = function(contentEl, duration, type) {
+
+	};
 
 	//Check if wrapper exists. If wrapper doesnt exists create general wrapper
 	ComponentBase.prototype.getWrapper = function(wrapper){
@@ -263,17 +267,17 @@
 	ComponentBase.prototype.setModel = function(model, eventType) {
 		this.model = model;
 		this.listen(eventType, model, this.onLoad);
-	}
+	};
 
 	ComponentBase.prototype.onLoad = function(data) {
 
-	}
+	};
 
 	ComponentBase.mainWrapper = "main-wrapper";
 	ComponentBase.EventType = {
 		CLICK: "click",
 		CHANGE: "change"
-	}
+	};
 
 
 
@@ -1795,6 +1799,16 @@
 	     getUserTaskData: function(model) {
 	     	var mediator = new Mediator();
 	     	mediator.loadData('tasks/user/list', {}, model);
+	     },
+
+	     getUserTaskDataCompleted: function(model) {
+	        var mediator = new Mediator();
+	        mediator.loadData('tasks/user/list/completed', {}, model);
+	     },
+
+	     getUserTaskDataNotCompleted: function(model) {
+	        var mediator = new Mediator();
+	        mediator.loadData('tasks/user/list/not-completed', {}, model);
 	     },
 
 	     updateUserTaskData: function(model, data) {
