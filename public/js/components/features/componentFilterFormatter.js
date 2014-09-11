@@ -31,16 +31,18 @@ var ComponentFilterFormatter = {
     /**
      * Function will delete items in dropdowns for which there is no items in last dropdowns
      * @param data - array of objects for dropdowns
+     * @param notDeletedDropdowns - array of indexes of dropdowns which cannot be deleted from
      * @returns {*} - data object for componentFilter
      */
-    format: function (data) {
+    format: function (data, notDeletedDropdowns) {
         var allowedIds = new Array(data.length);
+        var processed = [data.length - 1];
         for(var i = 0; i < allowedIds.length; i++){
             allowedIds[i] = {};
         }
 
         for (var i = data.length - 1; i >= 0; i--){
-            if (i !== data.length - 1) {
+            if (i !== data.length - 1 && allowedIds[i] && processed[i]) {
                 for (var j in data[i]) {
                     var dropItems = data[i][j];
                     for (var k = dropItems.length - 1; k >= 0; k--) {
@@ -65,7 +67,10 @@ var ComponentFilterFormatter = {
                         break;
                     }
                 }
-                if(!added) allowedIds[k - 1][keyArr[k - 1]] = true;
+                if(!added){
+                    allowedIds[k - 1][keyArr[k - 1]] = true;
+                    processed[k - 1] = true;
+                }
             }
         }
         return data;
@@ -92,6 +97,15 @@ var ComponentFilterFormatter = {
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
             ]);
             return res;
+        },
+        createNewTaskDropdowns : function(departments, teams, users, notBuddies){
+            var res = ComponentFilterFormatter.format([
+                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
+                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
+                ComponentFilterFormatter.transform(users, 'id_user', 'email', ['id_department', 'id_team']),
+                ComponentFilterFormatter.transform(notBuddies, 'id_user', 'email', ['id_department', 'id_team'])
+            ]);
+            return res
         }
     }
 };

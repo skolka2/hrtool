@@ -95,17 +95,18 @@ ComponentFilter.prototype._filterData = function(selected, src) {
 ComponentFilter.prototype._getSelection = function(depth) {
     var selection = '';
     var randomKey = Object.keys(this._data[depth])[0];
-    var length = randomKey === '' ? 0 : randomKey.split("-").length;
-    var oneSelected;
-    for(var i = 0; i < length; i++) {
-        oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
-        selection += oneSelected === -1 ? 'global' : oneSelected;
-        selection += '-';
+    if(randomKey) {
+        var length = randomKey === '' ? 0 : randomKey.split("-").length;
+        var oneSelected;
+        for (var i = 0; i < length; i++) {
+            oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
+            selection += oneSelected === -1 ? 'global' : oneSelected;
+            selection += '-';
+        }
+
+        if (selection.length > 0)
+            selection = selection.substring(0, selection.length - 1);
     }
-
-    if(selection.length > 0)
-        selection = selection.substring(0, selection.length - 1);
-
     return selection;
 };
 

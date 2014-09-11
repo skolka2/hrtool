@@ -57,5 +57,20 @@ hrtool.actions = {
      finishUserTask: function(model, data) {
      	var mediator = new Mediator();
      	mediator.loadData('tasks/finish', data, model);
-     }
+     },
+
+    getUsers : function(model, data){
+        var mediator = new Mediator();
+        mediator.loadData('user/get-all', data, model);
+    },
+
+    insertNewTask : function(model, data){
+        var mediator = new Mediator();
+        mediator.loadData('tasks/insert', data, model);
+    },
+
+    insertNewTemplate : function(model, data){
+        var mediator = new Mediator();
+        mediator.loadData('template/insert', data, model);
+    }
 };

@@ -1,59 +1,59 @@
 .view-wrapper {
-	border: 2px solid;
+    border: 2px solid;
 }
 
 .task-wrapper {
-	border: 2px solid #91FF6C;
-	width: 1000px;
+    border: 2px solid #91FF6C;
+    width: 1000px;
 }
 
 .task-wrapper-overflow {
-	border: 2px solid #FF4747;
-	width: 1000px;
+    border: 2px solid #FF4747;
+    width: 1000px;
 }
 
 .header-wrapper {
-	clear: none;
-	border-bottom: 2px solid;
-	height: 50px;
+    clear: none;
+    border-bottom: 2px solid;
+    height: 50px;
 }
 
 .buddy-label {
-	margin-right: 50px;
+    margin-right: 50px;
 }
 
 .time-label {
-	float: right;
-	background-color: #91FF6C;
+    float: right;
+    background-color: #91FF6C;
 }
 
 .time-label-overflow {
-	float: right;
-	background-color: #FF4747;
+    float: right;
+    background-color: #FF4747;
 }
 
 .description-wrapper {
-	height: 200px;
-	width: 30%;
-	float: left;
+    height: 200px;
+    width: 30%;
+    float: left;
 }
 
 .notes-wrapper {
-	height: 200px;
+    height: 200px;
     width: 69%;
-	border-left: 2px solid;
-	float: left;
+    border-left: 2px solid;
+    float: left;
 }
 
 .notes-text-area {
-	width: 95%;
-	height: 95%;
+    width: 95%;
+    height: 95%;
 }
 
 .footer-wrapper {
-	clear: both;
-	height: 50px;
-	border-top: 2px solid;
+    clear: both;
+    height: 50px;
+    border-top: 2px solid;
 }
 
 .buddy-checkbox {
@@ -62,23 +62,23 @@
 
 
 .checkbox {
-	background-color: red;
-	width: 20px;
-	height: 20px;
-	float: left;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    float: left;
 }
 
 .checked {
-	background-color: green;
-	width:20px;
-	height: 20px;
-	float: left;
+    background-color: green;
+    width:20px;
+    height: 20px;
+    float: left;
 }
 
 .checkbox-label {
-	width:100px;
-	height: 20px;
-	float: left;
+    width:100px;
+    height: 20px;
+    float: left;
 }
 
 .dropDownDiv {
@@ -148,47 +148,47 @@
 }
 
 .hide-comp {
-	float:left;
-	width:100%;
+    float:left;
+    width:100%;
 }
 
 .hide-tittle {
 
-	float:left;
-	width:95%;
-	height:50px;
+    float:left;
+    width:95%;
+    height:50px;
 }
 
 .hide-arrow {
-	float:left;
-	width:5%;
-	text-align:center;
-	height:50px;
-	cursor: pointer;
+    float:left;
+    width:5%;
+    text-align:center;
+    height:50px;
+    cursor: pointer;
 }
 
 .hide-arrow span {
-	float: left;
-	width: 75%;
-	font-size: 10px;
-	padding-top: 4px;
+    float: left;
+    width: 75%;
+    font-size: 10px;
+    padding-top: 4px;
 }
 
 .hide-arrow div {
-	float: left;
-	width: 25%;
+    float: left;
+    width: 25%;
 }
 .hide-head {
-	height:50px;
-	width:100%;
-	float:left;
+    height:50px;
+    width:100%;
+    float:left;
 }
 
 
 .hide-content{
-	float:left;
-	width:100%;
-	display: block;
+    float:left;
+    width:100%;
+    display: block;
 }
 .hidden {
     display: none;
@@ -204,58 +204,10 @@
     margin-right: 10%;
 }
 
-#navbar{
-    width: 100%;
-    height: auto;
-    min-height: 25px;
-    background-color: #8d3be2;
-    color: white;
-}
-
-#navbar a{
-    color: white;
-}
-
-#navbar-user{
-    float: right;
-    background-color: #8d3be2;
-}
-
-.navbar-menu-item{
-    float: none;
-    display: inline;
-}
-
-.navbar-menu{
-    float: none;
-}
-
-#navbar-name{
-    margin-right: 10px;
-}
-
-#login-button{
-    float: right;
-}
-
 .finish-task-bttn {
-	float: right;
+    float: right;
 }
 
 .save-notes-bttn {
     float: right;
-}
-
-.implicit-task div {
-    display: inline-block;
-    margin-right: 5px;
-}
-.implicit-task .head  {
-    font-weight: bold;
-}
-.implicit-task .length  .text  {
-    width: 45px;
-}
-.implicit-task .start  .text  {
-    width: 45px;
 }

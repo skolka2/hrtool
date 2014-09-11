@@ -3,7 +3,6 @@ var ComponentCheckBox = require('../components/features/componentCheckBox');
 var ComponentTaskImplicit = require('../components/features/addTask/componentTaskImplicit');
 var ComponentHide = require('../components/features/componentHide');
 var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
-var ComponentTasksTemplate = require('../components/features/addTask/componentTasksTemplate');
 var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
@@ -11,6 +10,7 @@ var ComponentListVladLaz = require('../components/componentListVladLaz');
 var ComponentTemplateList = require('../components/templateList/componentTemplateList');
 var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
+var ComponentAddTask = require('../components/addTask/componentAddTask');
 
 
 var ViewTest =  module.exports = function(){
@@ -25,22 +25,16 @@ ViewTest.prototype.render = function(){
     var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     //Neckar view___________________________________________________________________________
-    this.componentTemplateList = new ComponentTemplateListFactory.createAll();
-    var dataForImplicit = {id_task_template: 5, id_department: 2, id_team: 3, title: "title example"};
-    this.componentTaskImplicit = new ComponentTaskImplicit(dataForImplicit);
+    this.componentTemplateList = new ComponentTemplateList();
     var neckarWrapper = document.createElement('div');
+    var bodyN = document.getElementsByTagName('body')[0];
     var NWrapper = document.getElementById(this.super.mainWrapper);
     neckarWrapper.className = "neckar-wraper";
     neckarWrapper.innerHTML = "Neckar view";
-    mainWrapper.appendChild(neckarWrapper);
-    var implicitWrapper = document.createElement('div');
-    neckarWrapper.appendChild(implicitWrapper);
-    var templateWrapper = document.createElement('div');
-    neckarWrapper.appendChild(templateWrapper);
-    this.componentTaskImplicit.render(implicitWrapper);
-    this.componentTemplateList.render(templateWrapper);
+    bodyN.appendChild(neckarWrapper);
+    this.componentTemplateList.render(neckarWrapper);
 
-
+    
     //Fanda View START
     
     var fandaDiv = document.createElement('div');
@@ -73,7 +67,7 @@ ViewTest.prototype.render = function(){
 
     //Witz view___________________________________________________________________________
 
-    //this.super.prototype.render.apply(this, arguments);
+    this.super.prototype.render.apply(this, arguments);
     var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     this.component = new ComponentCheckBox("CheckBox");
@@ -123,10 +117,13 @@ ViewTest.prototype.render = function(){
 
 //Zibby:
     var zibbyDiv = document.createElement('div');
+    zibbyDiv.id = 'zibby';
     zibbyDiv.innerHTML = '<h3>Zibby div</h3>';
-    var component = new ComponentTasksTemplate();
+
+    var component = new ComponentAddTask();
+    body.insertBefore(zibbyDiv, mainWrapper);
     component.render(zibbyDiv);
-    mainWrapper.appendChild(zibbyDiv);
+    zibbyDiv.appendChild(document.createElement('br'));
 
 //Zibby END
 
