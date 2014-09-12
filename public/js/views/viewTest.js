@@ -7,11 +7,11 @@ var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
 var ComponentListVladLaz = require('../components/componentListVladLaz');
+var ComponentNotificationCenter = require('../components/features/componentNotificationCenter');
 var ComponentTemplateList = require('../components/templateList/componentTemplateList');
 var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/addTask/componentAddTask');
-
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -95,6 +95,38 @@ ViewTest.prototype.render = function(){
     component2.render(witzDiv);
     component3.render(witzDiv);
 
+    var notificationButton1 = document.createElement('button');
+    notificationButton1.innerText = "OK";
+    notificationButton1.addEventListener('click', (function(event){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = event.toString();
+        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
+    }));
+
+    witzDiv.appendChild(notificationButton1);
+
+    var notificationButton2 = document.createElement('button');
+    notificationButton2.innerText = "ERR";
+    notificationButton2.addEventListener('click', (function(event){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = event.toString();
+        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+    }));
+
+    witzDiv.appendChild(notificationButton2);
+
+    var notificationButton3 = document.createElement('button');
+    notificationButton3.innerText = "budiž";
+    notificationButton3.addEventListener('click', (function(event){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = event.toString();
+        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.neutral);
+    }));
+
+    witzDiv.appendChild(notificationButton3);
+
+
+
 
 
 
@@ -114,6 +146,7 @@ ViewTest.prototype.render = function(){
 
 	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
     b.render(viewWrapper);
+    //___________________________________________________________________________
 
 //Zibby:
     var zibbyDiv = document.createElement('div');

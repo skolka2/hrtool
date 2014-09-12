@@ -1,5 +1,6 @@
 var EventEmitter =require('../observer/ObservableComponent');
 var helper = require('../helpers/helpers');
+var ComponentNotificationCenter = require('../components/features/componentNotificationCenter');
 
 
 //Default constructor
@@ -115,7 +116,11 @@ ComponentBase.prototype.render = function (parrent){
 };
 
 ComponentBase.prototype.addNotification = function(contentEl, duration, type) {
+    ComponentBase.NotificationCenter = ComponentBase.NotificationCenter instanceof ComponentNotificationCenter ?
+        ComponentBase.NotificationCenter :
+        new ComponentNotificationCenter();
 
+    ComponentBase.NotificationCenter.addNewNotification(contentEl, duration, type);
 };
 
 //Check if wrapper exists. If wrapper doesnt exists create general wrapper
@@ -143,3 +148,6 @@ ComponentBase.EventType = {
     BLUR: "blur",
     DOMContentLoaded: "DOMContentLoaded"
 };
+
+ComponentBase.NotificationCenter = {};
+
