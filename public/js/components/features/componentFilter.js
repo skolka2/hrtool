@@ -63,19 +63,29 @@ ComponentFilter.prototype.getStatus = function () {
 };
 
 ComponentFilter.prototype._filterData = function(selected, src) {
+    var dropdown;
+    var data;
+    var selection;
+    var alreadyLoaded;
     for(var i = 0; i < this._dropdowns.length; i++) {
-        var dropdown = this._dropdowns[i];
-        var data;
-        var selection;
+        dropdown = this._dropdowns[i];
         if(src < dropdown.componentId ) {
             selection = this._getSelection(i);
-            data  = this._data[i][selection];
+            data = this._data[i][selection];
             data = data ? data : ComponentDropdown.EmptyOption;
-            dropdown.changeData(data);
-            dropdown.setSelection(ComponentDropdown.EmptyOption);
+            alreadyLoaded = data !== ComponentDropdown.EmptyOption && data.filter(function(item) {
+                return item === dropdown.selected;
+            }).length > 0;
+            if(!alreadyLoaded) {
+                dropdown.changeData(data);
+                dropdown.setSelection(ComponentDropdown.EmptyOption);
+            }
             this._status[i] = dropdown.selected;
             dropdown.setEnabled(data !== ComponentDropdown.EmptyOption);
         } else if(src === dropdown.componentId) {
+            if(this._status[i] === selected) {
+                return;
+            }
             this._status[i] = selected;
         }
     }
