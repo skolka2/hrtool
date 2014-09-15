@@ -1,6 +1,6 @@
 var ViewBase =  require('./viewBase');
 var ComponentCheckBox = require('../components/features/componentCheckBox');
-var ComponentTaskImplicit = require('../components/componentTaskImplicit');
+var ComponentTaskImplicit = require('../components/features/addTask/componentTaskImplicit');
 var ComponentHide = require('../components/features/componentHide');
 var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
 var ComponentTasksTemplate = require('../components/features/addTask/componentTasksTemplate');

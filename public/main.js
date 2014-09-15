@@ -49,14 +49,14 @@
 	__webpack_require__(4);
 	__webpack_require__(5);
 	__webpack_require__(6);
+	__webpack_require__(12);
+	__webpack_require__(13);
 	__webpack_require__(7);
 	__webpack_require__(8);
-	__webpack_require__(14);
 	__webpack_require__(9);
 	__webpack_require__(10);
 	__webpack_require__(11);
-	__webpack_require__(12);
-	__webpack_require__(13);
+	__webpack_require__(14);
 	__webpack_require__(15);
 	__webpack_require__(16);
 	__webpack_require__(17);
@@ -65,8 +65,8 @@
 	__webpack_require__(20);
 	__webpack_require__(21);
 	__webpack_require__(22);
-	__webpack_require__(23);
 	__webpack_require__(2);
+	__webpack_require__(23);
 	__webpack_require__(24);
 	__webpack_require__(25);
 	__webpack_require__(26);
@@ -79,8 +79,7 @@
 	__webpack_require__(33);
 	__webpack_require__(34);
 	__webpack_require__(35);
-	__webpack_require__(36);
-	module.exports = __webpack_require__(37);
+	module.exports = __webpack_require__(36);
 
 
 /***/ },
@@ -95,7 +94,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var app = __webpack_require__(1);
-	var Router = __webpack_require__(29);
+	var Router = __webpack_require__(28);
 	var router;
 
 	(function(){
@@ -141,8 +140,8 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter =__webpack_require__(27);
-	var helper = __webpack_require__(23);
+	var EventEmitter =__webpack_require__(26);
+	var helper = __webpack_require__(22);
 
 
 	//Default constructor
@@ -293,9 +292,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentUserTaskDetail = __webpack_require__(16);
-	var Model = __webpack_require__(26);
-	var hrtool = __webpack_require__(24);
+	var ComponentUserTaskDetail = __webpack_require__(15);
+	var Model = __webpack_require__(25);
+	var hrtool = __webpack_require__(23);
 
 	var ComponentListVladLaz = module.exports = function() {
 		ComponentBase.call(this);
@@ -436,504 +435,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(26);
-	var ComponentFilter = __webpack_require__(11);
-	var hrtool = __webpack_require__(24);
-	var helper = __webpack_require__(23);
-	var ComponentFilterFormatter = __webpack_require__(12);
-
-	var ComponentTaskImplicit =  module.exports  = function (data) {
-	    this.super = ComponentBase;
-	    this.super.call(this);
-	    this.data = data;
-	};
-	ComponentTaskImplicit.prototype = new ComponentBase();
-	ComponentTaskImplicit.prototype.constructor = ComponentTaskImplicit;
-
-	ComponentTaskImplicit.prototype.createDom = function () {
-	    var wrapper = document.createElement('div');
-	    var divsName = ComponentTaskImplicit.ListDivs;
-	    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
-	    var dataMap = this._getSelectedItem(this.data, dropDownData);
-	    this.dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);
-	    wrapper.className = "implicit-task";
-	    this.element = wrapper;
-
-	    var div = document.createElement("div");
-	    var span = document.createElement("span");
-	    var el = document.createElement('span');
-
-
-	    //create Title
-	    span.className = "head";
-	    span.innerText = "Title:";
-	    div.className = divsName.title;
-	    el.innerText = this.data.title;
-	    div.appendChild(span);
-	    div.appendChild(el);
-	    wrapper.appendChild(div);
-
-	    //Create Department and Team
-	    div = document.createElement("div");
-	    span = document.createElement("span");
-	    div.className = divsName.department_team;
-	    span.className = "head";
-	    span.innerText = "Department and Team:";
-	    div.appendChild(span);
-	    wrapper.appendChild(div);
-	    this.addChild(divsName.department_team + this.dropdown.componentId, this.dropdown, {el: div});
-	    this.dropdown.render(div);
-
-	    //create task start at
-	    div = document.createElement("div");
-	    span = document.createElement("span");
-	    div.className = divsName.task_start;
-	    el = document.createElement('input');
-	    el.type = "number";
-	    span.className = "head";
-	    span.innerText = "Task length(days):";
-	    el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
-	    el.className = divsName.task_start + " text";
-	    el.setAttribute("min", "0");
-	    el.value = "1";
-	    div.appendChild(span);
-	    div.appendChild(el);
-	    wrapper.appendChild(div);
-
-	    //create task length
-	    div = document.createElement("div");
-	    span = document.createElement("span");
-	    el = document.createElement('input');
-	    span.className = "head";
-	    div.className = divsName.task_length;
-	    el.type = "number";
-	    span.innerText = "Task length(days):";
-	    el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
-	    el.className = divsName.task_length + " text";
-	    el.setAttribute("min", "0");
-	    el.value = "1";
-	    div.appendChild(span);
-	    div.appendChild(el);
-	    wrapper.appendChild(div);
-
-	    //create save button
-	    div = document.createElement("div");
-	    div.className = divsName.route;
-	    span.className = "head";
-	    var butEl = document.createElement("button");
-	    butEl.className = "button save";
-	    butEl.innerHTML = "Save";
-	    div.appendChild(butEl);
-	    wrapper.appendChild(div);
-
-	    wrapper.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
-	};
-
-	ComponentTaskImplicit.prototype._getSelectedItem = function (data, dropDownData) {
-	    var map = {
-	        data: data,
-	        dd: JSON.parse(JSON.stringify(dropDownData)) //create copy of dropdown data, because multiple select....
-	    };
-	    if (data.id_department != null) {
-	        map.dd[0][""][this._getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "true";
-	    }/*
-	    if ((data.id_team != null) && (data.id_department == null)) {
-	        map.dd[1]["global"][this._getIdForSelected(map.dd[1]["global"], data.id_team)]['selected'] = "true";
-	    }*/
-	    if (data.id_team != null) {
-	        map.dd[1][data.id_department][this._getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "true";
-	    }
-	    return map;
-	};
-
-	ComponentTaskImplicit.prototype._getIdForSelected = function (arr, key) {
-	    for (var d = 0; d < arr.length; d++) {
-	        if (arr[d].id == key)
-	            return d
-	    }
-	    return null;
-	};
-
-	ComponentTaskImplicit.prototype.getDateNow = function(){
-	    var time = new Date().toLocaleDateString().split(".");
-	    if(time[1].length == 1)
-	        time[1] = "0" + time[1];
-	    if(time[0].length == 1)
-	        time[0] = "0" + time[0];
-	    return {
-	        "year": time[2],
-	        "month": time[1],
-	        "day": time[0],
-	        "toString": time[2] + "-" + time[1] + "-" + time[0]
-	    };
-	};
-
-	ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
-	    var target = ev.target;
-	    var rowEl;
-	    if (rowEl = helper.dom.getParentByClass(target, "implicit-task")) {
-	        var objectData = {
-	            object: target,
-	            rowEl: rowEl};
-	        if (target.classList.contains("save")) {
-	            this.handleButtonSave(objectData);
-	        }
-	        else if (target.classList.contains("title")) {
-	            this.handleEditText(objectData);
-	        }
-	        else if (target.classList.contains("length")) {
-	            this.handleEditText(objectData);
-	        }
-	        else if (target.classList.contains("dropDownItem")) {
-	            rowEl.getElementsByClassName("save").item().innerHTML = "Save";
-	        }
-	    }
-	};
-
-	ComponentTaskImplicit.prototype.handleEditText = function (data) {
-	    data.object.disabled = false;
-	    data.object.focus();
-	    data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
-	};
-
-	ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
-	    data.object.innerHTML = "Saving";
-	    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item();
-	    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item();
-
-	    if (lengthEl.value != "") {
-	        var dropStatus = this.dropdown.getStatus();
-	        var dep = dropStatus[0].id;
-	        var team = dropStatus[1].id;
-	        var saveData = {
-	            id_task_template: this.data.id_task_template,
-	            id_team: null,
-	            id_department: null,
-	            start_day:parseInt(start.value),
-	            duration: parseInt(lengthEl.value),
-	            id_department_role: helper.bulk.getData(["user","id_department_role"])
-	        };
-	        if (dep != "-1") {
-	            saveData['id_department'] = dep;
-	        }
-	        if (team != "-1") {
-	            saveData['id_team'] = team;
-	        }
-	        var saveModel = new Model(ComponentTaskImplicit.EventType.DATA_ADD);
-	        this.listen(ComponentTaskImplicit.EventType.DATA_ADD, saveModel, this.onSave.bind(this, data.object));
-	        console.log("Temporary saved co CL", saveData);
-	        hrtool.actions.saveImplicitTaskData(saveModel, saveData);
-	    }
-	    else
-	        data.object.innerHTML = "Error"; //TODO: waiting for notification center
-
-	};
-
-	ComponentTaskImplicit.prototype.onSave = function (objEl, data) {
-	    if (data.error) {
-	        objEl.disabled = false;
-	    }
-	    else {
-	        helper.dom.getParentByClass(objEl,"implicit-task").innerHTML = "Implicit task has been successful saved.";
-	    }
-	};
-
-	ComponentTaskImplicit.ListDivs = {
-	    title: "title",
-	    department_team: "department-and-team",
-	    task_start: "start",
-	    task_length: "length",
-	    route: "route"
-	};
-
-	ComponentTaskImplicit.EventType = {
-	    DATA_ADD: 'implicit/add'
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(26);
-	var ComponentFilter = __webpack_require__(11);
-	var hrtool = __webpack_require__(24);
-	var helper = __webpack_require__(23);
-
-	var ComponentTemplateList =  module.exports  = function () {
-	    this.super = ComponentBase;
-	    this.super.call(this);
-	    this.data = null;
-	    this.dropdowns = {};
-	    this.setModel(new Model(ComponentTemplateList.EventType.DATA_LOAD),ComponentTemplateList.EventType.DATA_LOAD);
-	    hrtool.actions.getTemplatesData(this.model);
-	};
-	ComponentTemplateList.prototype = new ComponentBase();
-	ComponentTemplateList.prototype.constructor = ComponentTemplateList;
-	ComponentTemplateList.prototype.createDom = function() {
-	    var wrapper = document.createElement('div');
-	    wrapper.className = "template-list";
-	    wrapper.innerHTML = "Loading... Please wait";
-	    this.element = wrapper;
-	};
-
-	ComponentTemplateList.prototype.onLoad = function (data) {
-	    this.element.innerHTML = "";
-	    this.data = data;
-	    var dropDownData = this.parseToDropdown();
-	    //Creating header titles and append to the div
-	    this.createHeader(this.getElement());
-	    //add eventlistener onClick
-	    this.getElement().addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
-	    //creating tasks
-	    for (var i = 0; i < this.data.length; i++) {
-	        var dataMap = this._getSelectedItem(data[i], dropDownData);
-	        this.addRow(dataMap);
-	    }
-	};
-
-	ComponentTemplateList.prototype.addRow = function (data) {
-
-	    var task = document.createElement("div");
-	    var id = data.data.id_task_template;
-	    var divsName = ComponentTemplateList.TemplateListDivs;
-	    task.className = "row";
-	    task.setAttribute("data-template-id", id);
-	    var dropdown = new ComponentFilter(data.dd);
-	    this.dropdowns[id] = dropdown;
-	    this.getElement().appendChild(task); //because I need addChild to exist div
-
-	    var div = document.createElement("div");
-	    var el = document.createElement('input');
-
-	    //create title input
-	    div.className = divsName.title;
-	    el.type = "text";
-	    el.className = divsName.title + " text";
-	    el.value = data.data[divsName.title ];
-	    el.disabled = true;
-	    div.appendChild(el);
-	    task.appendChild(div);
-
-	    //create description input
-	    div = document.createElement("div");
-	    el = document.createElement('input');
-	    div.className = divsName.description;
-	    el.type = "text";
-	    el.className = divsName.description + " text";
-	    el.value = data.data[divsName.description ];
-	    el.disabled = true;
-	    div.appendChild(el);
-	    task.appendChild(div);
-
-	    //create department and team
-	    div = document.createElement("div");
-	    div.className = divsName.id_department;
-	    task.appendChild(div);
-	    this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
-	    dropdown.render(div);
-
-	    //create save button
-	    div = document.createElement("div");
-	    el = document.createElement("button");
-	    div.className = divsName.route;
-	    el.className = "button save";
-	    el.innerHTML = "Save";
-	    div.appendChild(el);
-
-	    //create delete button
-	    el = document.createElement("button");
-	    el.className = "button delete";
-	    el.innerHTML = "Delete";
-	    if (data.data.implicit) {
-	        //el.disabled = true;//TODO: implement after implementation at server side will be done
-	    }
-	    div.appendChild(el);
-	    task.appendChild(div);
-
-	    return task;
-	};
-
-	ComponentTemplateList.prototype.createHeader = function (div) {
-	    var elDivHead = document.createElement("div");
-	    elDivHead.className = "template-header";
-	    for (var item in ComponentTemplateList.TemplateListDivs) {
-	        var elem = document.createElement('div');
-	        elem.className = "template-header-item";
-	        elem.innerText = ComponentTemplateList.TemplateListDivs[item];
-	        if(ComponentTemplateList.TemplateListDivs.id_department == item){
-	            elem.innerText = ComponentTemplateList.TemplateListDivs[item];
-	        }
-	        elDivHead.appendChild(elem);
-	        div.appendChild(elDivHead);
-	    }
-	};
-
-	ComponentTemplateList.prototype.parseToDropdown = function () {
-	//Departments dropdown:
-	    var departments = this.helper.bulk.getData(['departments']);
-	    var departmentsData = {};
-	    departmentsData[''] = [];
-	    var item = {};
-	    for (var i in departments) {
-	        var item = {
-	            value: departments[i].title,
-	            id: departments[i].id_department
-	        };
-	        departmentsData[''].push(item);
-	    }
-	//Teams dropdown:
-	    var teams = this.helper.bulk.getData(['teams']);
-	    var map = this.helper.bulk.getData(['map']);
-	    var teamsData = {};
-	    //teamsData["global"] = [];
-	    for (var i in map) {
-	        for (var j = 0; j < map[i].length; j++) {     //for all teams in department with id === i
-	            item = {
-	                value: teams[map[i][j]].title,
-	                id: teams[map[i][j]].id_team
-	            };
-	            teamsData[i] = teamsData[i] || [];
-	            teamsData[i].push(item);
-	            //teamsData["global"].push(item)
-	        }
-	    }
-	//Tasks dropdown:
-	    return [departmentsData, teamsData];
-	};
-
-	ComponentTemplateList.prototype._getSelectedItem = function (data, dropDownData) {
-	    var map = {
-	        data: data,
-	        dd: JSON.parse(JSON.stringify(dropDownData)) //create copy of dropdown data, because multiple select....
-	    };
-	    if (data.id_department != null) {
-	        map.dd[0][""][this._getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "true";
-	    }
-	    /*if ((data.id_team != null) && (data.id_department == null)) {
-	        map.dd[1]["global"][this._getIdForSelected(map.dd[1]["global"], data.id_team)]['selected'] = "true";
-	    }*/
-	    if (data.id_team != null) {
-	        map.dd[1][data.id_department][this._getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "true";
-	    }
-	    return map;
-	};
-
-	ComponentTemplateList.prototype._getIdForSelected = function (arr, key) {
-	    for (var d = 0; d < arr.length; d++) {
-	        if (arr[d].id == key)
-	            return d
-	    }
-	    return null;
-	};
-
-	ComponentTemplateList.prototype.handleOnClick = function (ev) {
-	    var target = ev.target;
-	    var rowEl;
-	    if (rowEl = helper.dom.getParentByClass(target, "row")) {
-	        var id = rowEl.getAttribute("data-template-id");
-	        var objectData = {
-	            object: target,
-	            id: id,
-	            rowEl: rowEl};
-	        if (target.classList.contains("delete")) {
-	            this.handleButtonDelete(objectData);
-	        }
-	        else if (target.classList.contains("save")) {
-	            this.handleButtonSave(objectData);
-	        }
-	        else if (target.classList.contains("title")) {
-	            this.handleEditText(objectData);
-	        }
-	        else if (target.classList.contains("description")) {
-	            this.handleEditText(objectData);
-	        }
-	        else if (target.classList.contains("dropDownItem")) {
-	            rowEl.getElementsByClassName("save").item().innerHTML = "Save";
-	        }
-	    }
-	};
-
-	ComponentTemplateList.prototype.handleEditText = function (data) {
-	    data.object.disabled = false;
-	    data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
-	};
-
-	ComponentTemplateList.prototype.handleButtonSave = function (data) {
-	    data.object.innerHTML = "Saving";
-	    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item();
-	    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item();
-	    var dropdownStatus = this.dropdowns[data.id].getStatus();
-	    titleEl.disabled = true;
-	    descEl.disabled = true;
-	    var dep = dropdownStatus[0].id;
-	    var team = dropdownStatus[1].id;
-	    var saveData = {
-	        title: titleEl.value,
-	        id_task_template: parseInt(data.id),
-	        description: descEl.value,
-	        id_team: null,
-	        id_department: null
-	    };
-	    if (dep != "-1") {
-	        saveData['id_department'] = dep;
-	    }
-	    if (team != "-1") {
-	        saveData['id_team'] = team;
-	    }
-	    var saveModel = new Model(ComponentTemplateList.EventType.DATA_SAVE);
-	    this.listen(ComponentTemplateList.EventType.DATA_SAVE, saveModel, this.onSave.bind(this, data.object));
-	    hrtool.actions.saveDefaultTaskData(saveModel, saveData);
-	};
-
-	ComponentTemplateList.prototype.handleButtonDelete = function (data) {
-	    var deleteModel = new Model(ComponentTemplateList.EventType.DATA_DELETE);
-	    data.object.disabled = true;
-	    this.listen(ComponentTemplateList.EventType.DATA_DELETE, deleteModel, this.onDelete.bind(this, data.object));
-	    hrtool.actions.deleteDefaultTaskData(deleteModel, {id_task_template: parseInt(data.id)});
-	};
-
-	ComponentTemplateList.prototype.onSave = function (objEl, data) {
-	    if (data.error) {
-	        objEl.disabled = false;
-	    }
-	    else {
-	        objEl.innerHTML = "Saved";
-	    }
-	};
-
-	ComponentTemplateList.prototype.onDelete = function (objEl, data) { //TODO: better way to remove liseners.
-	    if (data.error) {
-	        objEl.disabled = false;
-	    }
-	    else {
-	        document.body.removeEventListener(ComponentBase.EventType.CLICK, this.onDelete, false);
-	        this.dropdowns[data[0].id_task_template].destroy();
-	        var rowEl = helper.dom.getParentByClass(objEl, "row");
-	        rowEl.innerHTML = "";
-	    }
-	};
-
-	ComponentTemplateList.TemplateListDivs = {
-	    title: "title",
-	    description: "description",
-	    id_department: "department-and-team",
-	    route: "route"
-	};
-
-	ComponentTemplateList.EventType = {
-	    DATA_LOAD: 'template/get-all',
-	    DATA_SAVE: 'template/update',
-	    DATA_DELETE: 'template/delete'
-	};
-
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(26);
+	var Model = __webpack_require__(25);
 
 	var ComponentTest =  module.exports = function () {
 	    this.super = ComponentBase;
@@ -968,7 +470,7 @@
 	}
 
 /***/ },
-/* 9 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -1051,7 +553,7 @@
 	}
 
 /***/ },
-/* 10 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -1254,12 +756,12 @@
 	};
 
 /***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentDropdown = __webpack_require__(10);
-	var helper = __webpack_require__(23);
+	var ComponentDropdown = __webpack_require__(8);
+	var helper = __webpack_require__(22);
 
 	var ComponentFilter  =  module.exports =  function(data, keys) {
 	    ComponentBase.prototype.constructor.call(this);
@@ -1322,19 +824,29 @@
 	};
 
 	ComponentFilter.prototype._filterData = function(selected, src) {
+	    var dropdown;
+	    var data;
+	    var selection;
+	    var alreadyLoaded;
 	    for(var i = 0; i < this._dropdowns.length; i++) {
-	        var dropdown = this._dropdowns[i];
-	        var data;
-	        var selection;
+	        dropdown = this._dropdowns[i];
 	        if(src < dropdown.componentId ) {
 	            selection = this._getSelection(i);
-	            data  = this._data[i][selection];
+	            data = this._data[i][selection];
 	            data = data ? data : ComponentDropdown.EmptyOption;
-	            dropdown.changeData(data);
-	            dropdown.setSelection(ComponentDropdown.EmptyOption);
+	            alreadyLoaded = data !== ComponentDropdown.EmptyOption && data.filter(function(item) {
+	                return item === dropdown.selected;
+	            }).length > 0;
+	            if(!alreadyLoaded) {
+	                dropdown.changeData(data);
+	                dropdown.setSelection(ComponentDropdown.EmptyOption);
+	            }
 	            this._status[i] = dropdown.selected;
 	            dropdown.setEnabled(data !== ComponentDropdown.EmptyOption);
 	        } else if(src === dropdown.componentId) {
+	            if(this._status[i] === selected) {
+	                return;
+	            }
 	            this._status[i] = selected;
 	        }
 	    }
@@ -1381,7 +893,7 @@
 
 
 /***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentFilterFormatter = {
@@ -1457,6 +969,13 @@
 	        return data;
 	    },
 	    factory : {
+	        /**
+	         * Function will create data for componentFilter using functions transform and format
+	         * @param departments - data for first dropdown
+	         * @param teams - data for second dropdown
+	         * @param templates - data for third dropdown
+	         * @returns {*} - data for componentFilter
+	         */
 	        createTemplateDropdowns : function(departments, teams, templates){
 	            var res = ComponentFilterFormatter.format([
 	                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
@@ -1478,7 +997,7 @@
 	module.exports = ComponentFilterFormatter;
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -1604,14 +1123,233 @@
 	}
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentFilterFormatter = __webpack_require__(12);
-	var ComponentFilter = __webpack_require__(11);
-	var hrtool = __webpack_require__(24);
-	var Model = __webpack_require__(26);
+	var Model = __webpack_require__(25);
+	var ComponentFilter = __webpack_require__(9);
+	var hrtool = __webpack_require__(23);
+	var helper = __webpack_require__(22);
+	var ComponentFilterFormatter = __webpack_require__(10);
+
+	var ComponentTaskImplicit =  module.exports  = function (data) {
+	    this.super = ComponentBase;
+	    this.super.call(this);
+	    this.data = data;
+	};
+	ComponentTaskImplicit.prototype = new ComponentBase();
+	ComponentTaskImplicit.prototype.constructor = ComponentTaskImplicit;
+
+	ComponentTaskImplicit.prototype.createDom = function () {
+	    var wrapper = document.createElement('div');
+	    var divsName = ComponentTaskImplicit.ListDivs;
+	    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
+	    var dataMap = this._getSelectedItem(this.data, dropDownData);
+	    this.dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);
+	    wrapper.className = "implicit-task";
+	    this.element = wrapper;
+
+	    var div = document.createElement("div");
+	    var span = document.createElement("span");
+	    var el = document.createElement('span');
+
+
+	    //create Title
+	    span.className = "head";
+	    span.innerText = "Title:";
+	    div.className = divsName.title;
+	    el.innerText = this.data.title;
+	    div.appendChild(span);
+	    div.appendChild(el);
+	    wrapper.appendChild(div);
+
+	    //Create Department and Team
+	    div = document.createElement("div");
+	    span = document.createElement("span");
+	    div.className = divsName.department_team;
+	    span.className = "head";
+	    span.innerText = "Department and Team:";
+	    div.appendChild(span);
+	    wrapper.appendChild(div);
+	    this.addChild(divsName.department_team + this.dropdown.componentId, this.dropdown, {el: div});
+	    this.dropdown.render(div);
+
+	    //create task start at
+	    div = document.createElement("div");
+	    span = document.createElement("span");
+	    div.className = divsName.task_start;
+	    el = document.createElement('input');
+	    el.type = "number";
+	    span.className = "head";
+	    span.innerText = "Task length(days):";
+	    el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
+	    el.className = divsName.task_start + " text";
+	    el.setAttribute("min", "0");
+	    el.value = "1";
+	    div.appendChild(span);
+	    div.appendChild(el);
+	    wrapper.appendChild(div);
+
+	    //create task length
+	    div = document.createElement("div");
+	    span = document.createElement("span");
+	    el = document.createElement('input');
+	    span.className = "head";
+	    div.className = divsName.task_length;
+	    el.type = "number";
+	    span.innerText = "Task length(days):";
+	    el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
+	    el.className = divsName.task_length + " text";
+	    el.setAttribute("min", "0");
+	    el.value = "1";
+	    div.appendChild(span);
+	    div.appendChild(el);
+	    wrapper.appendChild(div);
+
+	    //create save button
+	    div = document.createElement("div");
+	    div.className = divsName.route;
+	    span.className = "head";
+	    var butEl = document.createElement("button");
+	    butEl.className = "button save";
+	    butEl.innerHTML = "Save";
+	    div.appendChild(butEl);
+	    wrapper.appendChild(div);
+
+	    wrapper.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
+	};
+
+	ComponentTaskImplicit.prototype._getSelectedItem = function (data, dropDownData) {
+	    var map = {
+	        data: data,
+	        dd: JSON.parse(JSON.stringify(dropDownData)) //create copy of dropdown data, because multiple select....
+	    };
+	    if (data.id_department != null) {
+	        map.dd[0][""][this._getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "true";
+	    }/*
+	    if ((data.id_team != null) && (data.id_department == null)) {
+	        map.dd[1]["global"][this._getIdForSelected(map.dd[1]["global"], data.id_team)]['selected'] = "true";
+	    }*/
+	    if (data.id_team != null) {
+	        map.dd[1][data.id_department][this._getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "true";
+	    }
+	    return map;
+	};
+
+	ComponentTaskImplicit.prototype._getIdForSelected = function (arr, key) {
+	    for (var d = 0; d < arr.length; d++) {
+	        if (arr[d].id == key)
+	            return d
+	    }
+	    return null;
+	};
+
+	ComponentTaskImplicit.prototype.getDateNow = function(){
+	    var time = new Date().toLocaleDateString().split(".");
+	    if(time[1].length == 1)
+	        time[1] = "0" + time[1];
+	    if(time[0].length == 1)
+	        time[0] = "0" + time[0];
+	    return {
+	        "year": time[2],
+	        "month": time[1],
+	        "day": time[0],
+	        "toString": time[2] + "-" + time[1] + "-" + time[0]
+	    };
+	};
+
+	ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
+	    var target = ev.target;
+	    var rowEl;
+	    if (rowEl = helper.dom.getParentByClass(target, "implicit-task")) {
+	        var objectData = {
+	            object: target,
+	            rowEl: rowEl};
+	        if (target.classList.contains("save")) {
+	            this.handleButtonSave(objectData);
+	        }
+	        else if (target.classList.contains("title")) {
+	            this.handleEditText(objectData);
+	        }
+	        else if (target.classList.contains("length")) {
+	            this.handleEditText(objectData);
+	        }
+	        else if (target.classList.contains("dropDownItem")) {
+	            rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+	        }
+	    }
+	};
+
+	ComponentTaskImplicit.prototype.handleEditText = function (data) {
+	    data.object.disabled = false;
+	    data.object.focus();
+	    data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+	};
+
+	ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
+	    data.object.innerHTML = "Saving";
+	    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item();
+	    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item();
+
+	    if (lengthEl.value != "") {
+	        var dropStatus = this.dropdown.getStatus();
+	        var dep = dropStatus["department"].id;
+	        var team = dropStatus["teams"].id;
+	        var saveData = {
+	            id_task_template: this.data.id_task_template,
+	            id_team: null,
+	            id_department: null,
+	            start_day:parseInt(start.value),
+	            duration: parseInt(lengthEl.value),
+	            id_department_role: helper.bulk.getData(["user","id_department_role"])
+	        };
+	        if (dep != "-1") {
+	            saveData['id_department'] = dep;
+	        }
+	        if (team != "-1") {
+	            saveData['id_team'] = team;
+	        }
+	        var saveModel = new Model(ComponentTaskImplicit.EventType.DATA_ADD);
+	        this.listen(ComponentTaskImplicit.EventType.DATA_ADD, saveModel, this.onSave.bind(this, data.object));
+	        console.log("Temporary saved co CL", saveData);
+	        hrtool.actions.saveImplicitTaskData(saveModel, saveData);
+	    }
+	    else
+	        data.object.innerHTML = "Error"; //TODO: waiting for notification center
+
+	};
+
+	ComponentTaskImplicit.prototype.onSave = function (objEl, data) {
+	    if (data.error) {
+	        objEl.disabled = false;
+	    }
+	    else {
+	        helper.dom.getParentByClass(objEl,"implicit-task").innerHTML = "Implicit task has been successfully Saved.";
+	    }
+	};
+
+	ComponentTaskImplicit.ListDivs = {
+	    title: "title",
+	    department_team: "department-and-team",
+	    task_start: "start",
+	    task_length: "length",
+	    route: "route"
+	};
+
+	ComponentTaskImplicit.EventType = {
+	    DATA_ADD: 'implicit/add'
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var ComponentBase = __webpack_require__(3);
+	var ComponentFilterFormatter = __webpack_require__(10);
+	var ComponentFilter = __webpack_require__(9);
+	var hrtool = __webpack_require__(23);
+	var Model = __webpack_require__(25);
 
 	var ComponentTasksTemplate = function() {
 	    ComponentBase.prototype.constructor.call(this);
@@ -1676,7 +1414,7 @@
 	module.exports = ComponentTasksTemplate;
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
@@ -1762,13 +1500,13 @@
 	}
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentBaseTaskDetail = __webpack_require__(15);
-	var Model = __webpack_require__(26);
-	var hrtool = __webpack_require__(24);
+	var ComponentBaseTaskDetail = __webpack_require__(14);
+	var Model = __webpack_require__(25);
+	var hrtool = __webpack_require__(23);
 
 	/*
 	Object, which contains HTML element for user task detail and other properties and functions inherrited from ComponentTaskDetail object.
@@ -1947,11 +1685,11 @@
 	ComponentUserTaskDetail.EventType = {DATA_UPDATE: 'tasks/update', TASK_FINISH: 'tasks/finish'};
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentBaseTaskDetail = __webpack_require__(15);
+	var ComponentBaseTaskDetail = __webpack_require__(14);
 
 	var ComponentBuddyTaskList = module.exports = function() {
 		ComponentBase.call(this);
@@ -2001,12 +1739,12 @@
 	}
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ComponentBuddyTaskList = __webpack_require__(17);
-	var Model = __webpack_require__(26);
-	var hrtool = __webpack_require__(24);
+	var ComponentBuddyTaskList = __webpack_require__(16);
+	var Model = __webpack_require__(25);
+	var hrtool = __webpack_require__(23);
 	var ComponentBuddyTaskListFactory = module.exports = {
 
 		createCompleted: function() {
@@ -2035,12 +1773,12 @@
 	}
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var ComponentBuddyTaskListFactory = __webpack_require__(18);
-	var ComponentHide = __webpack_require__(13);
+	var ComponentBuddyTaskListFactory = __webpack_require__(17);
+	var ComponentHide = __webpack_require__(11);
 
 	var ComponentBuddyTasksListsInView  = module.exports = function() {
 		ComponentBase.call(this);
@@ -2083,14 +1821,15 @@
 	}
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var ComponentBase = __webpack_require__(3);
-	var Model = __webpack_require__(26);
-	var ComponentFilter = __webpack_require__(11);
-	var helper = __webpack_require__(23);
-	var ComponentFilterFormatter = __webpack_require__(12);
+	var Model = __webpack_require__(25);
+	var ComponentFilter = __webpack_require__(9);
+	var helper = __webpack_require__(22);
+	var ComponentFilterFormatter = __webpack_require__(10);
+	var hrtool = __webpack_require__(23);
 
 	var ComponentTemplateList =  module.exports  = function () {
 	    this.super = ComponentBase;
@@ -2260,11 +1999,11 @@
 	    data.object.innerHTML = "Saving";
 	    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item();
 	    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item();
-	    var dropdownStatus = this.dropdowns[data.id].getStatus();
+	    var dropStatus = this.dropdowns[data.id].getStatus();
 	    titleEl.disabled = true;
 	    descEl.disabled = true;
-	    var dep = dropdownStatus[0].id;
-	    var team = dropdownStatus[1].id;
+	    var dep = dropStatus["department"].id;
+	    var team = dropStatus["teams"].id;
 	    var saveData = {
 	        title: titleEl.value,
 	        id_task_template: parseInt(data.id),
@@ -2326,12 +2065,12 @@
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ComponentTemplateList = __webpack_require__(20);
-	var Model = __webpack_require__(26);
-	var hrtool = __webpack_require__(24);
+	var ComponentTemplateList = __webpack_require__(19);
+	var Model = __webpack_require__(25);
+	var hrtool = __webpack_require__(23);
 	var ComponentTemplateListFactory = module.exports = {
 	    createAll: function() {
 	        var componentTemplateList = new ComponentTemplateList();
@@ -2342,19 +2081,23 @@
 	};
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Const = module.exports  = 
 	{
-		"develop": true
-	}
+		"develop": true,
+	    "user": 1,
+	    "Team_manager": 2,
+	    "Administrator": 3
+	};
+
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Const = __webpack_require__(22);
+	var Const = __webpack_require__(21);
 	var app = __webpack_require__(1);
 
 	//helper containing formating and other functions
@@ -2459,10 +2202,10 @@
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Mediator = __webpack_require__(25);
+	var Mediator = __webpack_require__(24);
 
 	var hrtool = module.exports = hrtool || {}
 
@@ -2525,7 +2268,7 @@
 	};
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -2587,10 +2330,10 @@
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter =__webpack_require__(27);
+	var EventEmitter =__webpack_require__(26);
 	var Model =   module.exports = function(eventType) {
 	    EventEmitter.call(this);
 	    this.super = EventEmitter;
@@ -2616,10 +2359,10 @@
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Observer = __webpack_require__(28);
+	var Observer = __webpack_require__(27);
 
 	/**
 	 * Constructor of Observable component: creates new component
@@ -2686,7 +2429,7 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2791,11 +2534,11 @@
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var RouterConfig = __webpack_require__(30);
-	var ViewBase = __webpack_require__(31);
+	var RouterConfig = __webpack_require__(29);
+	var ViewBase = __webpack_require__(30);
 	var Router = module.exports = function () {
 	}
 
@@ -2854,15 +2597,15 @@
 
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewHome = __webpack_require__(34);
-	var ViewDepartmentAdmin = __webpack_require__(33);
-	var ViewPeopleAdmin = __webpack_require__(35);
-	var ViewTaskAdmin = __webpack_require__(36);
-	var ViewTest =__webpack_require__(37);
-	var ViewDefault =__webpack_require__(32);
+	var ViewHome = __webpack_require__(33);
+	var ViewDepartmentAdmin = __webpack_require__(32);
+	var ViewPeopleAdmin = __webpack_require__(34);
+	var ViewTaskAdmin = __webpack_require__(35);
+	var ViewTest =__webpack_require__(36);
+	var ViewDefault =__webpack_require__(31);
 
 	var RouterConfig = module.exports = function () { }
 
@@ -2890,11 +2633,11 @@
 	}
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var EventEmitter = __webpack_require__(27);
-	var helper = __webpack_require__(23);
+	var EventEmitter = __webpack_require__(26);
+	var helper = __webpack_require__(22);
 	var ComponentNavBar = __webpack_require__(5);
 
 	var ViewBase = module.exports =	function(){
@@ -2930,10 +2673,10 @@
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
+	var ViewBase =  __webpack_require__(30);
 
 	var ViewDefault =  module.exports = function(){
 		ViewBase.call(this,null);
@@ -2952,10 +2695,10 @@
 	};
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
+	var ViewBase =  __webpack_require__(30);
 
 	var ViewDepartmentAdmin =  module.exports = function() {
 		ViewBase.call(this);
@@ -2978,16 +2721,17 @@
 	}
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
-	var ComponentBuddyTasksListsInView = __webpack_require__(19);
+	var ViewBase =  __webpack_require__(30);
+	var ComponentBuddyTasksListsInView = __webpack_require__(18);
+	var Const = __webpack_require__(21);
+	var helper = __webpack_require__(22);
 
 	var ViewHome = module.exports =  function() {
 		ViewBase.call(this);
 		this.super = ViewBase;
-
 		this.buddyTaskLists = new ComponentBuddyTasksListsInView();
 	}
 
@@ -2998,21 +2742,28 @@
 
 		this.super.prototype.render.apply(this, arguments);
 		var mainWrapper = document.getElementById(this.super.mainWrapper);
-
 		var viewWrapper = document.createElement('div');
+	    var userRole = helper.bulk.getData(["user", "id_user_role"]);
 		viewWrapper.className = "view-wraper";
 		viewWrapper.innerHTML = "Home View";
 
-		this.buddyTaskLists.render(viewWrapper);
+	    this.buddyTaskLists.render(viewWrapper);
 
-		mainWrapper.appendChild(viewWrapper);
-	}
+	    //TODO: tasklist
+	    if(userRole == Const.Team_manager || userRole == Const.Administrator)
+	    {
+	        //TODO: manager tasklist
+	    }
+
+	    mainWrapper.appendChild(viewWrapper);
+	};
+
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
+	var ViewBase =  __webpack_require__(30);
 
 	var ViewPeopleAdmin = module.exports = function() {
 		ViewBase.call(this);
@@ -3035,10 +2786,10 @@
 	}
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
+	var ViewBase =  __webpack_require__(30);
 
 	var ViewTaskAdmin =  module.exports = function() {
 		ViewBase.call(this);
@@ -3061,22 +2812,22 @@
 	}
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ViewBase =  __webpack_require__(31);
-	var ComponentCheckBox = __webpack_require__(9);
-	var ComponentTaskImplicit = __webpack_require__(6);
-	var ComponentHide = __webpack_require__(13);
-	var ComponentBuddyTasksListsInView = __webpack_require__(19);
-	var ComponentTasksTemplate = __webpack_require__(14);
-	var helper = __webpack_require__(23);
-	var ComponentFilter = __webpack_require__(11);
-	var Model = __webpack_require__(26);
+	var ViewBase =  __webpack_require__(30);
+	var ComponentCheckBox = __webpack_require__(7);
+	var ComponentTaskImplicit = __webpack_require__(12);
+	var ComponentHide = __webpack_require__(11);
+	var ComponentBuddyTasksListsInView = __webpack_require__(18);
+	var ComponentTasksTemplate = __webpack_require__(13);
+	var helper = __webpack_require__(22);
+	var ComponentFilter = __webpack_require__(9);
+	var Model = __webpack_require__(25);
 	var ComponentListVladLaz = __webpack_require__(4);
-	var ComponentTemplateList = __webpack_require__(20);
-	var ComponentTemplateListFactory = __webpack_require__(21);
-	var hrtool = __webpack_require__(24);
+	var ComponentTemplateList = __webpack_require__(19);
+	var ComponentTemplateListFactory = __webpack_require__(20);
+	var hrtool = __webpack_require__(23);
 
 	var ViewTest =  module.exports = function(){
 	    ViewBase.call(this,null);
@@ -3158,8 +2909,13 @@
 	        {'1': [{value: "svete", id: 1}, {value: "lidi", id: 2}], '2': [{value: "rano", id: 3}, {value: "pivo", id: 4}], '3': [{value: "pratchett", id: 5}]},
 	        {'global-global': [{value: 'default1', id: 20}], '2-3': [{value:"lidi"}]}]);
 
+	    var component3 = new ComponentFilter([{'': [{value: "ahoj", id: 1},{value:"dobre", id: 2},{value: "terry", id: 3}]},
+	        {'1': [{value: "svete", id: 1}, {value: "lidi", id: 2}], '2': [{value: "rano", id: 3}, {value: "pivo", id: 4}], '3': [{value: "pratchett", id: 5}]},
+	        {'global': [{value: 'default1', id: 20}], '2': [{value:"lidi"}]}]);
+
 	    component.render(witzDiv);
 	    component2.render(witzDiv);
+	    component3.render(witzDiv);
 
 
 

@@ -3,6 +3,7 @@ var Model = require('../../models/model');
 var ComponentFilter = require('./../features/componentFilter');
 var helper = require('../../helpers/helpers');
 var ComponentFilterFormatter = require('./../features/componentFilterFormatter');
+var hrtool = require('../../models/actions');
 
 var ComponentTemplateList =  module.exports  = function () {
     this.super = ComponentBase;
@@ -172,11 +173,11 @@ ComponentTemplateList.prototype.handleButtonSave = function (data) {
     data.object.innerHTML = "Saving";
     var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item();
     var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item();
-    var dropdownStatus = this.dropdowns[data.id].getStatus();
+    var dropStatus = this.dropdowns[data.id].getStatus();
     titleEl.disabled = true;
     descEl.disabled = true;
-    var dep = dropdownStatus[0].id;
-    var team = dropdownStatus[1].id;
+    var dep = dropStatus["department"].id;
+    var team = dropStatus["teams"].id;
     var saveData = {
         title: titleEl.value,
         id_task_template: parseInt(data.id),
