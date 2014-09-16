@@ -12,6 +12,7 @@ var ComponentTemplateList = require('../components/templateList/componentTemplat
 var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
+var ComponentDropdown = require('../components/features/componentDropdown');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -173,8 +174,20 @@ ViewTest.prototype.render = function(){
     titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
     divVladLaz.appendChild(titleVladLaz);
 
+    var listLabel = document.createElement("h3");
+    listLabel.innerText = "Showcase of userTaskDetail components:";
+    divVladLaz.appendChild(listLabel);
+
     var list = new ComponentListVladLaz();
     list.render(divVladLaz);
+
+    var dropLabel = document.createElement("h3");
+    dropLabel.innerText = "Showcase of amazing inputable dropdown... behold!";
+    divVladLaz.appendChild(dropLabel);
+
+    var myDropData = [{value: "Lukáš", id: 1}, {value: "Vláďa", id: 2}, {value: "Franta", id: 3}, {value: "Marek", id: 4}, {value: "Žluťoučký Koníček", id: 5}];
+    var myDrop = new ComponentDropdown(myDropData, true);
+    myDrop.render(divVladLaz);
 
     mainWrapper.appendChild(divVladLaz);
     //LAZ END

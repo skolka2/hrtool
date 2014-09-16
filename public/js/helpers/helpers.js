@@ -18,6 +18,24 @@ var helper = module.exports = {
 		getDate: function(date) {
 			var dateFormated = date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
 			return dateFormated;
+		},
+
+		getUniversalString: function(str) {
+			var specChars = "áäčďéěíĺľňóô öŕšťúů üýřžÁÄČĎÉĚÍĹĽŇÓÔ ÖŔŠŤÚŮ ÜÝŘŽ";
+			var univChars = "aacdeeillnoo orstuu uyrzAACDEEILLNOO ORSTUU UYRZ";
+			
+			output = "";
+
+			for(var i = 0; i < str.length; i++) {
+				if (specChars.indexOf(str.charAt(i)) != -1) {
+					output += univChars.charAt(specChars.indexOf(str.charAt(i)));
+				}
+				else {
+					output += str.charAt(i);
+				}
+			}
+
+			return output; 
 		}
 	},
 

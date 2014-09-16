@@ -1,4 +1,5 @@
 var ComponentBase = require('../componentBase');
+var helper = require('../../helpers/helpers');
 /**
  * DropDown class: creates clickable span contaning selected item and
  * a list (ul - with visibility set on 'hidden' by default) of selectable items.
@@ -9,11 +10,18 @@ var ComponentBase = require('../componentBase');
  * @param {object} data
  * @returns {ComponentDropdown}
  */
-var ComponentDropdown = module.exports = function(data) {
+var ComponentDropdown = module.exports = function(data, useSearch) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
     this.selected = "";
     this._enabled = true;
+
+    this.useSearch = false;
+    this.searchEl = null;
+
+    if(useSearch != null) {
+        this.useSearch = useSearch;
+    }
 
     this._map = [];
 
@@ -78,6 +86,17 @@ ComponentDropdown.prototype._handleListOpen = function () {
 ComponentDropdown.prototype._fillWithData = function(data) {
     this._map = [];
 
+    if(this.useSearch) {
+        var userInput = document.createElement('input');
+        userInput.setAttribute("type","text");
+        userInput.placeholder = "Search:";
+        userInput.className = "dropDownItem userInput";
+
+        this._listEl.appendChild(userInput);
+        this.searchEl = userInput;
+        this.searchEl.addEventListener("keyup", this.handleSearch.bind(this));
+    }
+
     if(data === ComponentDropdown.EmptyOption)
         this.setEnabled(false);
     var li = document.createElement('li');
@@ -86,7 +105,8 @@ ComponentDropdown.prototype._fillWithData = function(data) {
     var empty = ComponentDropdown.EmptyOption;
     this._map.push({
         el: li,
-        value: empty
+        value: empty,
+        searchValue: empty.value
     });
 
     var text = document.createTextNode("");
@@ -100,7 +120,8 @@ ComponentDropdown.prototype._fillWithData = function(data) {
         li.className = 'dropDownItem';
         this._map.push({
             el: li,
-            value: data[i]
+            value: data[i],
+            searchValue: helper.format.getUniversalString(data[i].value).toLowerCase().replace(/\s/g, "")
         });
 
         var text = document.createTextNode(data[i].value);
@@ -191,6 +212,23 @@ ComponentDropdown.prototype.setEnabled = function(enabled) {
  */
 ComponentDropdown.prototype.getIsEnabled = function() {
     return this._enabled;
+};
+
+/**
+ * Function that handles search after changing input from user
+ */ 
+ComponentDropdown.prototype.handleSearch = function() {
+    for(var i = 0; i < this._map.length; i++) {
+        var stringFromMap = this._map[i].searchValue;
+        var stringFromInput = helper.format.getUniversalString(this.searchEl.value).toLowerCase().replace(/\s/g, "");
+
+        if(stringFromMap.indexOf(stringFromInput) == -1) {
+            this._map[i].el.style.display = "none";
+        }
+        else {
+            this._map[i].el.style.display = "list-item";
+        }
+    }
 };
 
 ComponentDropdown.EmptyOption = {
