@@ -127,6 +127,12 @@ ComponentFilter.prototype.unselectAll = function() {
     this._filterData(ComponentDropdown.EmptyOption, firstDropdown.componentId);
 };
 
+ComponentFilter.prototype.setActive = function(active) {
+    for(var i = 0; i < this._dropdowns.length; i++) {
+        this._dropdowns[i].setEnabled(active);
+    }
+};
+
 ComponentFilter.EventType = {
     UPDATED: 'new_selection'
 };

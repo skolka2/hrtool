@@ -69,6 +69,7 @@ ComponentAddTaskNewTask.prototype.createDom = function() {
     var teams = this.helper.bulk.getData(['teams']);
     var data = ComponentFilterFormatter.factory.createTeamDropdowns(departments, teams);
     this._filter = new ComponentFilter(data, ['department', 'team']);
+    this._filter.setActive(false);
     this.element.appendChild(this._selectorDiv);
     this.addChild("filter_" + this._filter.componentId, this._filter, {el: this._selectorDiv});
 
@@ -89,5 +90,6 @@ ComponentAddTaskNewTask.prototype.getStatus = function() {
 };
 
 ComponentAddTaskNewTask.prototype.onChange = function(data) {
+    this._filter.setActive(data);
     this.fire(ComponentBase.EventType.CHANGE, this.getStatus());
 };
