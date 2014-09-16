@@ -22,20 +22,26 @@ ViewTest.prototype = new ViewBase();
 ViewTest.prototype.constructor = ViewTest;
 
 ViewTest.prototype.render = function(){
+    this.super.prototype.render.apply(this, arguments);
     var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     //Neckar view___________________________________________________________________________
     this.componentTemplateList = new ComponentTemplateListFactory.createAll();
+    var dataForImplicit = {id_task_template: 5, id_department: 2, id_team: 3, title: "title example"};
+    this.componentTaskImplicit = new ComponentTaskImplicit(dataForImplicit);
     var neckarWrapper = document.createElement('div');
-    var bodyN = document.getElementsByTagName('body')[0];
-    var NWrapper = document.getElementById(this.super.mainWrapper);
     neckarWrapper.className = "neckar-wraper";
     neckarWrapper.innerHTML = "Neckar view";
-    bodyN.appendChild(neckarWrapper);
-    this.componentTemplateList.render(neckarWrapper);
+    mainWrapper.appendChild(neckarWrapper);
+    var implicitWrapper = document.createElement('div');
+    neckarWrapper.appendChild(implicitWrapper);
+    var templateWrapper = document.createElement('div');
+    neckarWrapper.appendChild(templateWrapper);
+    this.componentTaskImplicit.render(implicitWrapper);
+    this.componentTemplateList.render(templateWrapper);
 
-    
-    //Fanda View START
+
+//Fanda View START
     
     var fandaDiv = document.createElement('div');
     fandaDiv.id = "fanda-div";
@@ -67,8 +73,6 @@ ViewTest.prototype.render = function(){
 
     //Witz view___________________________________________________________________________
 
-    this.super.prototype.render.apply(this, arguments);
-    var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     this.component = new ComponentCheckBox("CheckBox");
     var el = document.createElement('div');

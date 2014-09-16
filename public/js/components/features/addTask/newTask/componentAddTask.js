@@ -48,13 +48,13 @@ ComponentAddTask.prototype.onLoad = function(data){
         users[id] = data[i];
     }
     var data2 = ComponentFilterFormatter.factory.createNewTaskDropdowns(departments, teams, users);
-    this._componentFilter = new ComponentFilter(data2, ['department', 'team', 'user', 'buddy']);
+    this._componentFilter = new ComponentFilter(data2, ['department', 'team', 'user'], [false, false, true]);
     this.addChild('componentFilter', this._componentFilter, {el: this._personWrapper});
     this._componentFilter.render(this._personWrapper);
     this.listen(ComponentDropdown.EventType.CHANGE, this._componentFilter, this.handleDropdownChange);
 
     buddies = ComponentFilterFormatter.transform(buddies, 'id_user', 'full_name');
-    this._buddyDropdown = new ComponentDropdown(buddies['']);
+    this._buddyDropdown = new ComponentDropdown(buddies[''], true);
     this.addChild('buddyDropdown', this._buddyDropdown, {el: this._personWrapper});
     this._buddyDropdown.render(this._personWrapper);
 };
