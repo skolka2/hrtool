@@ -38,7 +38,7 @@ var helper = module.exports = {
 	},
 	tpl:{
 		create: function(name,params){
-			var template = require("jade!../../templates/"+name+".jade");
+			var template = require("jade!../"+name+".jade");
 
  		  return helper.dom.createElement(template(params));
  		}
