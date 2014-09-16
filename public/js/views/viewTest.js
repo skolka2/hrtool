@@ -178,7 +178,7 @@ ViewTest.prototype.render = function(){
 
      //simunek cool view_____________________________________
      //example of jade template 
-     mainWrapper.appendChild(helper.tpl.create("../templates/example",{label:"testfunguje"}));
+     mainWrapper.appendChild(helper.tpl.create("templates/example",{label:"testfunguje"}));
 
      //simunek view piece out_____________________________________
 
