@@ -33,7 +33,7 @@ ComponentDropdown.prototype = new ComponentBase();
 ComponentDropdown.prototype.constructor = ComponentDropdown;
 
 ComponentDropdown.EventType = {
-    CHANGE: 'change'
+    CHANGE: 'dropdown-change'
 };
 
 ComponentDropdown.State = {
@@ -125,6 +125,7 @@ ComponentDropdown.prototype.setSelection = function(selectedItem) {
     else {
         this._selectedTextElement.innerHTML = selectedItem.value;
     }
+    this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
 };
 
 /**

@@ -1,13 +1,12 @@
-var ComponentBase = require('../componentBase');
-var ComponentCheckBox = require('../features/componentCheckBox');
-var ComponentFilterFormatter = require('../features/componentFilterFormatter');
-var ComponentFilter = require('../features/componentFilter');
-var ComponentDropdown = require('../features/componentDropdown');
+var ComponentBase = require('../../../componentBase');
+var ComponentCheckBox = require('../../componentCheckBox');
+var ComponentFilterFormatter = require('../../componentFilterFormatter');
+var ComponentFilter = require('../../componentFilter');
+var ComponentDropdown = require('../../componentDropdown');
 
 var ComponentAddTaskNewTask = module.exports = function() {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
-    this._isVisible = true;
     this._filter = null;
     this._status = {
         title: "",
@@ -89,7 +88,8 @@ ComponentAddTaskNewTask.prototype.getStatus = function() {
     return this._status;
 };
 
-ComponentAddTaskNewTask.prototype.onChange = function(data) {
-    this._filter.setActive(data);
+ComponentAddTaskNewTask.prototype.onChange = function(data, src) {
+    //if(src === this._saveAsNew.componentId)
+        this._filter.setActive(data);
     this.fire(ComponentBase.EventType.CHANGE, this.getStatus());
 };

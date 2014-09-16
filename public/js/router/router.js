@@ -1,5 +1,6 @@
 ﻿var RouterConfig = require('./routerConfig');
 var ViewBase = require('../views/viewBase');
+var ComponentBase = require('../components/componentBase');
 var Router = module.exports = function () {
 }
 
@@ -46,8 +47,8 @@ Router.prototype.changeView = function () {
         this.view.render();
     }
     else {
-        document.addEventListener(CompoenntBase.EventType.DOMContentLoaded, function () {
-            document.removeEventListener(CompoenntBase.EventType.DOMContentLoaded, arguments.callee, false);
+        document.addEventListener(ComponentBase.EventType.DOMContentLoaded, function () {
+            document.removeEventListener(ComponentBase.EventType.DOMContentLoaded, arguments.callee, false);
             if (mainWrapper != null) {
                 mainWrapper.innerHTML = '';
                 _this.view.render();

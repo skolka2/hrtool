@@ -102,7 +102,7 @@ var ComponentFilterFormatter = {
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
-                ComponentFilterFormatter.transform(users, 'id_user', 'email', ['id_department', 'id_team'])
+                ComponentFilterFormatter.transform(users, 'id_user', 'full_name', ['id_department', 'id_team'])
             ]);
             return res
         }

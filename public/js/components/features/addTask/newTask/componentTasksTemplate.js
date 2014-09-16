@@ -1,13 +1,12 @@
-var ComponentBase = require('../componentBase');
-var ComponentFilterFormatter = require('../features/componentFilterFormatter');
-var ComponentFilter = require('../features/componentFilter');
-var hrtool = require('../../models/actions');
-var Model = require('../../models/model');
+var ComponentBase = require('../../../componentBase');
+var ComponentFilterFormatter = require('../../componentFilterFormatter');
+var ComponentFilter = require('../../componentFilter');
+var hrtool = require('../../../../models/actions');
+var Model = require('../../../../models/model');
 
 var ComponentTasksTemplate = function() {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
-    this._visible = false;
     this.setModel(new Model(ComponentTasksTemplate.EventType.GET_DATA), ComponentTasksTemplate.EventType.GET_DATA);
     hrtool.actions.getTemplatesData(this.model);
 };

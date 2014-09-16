@@ -11,7 +11,7 @@ var ComponentNotificationCenter = require('../components/features/componentNotif
 var ComponentTemplateList = require('../components/templateList/componentTemplateList');
 var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
-var ComponentAddTask = require('../components/addTask/componentAddTask');
+var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -25,7 +25,7 @@ ViewTest.prototype.render = function(){
     var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     //Neckar view___________________________________________________________________________
-    this.componentTemplateList = new ComponentTemplateList();
+    this.componentTemplateList = new ComponentTemplateListFactory.createAll();
     var neckarWrapper = document.createElement('div');
     var bodyN = document.getElementsByTagName('body')[0];
     var NWrapper = document.getElementById(this.super.mainWrapper);
