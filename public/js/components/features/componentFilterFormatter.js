@@ -34,7 +34,7 @@ var ComponentFilterFormatter = {
      * @param notDeletedDropdowns - array of indexes of dropdowns which cannot be deleted from
      * @returns {*} - data object for componentFilter
      */
-    format: function (data, notDeletedDropdowns) {
+    format: function (data) {
         var allowedIds = new Array(data.length);
         var processed = [data.length - 1];
         for(var i = 0; i < allowedIds.length; i++){
@@ -98,12 +98,11 @@ var ComponentFilterFormatter = {
             ]);
             return res;
         },
-        createNewTaskDropdowns : function(departments, teams, users, notBuddies){
+        createNewTaskDropdowns : function(departments, teams, users){
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
-                ComponentFilterFormatter.transform(users, 'id_user', 'email', ['id_department', 'id_team']),
-                ComponentFilterFormatter.transform(notBuddies, 'id_user', 'email', ['id_department', 'id_team'])
+                ComponentFilterFormatter.transform(users, 'id_user', 'email', ['id_department', 'id_team'])
             ]);
             return res
         }

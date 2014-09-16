@@ -4,6 +4,7 @@ var ComponentTaskTemplate = require('./componentTasksTemplate');
 var ComponentTabbedArea = require('../features/componentTabbedArea');
 var ComponentFilterFormatter = require('../features/componentFilterFormatter');
 var ComponentFilter = require('../features/componentFilter');
+var ComponentDropDown = require('../features/componentDropdown');
 var Model = require('../../models/model');
 var hrtool = require('../../models/actions');
 var Const = require('../../helpers/constants');
@@ -36,22 +37,24 @@ ComponentAddTask.constructor = ComponentAddTask;
 ComponentAddTask.prototype.onLoad = function(data){
     var departments = this.helper.bulk.getData(['departments']);
     var teams = this.helper.bulk.getData(['teams']);
-    var notBuddies = {};
     var users = {};
+    var buddies = {};
     var id;
     for(var i = 0; i < data.length; i++){
         id = this.helper.obj.getData(data[i], ['id_user']);
+        buddies[id] = data[i];
         id += '-' + this.helper.obj.getData(data[i], ['id_team']);
         users[id] = data[i];
-        if(!this.helper.obj.getData(data[i], ['is_hr'])){
-            notBuddies[id] = data[i];
-        }
     }
-    console.log(users);
-    var data2 = ComponentFilterFormatter.factory.createNewTaskDropdowns(departments, teams, users, notBuddies);
+    var data2 = ComponentFilterFormatter.factory.createNewTaskDropdowns(departments, teams, users);
     this._componentFilter = new ComponentFilter(data2, ['department', 'team', 'user', 'buddy']);
-    this.addChild('componentFilter', this._componentFilter, {el:     this._personWrapper    });
+    this.addChild('componentFilter', this._componentFilter, {el: this._personWrapper});
     this._componentFilter.render(this._personWrapper);
+
+    buddies = ComponentFilterFormatter.transform(buddies, 'id_user', 'email'); 
+    this._buddyDropdown = new ComponentDropDown(buddies['']);
+    this.addChild('buddyDropdown', this._buddyDropdown, {el: this._personWrapper});
+    this._buddyDropdown.render(this._personWrapper);
 };
 
 
@@ -119,18 +122,19 @@ ComponentAddTask.prototype.createDom = function(){
 
 ComponentAddTask.prototype.handleClickEvent = function(){
     var userStatus = this._componentFilter.getStatus();
-    if(userStatus.department.id === -1 || userStatus.team.id === -1 || userStatus.user.id === -1 || userStatus.buddy.id === -1){
-         console.log('Chybí nějaký id u osoby a buddyho');
-         return;
-     }
-     if(!Number(this._lengthInput.value)){
-         console.log('Délka musí být číslo');
-         return;
-     }
-     if(userStatus.user.id === userStatus.buddy.id){
-         console.log('User a Buddy je stejnej');
-         return;
-     }
+    if(userStatus.department.id === -1 || userStatus.team.id === -1 || userStatus.user.id === -1 || this._buddyDropdown.selected.id === -1){
+        console.log('Chybí nějaký id u osoby a buddyho');
+        return;
+    }
+    if(!Number(this._lengthInput.value)){
+        console.log('Délka musí být číslo');
+        return;
+    }
+    if(userStatus.user.id === this._buddyDropdown.selected.id){
+        console.log('User a Buddy je stejnej');
+        return;
+    }
+
 
     var selectedTab = this._tabbedAreaComponent.getSelectedTabNumber();
     var taskStatus = {};
