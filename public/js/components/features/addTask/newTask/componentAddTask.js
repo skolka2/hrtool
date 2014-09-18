@@ -61,8 +61,8 @@ ComponentAddTask.prototype.onLoad = function(data){
 
 
 ComponentAddTask.prototype.onSave = function(data){
-    if(!data){
-        this.addNotification(document.createTextNode('Something messed up durind saving!'),
+    if(data.name && data.name === 'error'){
+        this.addNotification(document.createTextNode('Something messed up during saving!'),
             ComponentAddTask.NotificationDuration, NotificationCenter.EventType.error);
     }else{
         this.addNotification(document.createTextNode('Saving was successful!'),
