@@ -86,7 +86,7 @@ ComponentDropdown.prototype._handleListOpen = function () {
 ComponentDropdown.prototype._fillWithData = function(data) {
     this._map = [];
 
-    if(this.useSearch) {
+    if(this.useSearch || data.length >= ComponentDropdown.SearchMin) {
         var userInput = document.createElement('input');
         userInput.setAttribute("type","text");
         userInput.placeholder = "Search:";
@@ -114,6 +114,8 @@ ComponentDropdown.prototype._fillWithData = function(data) {
 
     this._listEl.appendChild(li);
     this.setSelection(empty);
+    var div = document.createElement('div');
+    div.className = 'dropdown-item-wrapper';
 
     for(var i = 0; i < data.length; i++) {
         var li = document.createElement('li');
@@ -127,12 +129,15 @@ ComponentDropdown.prototype._fillWithData = function(data) {
         var text = document.createTextNode(data[i].value);
         li.appendChild(text);
 
-        this._listEl.appendChild(li);
+        //this._listEl.appendChild(li);
+        div.appendChild(li);
 
         if(data[i].selected) {
             this.setSelection(data[i]);
         }
     }
+
+    this._listEl.appendChild(div);
 };
 
 /**
@@ -235,3 +240,5 @@ ComponentDropdown.EmptyOption = {
     value: "",
     id: -1
 };
+
+ComponentDropdown.SearchMin = 10;

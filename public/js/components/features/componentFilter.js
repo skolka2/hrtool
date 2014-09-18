@@ -2,7 +2,7 @@ var ComponentBase = require('../componentBase');
 var ComponentDropdown = require('./componentDropdown');
 var helper = require('../../helpers/helpers');
 
-var ComponentFilter  =  module.exports =  function(data, keys) {
+var ComponentFilter  =  module.exports =  function(data, keys, searchable) {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
 
@@ -10,11 +10,17 @@ var ComponentFilter  =  module.exports =  function(data, keys) {
     this._status = [];
     this._data = data;
     this._dropdowns = [];
+
+    var cachedLength = data.length;
+    if(searchable == null) {
+        searchable = Array.apply(null, new Array(cachedLength)).map(Boolean.prototype.valueOf, false);
+    }
+
     var initData;
     var newDropdown;
     for(var i = 0; i < data.length; i++) {
         initData = this._initData(i);
-        newDropdown = new ComponentDropdown(initData);
+        newDropdown = new ComponentDropdown(initData, searchable[i]);
 
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
