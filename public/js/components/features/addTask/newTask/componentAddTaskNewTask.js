@@ -3,6 +3,7 @@ var ComponentCheckBox = require('../../componentCheckBox');
 var ComponentFilterFormatter = require('../../componentFilterFormatter');
 var ComponentFilter = require('../../componentFilter');
 var ComponentDropdown = require('../../componentDropdown');
+var helper = require('../../../../helpers/helpers');
 
 var ComponentAddTaskNewTask = module.exports = function() {
     ComponentBase.prototype.constructor.call(this);
@@ -18,7 +19,7 @@ var ComponentAddTaskNewTask = module.exports = function() {
     this._title = null;
     this._text = null;
     this._saveAsNew = new ComponentCheckBox('Save as template', false);
-    this.listen(ComponentBase.EventType.CHANGE, this._saveAsNew, this.onChange);
+    this.listen(ComponentBase.EventType.CHANGE, this._saveAsNew, this.handleSetAsImplicitChanged);
 };
 
 ComponentAddTaskNewTask.prototype = new ComponentBase();
@@ -72,24 +73,23 @@ ComponentAddTaskNewTask.prototype.createDom = function() {
     this.element.appendChild(this._selectorDiv);
     this.addChild("filter_" + this._filter.componentId, this._filter, {el: this._selectorDiv});
 
-    this.listen(ComponentDropdown.EventType.CHANGE, this._filter, this.onChange);
+    this.listen(ComponentDropdown.EventType.CHANGE, this._filter, this.handleSetAsImplicitChanged);
 };
 
 
 ComponentAddTaskNewTask.prototype.getStatus = function() {
     if(this._filter !== null) {
         var filterStatus = this._filter.getStatus();
-        this._status.department_id = filterStatus.department.id;
-        this._status.team_id = filterStatus.team.id;
+        this._status.department_id = helper.obj.getData(filterStatus, ['department', 'id']);
+        this._status.team_id = helper.obj.getData(filterStatus, ['team', 'id']);
     }
-    this._status.title = this._title.value;
-    this._status.description = this._text.value;
-    this._status.save_as_template = this._saveAsNew.checked;
+    this._status.title = helper.obj.getData(this, ['_title', 'value']);
+    this._status.description = helper.obj.getData(this, ['_text', 'value']);
+    this._status.save_as_template = helper.obj.getData(this, ['_saveAsNew', 'checked']);
     return this._status;
 };
 
-ComponentAddTaskNewTask.prototype.onChange = function(data, src) {
-    //if(src === this._saveAsNew.componentId)
-        this._filter.setActive(data);
+ComponentAddTaskNewTask.prototype.handleSetAsImplicitChanged = function(data) {
+    this._filter.setActive(data);
     this.fire(ComponentBase.EventType.CHANGE, this.getStatus());
 };
