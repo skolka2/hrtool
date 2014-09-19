@@ -20,7 +20,7 @@ var ComponentDropdown = module.exports = function(data, useSearch) {
     this.useSearch = false;
     this.searchEl = null;
 
-    if(useSearch != null) {
+    if(useSearch != null || data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT) {
         this.useSearch = useSearch;
     }
 
@@ -59,11 +59,16 @@ ComponentDropdown.prototype._handleListOpen = function () {
     if(this._enabled) {
         if (this._listEl.style.visibility === 'visible') {
             this._listEl.style.visibility = 'hidden';
+            if(this.useSearch) {
+                this.searchEl.value = "";
+                this.handleSearch();
+            }
             return;
         }
 
         /*Close list on click in body (outside of span)*/
         this._listEl.style.visibility = 'visible';
+        this.searchEl.focus();
         var onClick;
         onClick = function (ev) {
             if (this.getElement() === ev.target || this.getElement().contains(ev.target)) {
@@ -71,6 +76,10 @@ ComponentDropdown.prototype._handleListOpen = function () {
             }
             else {
                 this._listEl.style.visibility = 'hidden';
+                if(this.useSearch) {
+                    this.searchEl.value = "";
+                    this.handleSearch();
+                }
                 document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
             }
         }.bind(this);
@@ -88,7 +97,7 @@ ComponentDropdown.prototype._handleListOpen = function () {
 ComponentDropdown.prototype._fillWithData = function(data) {
     this._map = [];
 
-    if(this.useSearch || data.length >= ComponentDropdown.SearchMin) {
+    if(this.useSearch) {
         var userInput = document.createElement('input');
         userInput.setAttribute("type","text");
         userInput.placeholder = "Search:";
@@ -252,4 +261,4 @@ ComponentDropdown.EmptyOption = {
     id: -1
 };
 
-ComponentDropdown.SearchMin = 10;
+ComponentDropdown.SEARCH_FROM_ITEMS_COUNT = 10;
