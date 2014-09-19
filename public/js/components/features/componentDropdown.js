@@ -1,5 +1,6 @@
 var ComponentBase = require('../componentBase');
 var helper = require('../../helpers/helpers');
+var Const = require('../../helpers/constants');
 /**
  * DropDown class: creates clickable span contaning selected item and
  * a list (ul - with visibility set on 'hidden' by default) of selectable items.
@@ -26,6 +27,7 @@ var ComponentDropdown = module.exports = function(data, useSearch) {
     this._map = [];
 
     this._selectedTextElement = document.createElement('div');
+    this._selectedTextElement.id = 'component-' + this.componentId + 'dropdown-button';
     this._selectedTextElement.className = 'dropdown-button ' + ComponentDropdown.State.ENABLED;
 
     this._listEl = document.createElement('ul');
@@ -191,6 +193,7 @@ ComponentDropdown.prototype._makeSelection = function (src, onClick) {
  */
 ComponentDropdown.prototype.createDom = function() {
     this.element = document.createElement("div");
+    this.element.id = 'component-' + this.componentId;
     this.element.className = 'dropDownDiv';
 
     this.element.appendChild(this._selectedTextElement);
@@ -218,6 +221,14 @@ ComponentDropdown.prototype.setEnabled = function(enabled) {
 ComponentDropdown.prototype.getIsEnabled = function() {
     return this._enabled;
 };
+
+/*
+ComponentDropdown.prototype.setInvalidInputClass = function(){
+    if(this.getIsEnabled()) {
+        this._selectedTextElement.classList.add(Const.INVALID_INPUT_CLASS);
+        this._selectedTextElement.addEventListener('click', this.handleFocusEvent);
+    }
+};*/
 
 /**
  * Function that handles search after changing input from user

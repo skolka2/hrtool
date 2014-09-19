@@ -1,8 +1,9 @@
 var Const = module.exports  = 
 {
-	"develop": true,
-    "user": 1,
-    "Team_manager": 2,
-    "Administrator": 3,
-    milisPerDay: 86400000
+	DEVELOP: true,
+    USER: 1,
+    TEAM_MANAGER: 2,
+    ADMINISTRATOR: 3,
+    MILIS_PER_DAY: 86400000,
+    INVALID_INPUT_CLASS: 'invalid-input'
 };

@@ -1,4 +1,7 @@
 var ViewBase =  require('./viewBase');
+var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
+var ComponentHide = require('../components/features/componentHide');
+var helper = require('../helpers/helpers');
 
 var ViewTaskAdmin =  module.exports = function() {
 	ViewBase.call(this);
@@ -16,6 +19,13 @@ ViewTaskAdmin.prototype.render = function() {
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
 	viewWrapper.innerHTML = "Task Admin View";
+    viewWrapper.appendChild(document.createElement('br'));
+
+    var div = document.createElement('div');
+    var component = new ComponentAddTask();
+    component.render(div);
+    var hide = new ComponentHide(helper.dom.createElement("<span>Insert new task</span>"), div, false);
+    hide.render(viewWrapper);
 
 	mainWrapper.appendChild(viewWrapper);
 }

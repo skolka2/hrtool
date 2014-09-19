@@ -1,5 +1,6 @@
 var EventEmitter =require('../observer/ObservableComponent');
 var helper = require('../helpers/helpers');
+var Const = require('../helpers/constants');
 var ComponentNotificationCenter = require('./componentNotificationCenter');
 
 
@@ -10,6 +11,7 @@ var ComponentBase = module.exports = function(){
 	this.childs = {};
 	this.element = null;
 	this.rendered = false;
+    this._invalidInputs = [];
 
 	this.helper = helper;
 };
@@ -76,6 +78,7 @@ ComponentBase.prototype.destroy = function (){
 // Prepare element
 ComponentBase.prototype.createDom = function (){
 	this.element = document.createElement("div");
+    this.element.id = 'component-' + this.componentId;
 };
 
 // Returns element
@@ -139,6 +142,28 @@ ComponentBase.prototype.setModel = function(model, eventType) {
 ComponentBase.prototype.onLoad = function(data) {
 
 };
+
+ComponentBase.prototype.setInvalidInputClass = function(element){
+    element = element || this.element;
+    this._invalidInputs.push(element);
+    element.classList.add(Const.INVALID_INPUT_CLASS);
+    element.addEventListener('click', this.handleFocusEvent.bind(this));
+};
+
+ComponentBase.prototype.handleFocusEvent = function(e){
+    var element = null;
+    var i;
+    for(i = 0; i < this._invalidInputs.length; i++){
+        if(this._invalidInputs[i] == e.currentTarget){
+            element = this._invalidInputs[i];
+            this._invalidInputs.splice(i, 0);
+            break;
+        }
+    }
+    element.classList.remove(Const.INVALID_INPUT_CLASS);
+    element.removeEventListener('click', this.handleFocusEvent.bind(this));
+};
+
 
 ComponentBase.mainWrapper = "main-wrapper";
 ComponentBase.EventType = {

@@ -5,7 +5,7 @@ var ComponentFilter = require('../../componentFilter');
 var ComponentDropdown = require('../../componentDropdown');
 var helper = require('../../../../helpers/helpers');
 
-var ComponentAddTaskNewTask = module.exports = function() {
+var ComponentLeft = module.exports = function() {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
     this._filter = null;
@@ -22,10 +22,10 @@ var ComponentAddTaskNewTask = module.exports = function() {
     this.listen(ComponentBase.EventType.CHANGE, this._saveAsNew, this.handleSetAsImplicitChanged);
 };
 
-ComponentAddTaskNewTask.prototype = new ComponentBase();
-ComponentAddTaskNewTask.prototype.constructor = ComponentAddTaskNewTask;
+ComponentLeft.prototype = new ComponentBase();
+ComponentLeft.prototype.constructor = ComponentLeft;
 
-ComponentAddTaskNewTask.prototype.createDom = function() {
+ComponentLeft.prototype.createDom = function() {
     this.element = document.createElement('div');
     this.element.className = 'add-task-wrapper';
 
@@ -43,6 +43,7 @@ ComponentAddTaskNewTask.prototype.createDom = function() {
 
     titleDiv.appendChild(taskTitle);
     this._title = document.createElement('input');
+    this._title.id = this.componentId + '-title';
     titleDiv.appendChild(this._title);
 
     //Wrapper of task's text
@@ -54,6 +55,7 @@ ComponentAddTaskNewTask.prototype.createDom = function() {
 
     textDiv.appendChild(taskText);
     this._text = document.createElement('textarea');
+    this._text.id = this.componentId + '-text';
     textDiv.appendChild(this._text);
 
     this._selectorDiv = document.createElement('div');
@@ -77,7 +79,7 @@ ComponentAddTaskNewTask.prototype.createDom = function() {
 };
 
 
-ComponentAddTaskNewTask.prototype.getStatus = function() {
+ComponentLeft.prototype.getStatus = function() {
     if(this._filter !== null) {
         var filterStatus = this._filter.getStatus();
         this._status.department_id = helper.obj.getData(filterStatus, ['department', 'id']);
@@ -89,7 +91,7 @@ ComponentAddTaskNewTask.prototype.getStatus = function() {
     return this._status;
 };
 
-ComponentAddTaskNewTask.prototype.handleSetAsImplicitChanged = function(data) {
+ComponentLeft.prototype.handleSetAsImplicitChanged = function(data) {
     this._filter.setActive(data);
     this.fire(ComponentBase.EventType.CHANGE, this.getStatus());
 };

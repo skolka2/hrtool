@@ -64,7 +64,15 @@ var helper = module.exports = {
 			}
 
 			return output; 
-		}
+		},
+
+        getDateInputFormat: function(date){
+            var getMonth = date.getMonth();
+            var getDate = date.getDate();
+            var month = getMonth < 10 ? '0' + (getMonth + 1) : getMonth + 1;
+            var day = getDate < 10 ? '0' + getDate : getDate;
+            return date.getFullYear() + '-' + month + '-' + day;
+        }
 	},
 
 	dom: {
@@ -89,12 +97,27 @@ var helper = module.exports = {
  		  return helper.dom.createElement(template(params));
  		}
  	},
-	//helper.bulk.getData(['user','id_user'])
 	bulk: {
 
 		getData: function(keys){
 			return helper.obj.getData(app.bulk, keys);
-		}
+		},
+
+        getDepartmentData: function(){
+            if(this.getData(['user', 'is_hr']) === false){
+                return this.getData(['userDepartments']);
+            }else{
+                return this.getData(['departments']);
+            }
+        },
+
+        getTeamData: function(){
+            if(this.getData(['user', 'is_hr']) === false){
+                return this.getData(['userTeams']);
+            }else{
+                return this.getData(['teams']);
+            }
+        }
 	},
 	obj: {
 		getData: function(obj, keys){
@@ -115,7 +138,7 @@ var helper = module.exports = {
 	
 	//helper.debugger('id', {data})
 	debugger: function(eventName, data){
-		if(Const.develop){
+		if(Const.DEVELOP){
 			if(data != null){
 				console.log(eventName, data);
 			}

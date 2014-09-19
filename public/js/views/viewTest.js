@@ -148,14 +148,14 @@ ViewTest.prototype.render = function(){
     //___________________________________________________________________________
 
 //Zibby:
-    var zibbyDiv = document.createElement('div');
+   /* var zibbyDiv = document.createElement('div');
     zibbyDiv.id = 'zibby';
     zibbyDiv.innerHTML = '<h3>Zibby div</h3>';
 
     var component = new ComponentAddTask();
-    body.insertBefore(zibbyDiv, mainWrapper);
+    mainWrapper.appendChild(zibbyDiv);
     component.render(zibbyDiv);
-    zibbyDiv.appendChild(document.createElement('br'));
+    zibbyDiv.appendChild(document.createElement('br'));*/
 
 //Zibby END
 

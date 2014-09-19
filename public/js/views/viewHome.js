@@ -24,7 +24,7 @@ ViewHome.prototype.render = function() {
     this.buddyTaskLists.render(viewWrapper);
 
     //TODO: tasklist
-    if(userRole == Const.Team_manager || userRole == Const.Administrator)
+    if(userRole == Const.TEAM_MANAGER || userRole == Const.ADMINISTRATOR)
     {
         //TODO: manager tasklist
     }

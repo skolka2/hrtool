@@ -5,11 +5,10 @@ var Router = module.exports = function () {
 }
 
 Router.prototype.init = function () {
-    var path = this.getPath();
     this.routerConfig = new RouterConfig();
-    this.changeView(path);
+    this.changeView();
+};
 
-}
 Router.prototype.getPath = function () {
 
     var url = window.location.hash;
@@ -38,7 +37,6 @@ Router.prototype.getPath = function () {
 }
 
 Router.prototype.changeView = function () {
-
     this.view = this.routerConfig.setView(this.getPath());
     var _this = this;
     var mainWrapper = document.getElementById(ViewBase.mainWrapper);

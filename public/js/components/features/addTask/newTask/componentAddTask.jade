@@ -1,0 +1,11 @@
+div(class=wrapperClass)
+    div(class=personWrapperClass)
+        span=personTitle
+    div(class=bottomWrapperClass)
+        label(class=dateLabelClass)
+            span=dateTitle
+            input(class=dateInputClass, type="date", min=today, value=today)
+        label(class=taskLengthLabelClass)
+            span=taskLengthTitle
+            input(class=taskLengthInputClass, type="number", min=1)
+    button(class=saveButtonClass)=saveButtonTitle

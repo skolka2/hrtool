@@ -1,4 +1,5 @@
 ﻿var ComponentBase = require('./componentBase');
+var Const = require('../helpers/constants');
 var app = require('../app');
 
 var ComponentNavBar =  module.exports =  function () {
@@ -40,14 +41,14 @@ ComponentNavBar.prototype.createDom = function () {
 ComponentNavBar.prototype.createMenu = function(){
     var menu = document.createElement('div');
     menu.id = ComponentNavBar.MENU_CLASS;
-    if(this.helper.bulk.getData(['user', 'id_user_role']) === ComponentNavBar.TEAM_MANAGER || this.helper.bulk.getData(['user', 'id_user_role']) === ComponentNavBar.ADMIN){
+    if(this.helper.bulk.getData(['user', 'id_user_role']) === Const.TEAM_MANAGER || this.helper.bulk.getData(['user', 'id_user_role']) === Const.ADMINISTRATOR){
         var homeEl = this.helper.dom.createElement('<a href="#"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Home</div></a>');
         menu.appendChild(homeEl);
         var tasksEl = this.helper.dom.createElement('<a href="#taskAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
         menu.appendChild(tasksEl);
         var peopleEl = this.helper.dom.createElement('<a href="#poopleAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>People</div></a>');
         menu.appendChild(peopleEl);
-        if(this.helper.bulk.getData(['user', 'id_user_role']) === ComponentNavBar.ADMIN){
+        if(this.helper.bulk.getData(['user', 'id_user_role']) === Const.ADMINISTRATOR){
             var depEl = this.helper.dom.createElement('<a href="#departmentAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Departments</div></a>');
             menu.appendChild(depEl);
         }
@@ -74,8 +75,6 @@ ComponentNavBar.USER_PAGE = "/User/user=";
 ComponentNavBar.LOGOUT_PAGE = "/logout";
 ComponentNavBar.LOGIN_PAGE = "/login";
 ComponentNavBar.ID = "navbar";
-ComponentNavBar.ADMIN = 3;
-ComponentNavBar.TEAM_MANAGER = 2;
 ComponentNavBar.USER_DIV_ID = 'navbar-user';
 ComponentNavBar.MENU_ITEM_CLASS = 'navbar-menu-item';
 ComponentNavBar.MENU_CLASS = 'navbar-menu';

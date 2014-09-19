@@ -4,19 +4,19 @@ var ComponentFilter = require('../../componentFilter');
 var hrtool = require('../../../../models/actions');
 var Model = require('../../../../models/model');
 
-var ComponentTasksTemplate = function() {
+var ComponentRight = function() {
     ComponentBase.prototype.constructor.call(this);
     this.super = ComponentBase;
-    this.setModel(new Model(ComponentTasksTemplate.EventType.GET_DATA), ComponentTasksTemplate.EventType.GET_DATA);
+    this.setModel(new Model(ComponentRight.EventType.GET_DATA), ComponentRight.EventType.GET_DATA);
     hrtool.actions.getTemplatesData(this.model);
 };
 
-ComponentTasksTemplate.prototype = Object.create(ComponentBase.prototype);
-ComponentTasksTemplate.constructor = ComponentTasksTemplate;
+ComponentRight.prototype = Object.create(ComponentBase.prototype);
+ComponentRight.constructor = ComponentRight;
 
 
 
-ComponentTasksTemplate.prototype.onLoad = function(templates){
+ComponentRight.prototype.onLoad = function(templates){
     this._templates = templates;
     var departments = this.helper.bulk.getData(['departments']);
     var teams = this.helper.bulk.getData(['teams']);
@@ -32,19 +32,19 @@ ComponentTasksTemplate.prototype.onLoad = function(templates){
 /**
  * Creates component's DOM. Inserts html elements into one <div>
  */
-ComponentTasksTemplate.prototype.createDom = function() {
+ComponentRight.prototype.createDom = function() {
     this.element = document.createElement('div');
-    this.element.className = ComponentTasksTemplate.WRAPPER_CLASS;
+    this.element.className = ComponentRight.WRAPPER_CLASS;
 
     var headline = document.createElement('span');
-    headline.className = ComponentTasksTemplate.HEADLINE_CLASS;
+    headline.className = ComponentRight.HEADLINE_CLASS;
     headline.innerHTML = 'Choose saved task';
     this.element.appendChild(headline);
 
 };
 
 
-ComponentTasksTemplate.prototype.getSelectedTemplate = function(id){
+ComponentRight.prototype.getSelectedTemplate = function(id){
     for(var i = 0; i < this._templates.length; i++){
         if(this._templates[i].id_task_template === id){
             return this._templates[i];
@@ -54,14 +54,16 @@ ComponentTasksTemplate.prototype.getSelectedTemplate = function(id){
 
 
 
-ComponentTasksTemplate.prototype.getStatus = function(){
+ComponentRight.prototype.getStatus = function(){
     return this._componentFilter.getStatus();
 };
 
 
 
-ComponentTasksTemplate.WRAPPER_CLASS = 'task-template-div';
-ComponentTasksTemplate.HEADLINE_CLASS = 'task-template-headline';
-ComponentTasksTemplate.EventType = {GET_DATA: 'template/get-all'};
+ComponentRight.WRAPPER_CLASS = 'task-template-div';
+ComponentRight.HEADLINE_CLASS = 'task-template-headline';
+ComponentRight.EventType = {
+    GET_DATA: 'template/get-all'
+};
 
-module.exports = ComponentTasksTemplate;
+module.exports = ComponentRight;
