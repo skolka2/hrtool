@@ -4,6 +4,7 @@ var ComponentFilter = require('./../features/componentFilter');
 var helper = require('../../helpers/helpers');
 var ComponentFilterFormatter = require('./../features/componentFilterFormatter');
 var hrtool = require('../../models/actions');
+var ComponentNotificationCenter = require('./../features/componentNotificationCenter');
 
 var ComponentTemplateList =  module.exports  = function () {
     this.super = ComponentBase;
@@ -170,30 +171,39 @@ ComponentTemplateList.prototype.handleEditText = function (data) {
 };
 
 ComponentTemplateList.prototype.handleButtonSave = function (data) {
-    data.object.innerHTML = "Saving";
+
     var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item();
     var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item();
     var dropStatus = this.dropdowns[data.id].getStatus();
-    titleEl.disabled = true;
-    descEl.disabled = true;
-    var dep = dropStatus["department"].id;
-    var team = dropStatus["teams"].id;
-    var saveData = {
-        title: titleEl.value,
-        id_task_template: parseInt(data.id),
-        description: descEl.value,
-        id_team: null,
-        id_department: null
-    };
-    if (dep != "-1") {
-        saveData['id_department'] = dep;
+    var error = false;
+    if(titleEl.value == ""){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Title must not be empty!";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
     }
-    if (team != "-1") {
-        saveData['id_team'] = team;
+    if(!error) {
+        data.object.innerHTML = "Saving";
+        titleEl.disabled = true;
+        descEl.disabled = true;
+        var dep = dropStatus["department"].id;
+        var team = dropStatus["teams"].id;
+        var saveData = {
+            title: titleEl.value,
+            id_task_template: parseInt(data.id),
+            description: descEl.value,
+            id_team: null,
+            id_department: null
+        };
+        if (dep != "-1") {
+            saveData['id_department'] = dep;
+        }
+        if (team != "-1") {
+            saveData['id_team'] = team;
+        }
+        var saveModel = new Model(ComponentTemplateList.EventType.DATA_SAVE);
+        this.listen(ComponentTemplateList.EventType.DATA_SAVE, saveModel, this.onSave.bind(this, data.object));
+        hrtool.actions.saveDefaultTaskData(saveModel, saveData);
     }
-    var saveModel = new Model(ComponentTemplateList.EventType.DATA_SAVE);
-    this.listen(ComponentTemplateList.EventType.DATA_SAVE, saveModel, this.onSave.bind(this, data.object));
-    hrtool.actions.saveDefaultTaskData(saveModel, saveData);
 };
 
 ComponentTemplateList.prototype.handleButtonDelete = function (data) {
@@ -206,21 +216,39 @@ ComponentTemplateList.prototype.handleButtonDelete = function (data) {
 ComponentTemplateList.prototype.onSave = function (objEl, data) {
     if (data.error) {
         objEl.disabled = false;
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Critical error! Please contact your administrator!";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
     }
     else {
-        objEl.innerHTML = "Saved";
+        objEl.innerHTML = "Save";
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Task has been successfuly saved.";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
     }
 };
 
-ComponentTemplateList.prototype.onDelete = function (objEl, data) { //TODO: better way to remove liseners.
+ComponentTemplateList.prototype.onDelete = function (objEl, data) {
     if (data.error) {
         objEl.disabled = false;
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Critical error! Please contact your administrator!";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+    }
+    if (data  == "implicit task cannot be deleted") {//TODO: speak with backend for better implementation
+        objEl.disabled = false;
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Implicit task cannot be deleted";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
     }
     else {
         document.body.removeEventListener(ComponentBase.EventType.CLICK, this.onDelete, false);
         this.dropdowns[data[0].id_task_template].destroy();
         var rowEl = helper.dom.getParentByClass(objEl, "row");
         rowEl.innerHTML = "";
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Task has been successfuly deleted.";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
     }
 };
 

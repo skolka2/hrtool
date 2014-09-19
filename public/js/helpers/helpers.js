@@ -20,6 +20,34 @@ var helper = module.exports = {
 			return dateFormated;
 		},
 
+        getDiffDate: function (date1, date2){ // number of days between two dates
+            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+            firstDate = new Date(date1);
+            secondDate = new Date(date2);
+            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+            return diffDays;
+        },
+
+        //use in event
+        dateValidate: function(){
+            helper.format.getDateNow();
+            if(event.currentTarget.value < time.toString || event.currentTarget.value > time.toString)
+                event.currentTarget.value = time.toString;
+        },
+        getDateNow: function() {
+            var time = new Date().toLocaleDateString().split(".");
+            if (time[1].length == 1)
+                time[1] = "0" + time[1];
+            if (time[0].length == 1)
+                time[0] = "0" + time[0];
+            return {
+                "year": time[2],
+                "month": time[1],
+                "day": time[0],
+                "toString": time[2] + "-" + time[1] + "-" + time[0]
+            };
+        },
+
 		getUniversalString: function(str) {
 			var specChars = "áäčďéěíĺľňóô öŕšťúů üýřžÁÄČĎÉĚÍĹĽŇÓÔ ÖŔŠŤÚŮ ÜÝŘŽ";
 			var univChars = "aacdeeillnoo orstuu uyrzAACDEEILLNOO ORSTUU UYRZ";
@@ -96,20 +124,6 @@ var helper = module.exports = {
 			}
 		}
 	},
-    date: {
-        getDiffDate: function (date1, date2){ // number of days between two dates
-            var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-            firstDate = new Date(date1);
-            secondDate = new Date(date2);
-            var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-            return diffDays;
-        },
-        handleOnBlurDate: function(){
-            var time = ComponentTaskImplicit.prototype.getDateNow();
-            if(event.currentTarget.value < time.toString || event.currentTarget.value > time.toString)
-                event.currentTarget.value = time.toString;
-        }
-    },
     number: {
         //Use for example isNumber(number,minimum,maximum), use isNumber(5,"","") if you don't need bounds.
         isNumber: function (num,min,max) {

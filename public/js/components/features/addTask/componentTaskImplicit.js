@@ -4,6 +4,7 @@ var ComponentFilter = require('./../componentFilter');
 var hrtool = require('../../../models/actions');
 var helper = require('../../../helpers/helpers');
 var ComponentFilterFormatter = require('./../componentFilterFormatter');
+var ComponentNotificationCenter = require('./../componentNotificationCenter');
 
 var ComponentTaskImplicit =  module.exports  = function (data) {
     this.super = ComponentBase;
@@ -54,11 +55,11 @@ ComponentTaskImplicit.prototype.createDom = function () {
     el = document.createElement('input');
     el.type = "number";
     span.className = "head";
-    span.innerText = "Task length(days):";
+    span.innerText = "Task starts:";
     el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
     el.className = divsName.task_start + " text";
     el.setAttribute("min", "0");
-    el.value = "1";
+    el.value = "";
     div.appendChild(span);
     div.appendChild(el);
     wrapper.appendChild(div);
@@ -74,7 +75,7 @@ ComponentTaskImplicit.prototype.createDom = function () {
     el.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
     el.className = divsName.task_length + " text";
     el.setAttribute("min", "0");
-    el.value = "1";
+    el.value = "";
     div.appendChild(span);
     div.appendChild(el);
     wrapper.appendChild(div);
@@ -85,7 +86,7 @@ ComponentTaskImplicit.prototype.createDom = function () {
     span.className = "head";
     var butEl = document.createElement("button");
     butEl.className = "button save";
-    butEl.innerHTML = "Save";
+    butEl.innerHTML = "Add";
     div.appendChild(butEl);
     wrapper.appendChild(div);
 
@@ -117,19 +118,6 @@ ComponentTaskImplicit.prototype._getIdForSelected = function (arr, key) {
     return null;
 };
 
-ComponentTaskImplicit.prototype.getDateNow = function(){
-    var time = new Date().toLocaleDateString().split(".");
-    if(time[1].length == 1)
-        time[1] = "0" + time[1];
-    if(time[0].length == 1)
-        time[0] = "0" + time[0];
-    return {
-        "year": time[2],
-        "month": time[1],
-        "day": time[0],
-        "toString": time[2] + "-" + time[1] + "-" + time[0]
-    };
-};
 
 ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
     var target = ev.target;
@@ -148,7 +136,7 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
             this.handleEditText(objectData);
         }
         else if (target.classList.contains("dropDownItem")) {
-            rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+            rowEl.getElementsByClassName("save").item().innerHTML = "Add";
         }
     }
 };
@@ -156,15 +144,28 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
 ComponentTaskImplicit.prototype.handleEditText = function (data) {
     data.object.disabled = false;
     data.object.focus();
-    data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+    data.rowEl.getElementsByClassName("save").item().innerHTML = "Add";
 };
 
 ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
     data.object.innerHTML = "Saving";
     var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item();
     var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item();
+    var error = false;
+    if (lengthEl.value == "") {
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Length of implicit task must me a number";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        error = true;
+    }
+    if (start.value == "") {
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "start day of implicit task must me a number";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        error = true;
+    }
 
-    if (lengthEl.value != "") {
+    if (!error) {
         var dropStatus = this.dropdown.getStatus();
         var dep = dropStatus["department"].id;
         var team = dropStatus["teams"].id;
@@ -182,22 +183,26 @@ ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
         if (team != "-1") {
             saveData['id_team'] = team;
         }
+        start.value = "";
+        lengthEl.value = "";
         var saveModel = new Model(ComponentTaskImplicit.EventType.DATA_ADD);
         this.listen(ComponentTaskImplicit.EventType.DATA_ADD, saveModel, this.onSave.bind(this, data.object));
-        console.log("Temporary saved co CL", saveData);
         hrtool.actions.saveImplicitTaskData(saveModel, saveData);
     }
-    else
-        data.object.innerHTML = "Error"; //TODO: waiting for notification center
-
 };
 
 ComponentTaskImplicit.prototype.onSave = function (objEl, data) {
     if (data.error) {
-        objEl.disabled = false;
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Critical error! Please contact administrator!";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+
     }
     else {
-        helper.dom.getParentByClass(objEl,"implicit-task").innerHTML = "Implicit task has been successfully Saved.";
+        objEl.innerHTML = "Add";
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Implicit task has been successfully added.";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
     }
 };
 
