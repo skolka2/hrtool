@@ -1,0 +1,26 @@
+if header
+    div(class="#{wrapper.className}")
+        each item in data.items
+            span(class="#{data.className}")
+                if data.items.id_department == item
+                    | department and team
+                else
+                    | #{item}
+
+
+else
+    div(class="#{row.wrapper.className}", data-template-id="#{row.wrapper.atribut}")
+        //- creating title
+        div(class="#{title.wrapper.className}")
+            input(class="#{title.data.className}", type='text', value="#{title.data.value}")
+        //- creating description
+        div(class="#{desc.wrapper.className}")
+            input(class="#{desc.data.className}", type='text', value="#{desc.data.value}")
+        //- creating department and team
+        div(class="#{dAt.wrapper.className}")
+        //- creating save button and delete button
+        div(class="#{save.wrapper.className}")
+            button(class="#{save.data.className}")
+                | #{save.data.text}
+            button(class="#{bdelete.data.className}", implicit= "#{bdelete.data.implicit}")
+                | #{bdelete.data.text}

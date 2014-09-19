@@ -35,7 +35,9 @@ CREATE TABLE tasks_implicit
     id_task_template INTEGER NOT NULL,
     id_team INTEGER,
     id_department INTEGER,
-    id_department_role INTEGER
+    id_department_role INTEGER,
+    id_buddy_department INTEGER,
+    id_buddy_team INTEGER
 );
  
  

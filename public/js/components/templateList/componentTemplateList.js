@@ -25,10 +25,24 @@ ComponentTemplateList.prototype.onLoad = function (data) {
     this.element.innerHTML = "";
     this.data = data;
     var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
+
     //Creating header titles and append to the div
-    this.createHeader(this.getElement());
+    jadeHeaderData = {
+        header: true,
+        wrapper: {
+            className: "template-header"
+        },
+        data: {
+            className: "template-header-item",
+            items: ComponentTemplateList.TemplateListDivs
+        }
+    };
+    var jadeHeader = helper.tpl.create("components/templateList/componentTemplateList", jadeHeaderData);
+    this.getElement().appendChild(jadeHeader);
+
     //add eventlistener onClick
     this.getElement().addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
+
     //creating tasks
     for (var i = 0; i < this.data.length; i++) {
         var dataMap = this._getSelectedItem(data[i], dropDownData);
@@ -38,79 +52,77 @@ ComponentTemplateList.prototype.onLoad = function (data) {
 
 ComponentTemplateList.prototype.addRow = function (data) {
 
-    var task = document.createElement("div");
     var id = data.data.id_task_template;
     var divsName = ComponentTemplateList.TemplateListDivs;
-    task.className = "row";
-    task.setAttribute("data-template-id", id);
     var dropdown = new ComponentFilter(data.dd, ['department', 'teams']);
     this.dropdowns[id] = dropdown;
-    this.getElement().appendChild(task); //because I need addChild to exist div
+    var jadeRow = {
+        wrapper: {
+            className: "row",
+            atribut: id
+        }
+    };
 
-    var div = document.createElement("div");
-    var el = document.createElement('input');
+    var jadeTitle = {
+        wrapper: {
+            className: divsName.title
+        },
+        data: {
+            className: divsName.title + " text",
+            value: data.data[divsName.title ]
+        }
+    };
 
-    //create title input
-    div.className = divsName.title;
-    el.type = "text";
-    el.className = divsName.title + " text";
-    el.value = data.data[divsName.title ];
-    el.disabled = true;
-    div.appendChild(el);
-    task.appendChild(div);
+    var jadeDesc = {
+        wrapper: {
+            className: divsName.description
+        },
+        data: {
+            className: divsName.description + " text",
+            value: data.data[divsName.description ]
+        }
+    };
+    var jadeDaT = {
+        wrapper: {
+            className: divsName.id_department
+        }
+    };
 
-    //create description input
-    div = document.createElement("div");
-    el = document.createElement('input');
-    div.className = divsName.description;
-    el.type = "text";
-    el.className = divsName.description + " text";
-    el.value = data.data[divsName.description ];
-    el.disabled = true;
-    div.appendChild(el);
-    task.appendChild(div);
+    var jadeSave = {
+        wrapper: {
+            className: divsName.route
+        },
+        data:{
+            text: "Save",
+            className:  "button save"
+        }
+    };
+    var jadeDelete = {
+        data:{
+            text: "Delete",
+            className:  "button delete",
+            implicit: !!data.data.implicit
+        }
+    };
+
+    var jadeData = {
+        //wrapper: jadeWrapper,
+        row: jadeRow,
+        title: jadeTitle,
+        desc: jadeDesc,
+        dAt: jadeDaT,
+        save: jadeSave,
+        bdelete: jadeDelete
+    };
+
+    var jadeTask = helper.tpl.create("components/templateList/componentTemplateList", jadeData);
+    this.getElement().appendChild(jadeTask); //because I need addChild to exist div
 
     //create department and team
-    div = document.createElement("div");
-    div.className = divsName.id_department;
-    task.appendChild(div);
-    dropdown.render(div);
+    var div = jadeTask.getElementsByClassName(divsName.id_department).item();
     this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
-
-    //create save button
-    div = document.createElement("div");
-    el = document.createElement("button");
-    div.className = divsName.route;
-    el.className = "button save";
-    el.innerHTML = "Save";
-    div.appendChild(el);
-
-    //create delete button
-    el = document.createElement("button");
-    el.className = "button delete";
-    el.innerHTML = "Delete";
-    if (data.data.implicit) {
-        //el.disabled = true;//TODO: implement after implementation at server side will be done
-    }
-    div.appendChild(el);
-    task.appendChild(div);
-
-    return task;
-};
-
-ComponentTemplateList.prototype.createHeader = function (div) {
-    var elDivHead = document.createElement("div");
-    elDivHead.className = "template-header";
-    for (var item in ComponentTemplateList.TemplateListDivs) {
-        var elem = document.createElement('div');
-        elem.className = "template-header-item";
-        elem.innerText = ComponentTemplateList.TemplateListDivs[item];
-        if(ComponentTemplateList.TemplateListDivs.id_department == item){
-            elem.innerText = ComponentTemplateList.TemplateListDivs[item];
-        }
-        elDivHead.appendChild(elem);
-        div.appendChild(elDivHead);
-    }
+    dropdown.render(div);
+    return jadeTask;
 };
 
 ComponentTemplateList.prototype._getSelectedItem = function (data, dropDownData) {
@@ -122,8 +134,8 @@ ComponentTemplateList.prototype._getSelectedItem = function (data, dropDownData)
         map.dd[0][""][this._getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "true";
     }
     /*if ((data.id_team != null) && (data.id_department == null)) {
-        map.dd[1]["global"][this._getIdForSelected(map.dd[1]["global"], data.id_team)]['selected'] = "true";
-    }*/
+     map.dd[1]["global"][this._getIdForSelected(map.dd[1]["global"], data.id_team)]['selected'] = "true";
+     }*/
     if (data.id_team != null) {
         map.dd[1][data.id_department][this._getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "true";
     }
@@ -166,7 +178,6 @@ ComponentTemplateList.prototype.handleOnClick = function (ev) {
 };
 
 ComponentTemplateList.prototype.handleEditText = function (data) {
-    data.object.disabled = false;
     data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
 };
 
@@ -177,14 +188,14 @@ ComponentTemplateList.prototype.handleButtonSave = function (data) {
     var dropStatus = this.dropdowns[data.id].getStatus();
     var error = false;
     if(titleEl.value == ""){
+        error = true;
         var newDiv = document.createElement('div');
         newDiv.innerHTML = "Title must not be empty!";
+        this.setInvalidInputClass(titleEl);
         this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
     }
     if(!error) {
         data.object.innerHTML = "Saving";
-        titleEl.disabled = true;
-        descEl.disabled = true;
         var dep = dropStatus["department"].id;
         var team = dropStatus["teams"].id;
         var saveData = {
@@ -207,10 +218,16 @@ ComponentTemplateList.prototype.handleButtonSave = function (data) {
 };
 
 ComponentTemplateList.prototype.handleButtonDelete = function (data) {
-    var deleteModel = new Model(ComponentTemplateList.EventType.DATA_DELETE);
-    data.object.disabled = true;
-    this.listen(ComponentTemplateList.EventType.DATA_DELETE, deleteModel, this.onDelete.bind(this, data.object));
-    hrtool.actions.deleteDefaultTaskData(deleteModel, {id_task_template: parseInt(data.id)});
+    if(data.object.getAttribute("implicit") == "true"){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "Implicit task cannot be deleted";
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+    }
+    else{
+        var deleteModel = new Model(ComponentTemplateList.EventType.DATA_DELETE);
+        this.listen(ComponentTemplateList.EventType.DATA_DELETE, deleteModel, this.onDelete.bind(this, data.object));
+        hrtool.actions.deleteDefaultTaskData(deleteModel, {id_task_template: parseInt(data.id)});
+    }
 };
 
 ComponentTemplateList.prototype.onSave = function (objEl, data) {
@@ -235,12 +252,7 @@ ComponentTemplateList.prototype.onDelete = function (objEl, data) {
         newDiv.innerHTML = "Critical error! Please contact your administrator!";
         this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
     }
-    if (data  == "implicit task cannot be deleted") {//TODO: speak with backend for better implementation
-        objEl.disabled = false;
-        var newDiv = document.createElement('div');
-        newDiv.innerHTML = "Implicit task cannot be deleted";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
-    }
+
     else {
         document.body.removeEventListener(ComponentBase.EventType.CLICK, this.onDelete, false);
         this.dropdowns[data[0].id_task_template].destroy();

@@ -8,8 +8,6 @@ var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
 var ComponentListVladLaz = require('../components/componentListVladLaz');
 var ComponentNotificationCenter = require('../components/componentNotificationCenter');
-var ComponentTemplateList = require('../components/templateList/componentTemplateList');
-var ComponentTemplateListFactory = require('../components/templateList/componentTemplateListFactory');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
@@ -27,20 +25,6 @@ ViewTest.prototype.render = function(){
     var mainWrapper = document.getElementById(this.super.mainWrapper);
 
     //Neckar view___________________________________________________________________________
-    this.componentTemplateList = new ComponentTemplateListFactory.createAll();
-    var dataForImplicit = {id_task_template: 5, id_department: 2, id_team: 3, title: "title example"};
-    this.componentTaskImplicit = new ComponentTaskImplicit(dataForImplicit);
-    var neckarWrapper = document.createElement('div');
-    neckarWrapper.className = "neckar-wraper";
-    neckarWrapper.innerHTML = "Neckar view";
-    mainWrapper.appendChild(neckarWrapper);
-    var implicitWrapper = document.createElement('div');
-    neckarWrapper.appendChild(implicitWrapper);
-    var templateWrapper = document.createElement('div');
-    neckarWrapper.appendChild(templateWrapper);
-    this.componentTaskImplicit.render(implicitWrapper);
-    this.componentTemplateList.render(templateWrapper);
-
 
 //Fanda View START
     
