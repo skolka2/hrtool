@@ -4,7 +4,7 @@ var ComponentFilter = require('./../features/componentFilter');
 var helper = require('../../helpers/helpers');
 var ComponentFilterFormatter = require('./../features/componentFilterFormatter');
 var hrtool = require('../../models/actions');
-var ComponentNotificationCenter = require('./../features/componentNotificationCenter');
+var ComponentNotificationCenter = require('./../componentNotificationCenter');
 
 var ComponentTemplateList =  module.exports  = function () {
     this.super = ComponentBase;
