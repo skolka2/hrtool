@@ -9,6 +9,7 @@ var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
 var ComponentListVladLaz = require('../components/componentListVladLaz');
 var ComponentNotificationCenter = require('../components/componentNotificationCenter');
+var ComponentTable = require('../components/table/componentTable');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
