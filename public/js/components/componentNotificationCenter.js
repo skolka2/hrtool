@@ -5,6 +5,12 @@ var ComponentNotificationCenter = module.exports = function() {
 };
 
 ComponentNotificationCenter.prototype.addNewNotification = function(element, duration, type) {
+    if(typeof element === "string") {
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = element;
+        element = wrapper;
+    }
+
     var newDiv = document.createElement('div');
     newDiv.className = type ? type : ComponentNotificationCenter.EventType.neutral;
     newDiv.appendChild(element);

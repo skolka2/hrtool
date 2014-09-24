@@ -103,9 +103,7 @@ ViewTest.prototype.render = function(){
     var notificationButton1 = document.createElement('button');
     notificationButton1.innerText = "OK";
     notificationButton1.addEventListener('click', (function(event){
-        var newDiv = document.createElement('div');
-        newDiv.innerHTML = event.toString();
-        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
+        component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.success);
     }));
 
     witzDiv.appendChild(notificationButton1);
@@ -113,9 +111,7 @@ ViewTest.prototype.render = function(){
     var notificationButton2 = document.createElement('button');
     notificationButton2.innerText = "ERR";
     notificationButton2.addEventListener('click', (function(event){
-        var newDiv = document.createElement('div');
-        newDiv.innerHTML = event.toString();
-        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.error);
     }));
 
     witzDiv.appendChild(notificationButton2);
@@ -123,9 +119,7 @@ ViewTest.prototype.render = function(){
     var notificationButton3 = document.createElement('button');
     notificationButton3.innerText = "budiž";
     notificationButton3.addEventListener('click', (function(event){
-        var newDiv = document.createElement('div');
-        newDiv.innerHTML = event.toString();
-        component.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.neutral);
+        component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.neutral);
     }));
 
     witzDiv.appendChild(notificationButton3);
