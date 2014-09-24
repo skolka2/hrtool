@@ -8,7 +8,7 @@ var ComponentDropdown = require('../../componentDropdown');
 var Model = require('../../../../models/model');
 var hrtool = require('../../../../models/actions');
 var Const = require('../../../../helpers/constants');
-var NotificationCenter = require('../../componentNotificationCenter');
+var NotificationCenter = require('../../../componentNotificationCenter');
 
 
 var ComponentAddTask = function() {

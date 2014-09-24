@@ -1,11 +1,7 @@
-var ComponentNotificationCenter = module.exports = function(wrapper) {
+var ComponentNotificationCenter = module.exports = function() {
 
     this._countOfNotifications = 0;
-
-    if(!wrapper) {
-        wrapper = document.body;
-    }
-    this.render(wrapper);
+    this.render(document.getElementById('navbar'));
 };
 
 ComponentNotificationCenter.prototype.addNewNotification = function(element, duration, type) {

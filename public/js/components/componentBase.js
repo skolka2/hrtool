@@ -1,6 +1,6 @@
 var EventEmitter =require('../observer/ObservableComponent');
 var helper = require('../helpers/helpers');
-var ComponentNotificationCenter = require('../components/features/componentNotificationCenter');
+var ComponentNotificationCenter = require('./componentNotificationCenter');
 
 
 //Default constructor
@@ -116,9 +116,9 @@ ComponentBase.prototype.render = function (parrent){
 };
 
 ComponentBase.prototype.addNotification = function(contentEl, duration, type) {
-    ComponentBase.NotificationCenter = ComponentBase.NotificationCenter instanceof ComponentNotificationCenter ?
-        ComponentBase.NotificationCenter :
-        new ComponentNotificationCenter();
+    if (ComponentBase.NotificationCenter == null) {
+        ComponentBase.NotificationCenter = new ComponentNotificationCenter();
+    }
 
     ComponentBase.NotificationCenter.addNewNotification(contentEl, duration, type);
 };
@@ -149,5 +149,5 @@ ComponentBase.EventType = {
     DOMContentLoaded: "DOMContentLoaded"
 };
 
-ComponentBase.NotificationCenter = {};
+ComponentBase.NotificationCenter = null;
 
