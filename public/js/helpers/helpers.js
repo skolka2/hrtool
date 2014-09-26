@@ -104,7 +104,7 @@ var helper = module.exports = {
 		},
 
         getDepartmentData: function(){
-            if(this.getData(['user', 'is_hr']) === false){
+            if(this.getData(['user', 'id_user_role']) !== Const.ADMINISTRATOR){
                 return this.getData(['userDepartments']);
             }else{
                 return this.getData(['departments']);
@@ -112,7 +112,7 @@ var helper = module.exports = {
         },
 
         getTeamData: function(){
-            if(this.getData(['user', 'is_hr']) === false){
+            if(this.getData(['user', 'id_user_role']) !== Const.ADMINISTRATOR){
                 return this.getData(['userTeams']);
             }else{
                 return this.getData(['teams']);
