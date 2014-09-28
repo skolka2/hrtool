@@ -22,14 +22,15 @@ module.exports = ComponentPopupFactory =
 		popup.listen ComponentSelect.EventType.CANCEL, select, popup.close
 		return popup
 
-	getUserEditPopup: (popupTrigger, idUser) ->
+	getUserEditPopup: (idUser) ->
 		componentEditUser = new ComponentEditUser idUser, yes
-		popup = new ComponentPopup(popupTrigger, componentEditUser)
+		popup = new ComponentPopup(componentEditUser)
 		popup.listen ComponentEditUser.EventType.SAVE, componentEditUser, popup.close
+		popup.listen ComponentEditUser.EventType.CANCEL, componentEditUser, popup.close
 		return popup
 
-	getNewTaskPopup: (popupTrigger) ->
+	getNewTaskPopup:  ->
 		componentAddTask = new ComponentAddTask()
-		popup = new ComponentPopup(popupTrigger, componentAddTask)
+		popup = new ComponentPopup(componentAddTask)
 		popup.listen ComponentAddTask.EventType.SAVE_SUCCESS, componentAddTask, popup.close
 		return popup

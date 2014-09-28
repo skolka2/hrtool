@@ -3,11 +3,9 @@ var ComponentBase = require('../components/componentBase');
 var ComponentCheckBox = require('../components/features/componentCheckBox');
 var ComponentTaskImplicit = require('../components/features/addTask/componentTaskImplicit');
 var ComponentHide = require('../components/features/componentHide');
-var ComponentBuddyTasksListsInView = require('../components/tasksBuddy/componentBuddyTaskListsInView');
 var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
-var ComponentListVladLaz = require('../components/componentListVladLaz');
 var ComponentNotificationCenter = require('../components/componentNotificationCenter');
 var ComponentTable = require('../components/table/componentTable');
 var hrtool = require('../models/actions');
@@ -20,6 +18,7 @@ var ComponentFilterFormatter = require('../components/features/componentFilterFo
 var ComponentTableWrapper = require('../components/table/componentTableWrapper');
 var ComponentTextInput = require('../components/features/componentTextInput');
 var ComponentStatusBarFactory = require('../components/features/componentStatusBarFactory');
+var ComponentTableFactory = require('../components/table/componentTableFactory');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -75,11 +74,11 @@ ViewTest.prototype.render = function(){
     divSelector.innerHTML = "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>ComponentSelect...<br><br>";
 
 
-    var trigger = document.createElement('span');
+    /*var trigger = document.createElement('span');
     trigger.innerHTML = "<strong>Open popup with select</strong>";
     var selectPopup = ComponentPopupFactory.getSelectDepTeamPopup(trigger);
     selectPopup.render(document.getElementById('popup-wrapper'));
-    divSelector.appendChild(trigger);
+    divSelector.appendChild(trigger);*/
     fandaDiv.appendChild(divSelector);
 
     fandaDiv.appendChild(tab);
@@ -138,8 +137,11 @@ ViewTest.prototype.render = function(){
     witzDiv.appendChild(document.createElement('br'));
     witzDiv.appendChild(popupTrigger);
 
-    var popup = ComponentPopupFactory.getCheckBoxPopup(popupTrigger, component);
-    popup.render(document.getElementById('popup-wrapper'));
+	popupTrigger.addEventListener( 'click', popupTrigger, function(ev){
+			var popup = ComponentPopupFactory.getCheckBoxPopup(component);
+			popup.open();
+		}
+	, false);
 
 
 

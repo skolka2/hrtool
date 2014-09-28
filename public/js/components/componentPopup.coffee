@@ -1,46 +1,63 @@
 ComponentBase = require "./componentBase"
-module.exports = class ComponentPopup extends ComponentBase
 
-	constructor: (@triggerEl, @insideComponent) ->
+class ComponentPopup extends ComponentBase
+
+#	TODO remove @triggerEl argument and never use render
+
+	constructor: (@insideComponent) ->
 		super()
 		@insideEl = @insideComponent.element
-		@triggerEl.addEventListener ComponentBase.CLICK_EVENT, @open, no
 		@rendered = no
+		@mainDiv = document.getElementById 'popup-wrapper'
+		@opened = no
+		return
 
-	open: =>
-		popups = document.getElementsByClassName 'popup-container'
-		for popup in popups
-			popup.style.display = 'none'
-
+	open: (ev) =>
+		@_prepare()
+		@opened = yes
 		@mainDiv.classList.add 'popup-opened'
 		@container.style.display = 'block'
-		@mainDiv.addEventListener ComponentBase.CLICK_EVENT, @handleOuterClick, no
 		@fire ComponentPopup.eventType.OPEN, {}
-
-	handleOuterClick: (ev) =>
-		@mainDiv.classList.remove 'popup-opened' if not @innerDiv.contains ev.target
+		@handleOuterClickFn = (ev) =>
+			if @innerDiv? and not @innerDiv.contains ev.target
+				@close()
+			return
+		@mainDiv.addEventListener ComponentBase.CLICK_EVENT, @handleOuterClickFn, no
+		return
 
 	close: ->
 		@container.style.display = 'none'
+		@insideComponent.destroy()
+		@mainDiv.removeEventListener ComponentBase.CLICK_EVENT, @handleOuterClickFn, no
 		@mainDiv.classList.remove 'popup-opened'
+		while @mainDiv.firstChild
+			@mainDiv.removeChild @mainDiv.firstChild
 		@fire ComponentPopup.eventType.CLOSE, {}
+		return
 
 	createDom: ->
-		@mainDiv = document.getElementById 'popup-wrapper'
+
+	_prepare: ->
 		@container = document.createElement 'div'
-		@innerDiv = document.createElement 'div'
-		@closeCrossDiv = document.createElement 'div'
 		@container.className = 'popup-container'
-		@innerDiv.className =	'popup-inner'
+		@innerDiv = document.createElement 'div'
+		@innerDiv.className = 'popup-inner'
+		@closeCrossDiv = document.createElement 'div'
 		@closeCrossDiv.className = 'popup-close-cross'
 
-		@addChild 'popup_' + @insideComponent.componentId, @insideComponent, {'el': @innerDiv}
+		@addChild 'popup_' + @insideComponent.componentId, @insideComponent
+		@insideComponent.render @innerDiv
 
 		@container.appendChild @innerDiv
 		@container.appendChild @closeCrossDiv
 
 		@element = @container
+		@mainDiv.appendChild @container
+		return
 
-	ComponentPopup.eventType =
-		CLOSE: 'popup_close'
-		OPEN: 'popup-open'
+
+ComponentPopup.eventType =
+	CLOSE: 'popup_close'
+	OPEN: 'popup-open'
+
+module.exports = ComponentPopup

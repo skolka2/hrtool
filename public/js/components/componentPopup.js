@@ -6,65 +6,73 @@
 
   ComponentBase = require("./componentBase");
 
-  module.exports = ComponentPopup = (function(_super) {
+  ComponentPopup = (function(_super) {
     __extends(ComponentPopup, _super);
 
-    function ComponentPopup(triggerEl, insideComponent) {
-      this.triggerEl = triggerEl;
+    function ComponentPopup(insideComponent) {
       this.insideComponent = insideComponent;
       this.open = __bind(this.open, this);
       ComponentPopup.__super__.constructor.call(this);
       this.insideEl = this.insideComponent.element;
-      this.triggerEl.addEventListener(ComponentBase.CLICK_EVENT, this.open, false);
       this.rendered = false;
+      this.mainDiv = document.getElementById('popup-wrapper');
+      this.opened = false;
+      return;
     }
 
-    ComponentPopup.prototype.open = function() {
-      var popup, popups, _i, _len;
-      popups = document.getElementsByClassName('popup-container');
-      for (_i = 0, _len = popups.length; _i < _len; _i++) {
-        popup = popups[_i];
-        popup.style.display = 'none';
-      }
+    ComponentPopup.prototype.open = function(ev) {
+      this._prepare();
+      this.opened = true;
       this.mainDiv.classList.add('popup-opened');
       this.container.style.display = 'block';
-      this.mainDiv.addEventListener(ComponentBase.CLICK_EVENT, this.handleOuterClick.bind(this), false);
-      return this.fire(ComponentPopup.EVENT_TYPE.OPEN, {});
-    };
-
-    ComponentPopup.prototype.handleOuterClick = function(ev) {
-      if (!this.innerDiv.contains(ev.target)) {
-        return this.mainDiv.classList.remove('popup-opened');
-      }
+      this.fire(ComponentPopup.eventType.OPEN, {});
+      this.handleOuterClickFn = (function(_this) {
+        return function(ev) {
+          if ((_this.innerDiv != null) && !_this.innerDiv.contains(ev.target)) {
+            _this.close();
+          }
+        };
+      })(this);
+      this.mainDiv.addEventListener(ComponentBase.CLICK_EVENT, this.handleOuterClickFn, false);
     };
 
     ComponentPopup.prototype.close = function() {
-      return this.fire(ComponentPopup.EVENT_TYPE.CLOSE, {});
+      this.container.style.display = 'none';
+      this.insideComponent.destroy();
+      this.mainDiv.removeEventListener(ComponentBase.CLICK_EVENT, this.handleOuterClickFn, false);
+      this.mainDiv.classList.remove('popup-opened');
+      while (this.mainDiv.firstChild) {
+        this.mainDiv.removeChild(this.mainDiv.firstChild);
+      }
+      this.fire(ComponentPopup.eventType.CLOSE, {});
     };
 
-    ComponentPopup.prototype.createDom = function() {
-      this.mainDiv = document.getElementById('popup-wrapper');
+    ComponentPopup.prototype.createDom = function() {};
+
+    ComponentPopup.prototype._prepare = function() {
       this.container = document.createElement('div');
-      this.innerDiv = document.createElement('div');
-      this.closeCrossDiv = document.createElement('div');
       this.container.className = 'popup-container';
+      this.innerDiv = document.createElement('div');
       this.innerDiv.className = 'popup-inner';
+      this.closeCrossDiv = document.createElement('div');
       this.closeCrossDiv.className = 'popup-close-cross';
-      this.addChild('popup_' + this.insideComponent.componentId, this.insideComponent, {
-        'el': this.innerDiv
-      });
+      this.addChild('popup_' + this.insideComponent.componentId, this.insideComponent);
+      this.insideComponent.render(this.innerDiv);
       this.container.appendChild(this.innerDiv);
       this.container.appendChild(this.closeCrossDiv);
-      return this.element = this.container;
-    };
-
-    ComponentPopup.EVENT_TYPE = {
-      CLOSE: 'popup_close',
-      OPEN: 'popup-open'
+      this.element = this.container;
+      this.mainDiv.appendChild(this.container);
     };
 
     return ComponentPopup;
 
   })(ComponentBase);
+
+  ComponentPopup.eventType = {
+    CLOSE: 'popup_close',
+    OPEN: 'popup-open'
+  };
+
+  module.exports = ComponentPopup;
 
 }).call(this);

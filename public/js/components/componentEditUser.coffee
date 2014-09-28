@@ -4,6 +4,7 @@ ComponentCheckBox = require './features/componentCheckBox'
 ComponentFilter = require './features/componentFilter'
 ComponentDropdown = require './features/componentDropdown'
 ComponentFilterFormatter = require './features/componentFilterFormatter'
+NotificationCenter = require './componentNotificationCenter'
 hrtool = require '../models/actions'
 app = require '../app'
 
@@ -30,7 +31,7 @@ class ComponentEditUser extends ComponentBase
 
 	onLoad: (data) =>
 		@teams = data
-		@repaintTeams()
+		@createTeamItems()
 		return
 
 
@@ -71,6 +72,7 @@ class ComponentEditUser extends ComponentBase
 		@element = @helper.tpl.create 'components/componentEditUser',
 			wrapperClass: ComponentEditUser.WRAPPER_CLASS
 			teamWrapper: ComponentEditUser.TEAM_WRAPPER_CLASS
+			newTeamWrapper: ComponentEditUser.NEW_TEAM_WRAPPER_CLASS
 			userInfoWrapper: ComponentEditUser.USER_INFO_WRAPPER_CLASS
 			inputName: ComponentEditUser.INPUT_NAME_CLASS
 			inputSurname: ComponentEditUser.INPUT_SURNAME_CLASS
@@ -82,6 +84,7 @@ class ComponentEditUser extends ComponentBase
 			buttonSave: ComponentEditUser.BUTTON_SAVE_CLASS
 
 		@teamWrapper = @element.getElementsByClassName(ComponentEditUser.TEAM_WRAPPER_CLASS)[0]
+		@newTeamWrapper = @element.getElementsByClassName(ComponentEditUser.NEW_TEAM_WRAPPER_CLASS)[0]
 		@userInfoWrapper = @element.getElementsByClassName(ComponentEditUser.USER_INFO_WRAPPER_CLASS)[0]
 		@buttonsWrapper = @element.getElementsByClassName(ComponentEditUser.BUTTON_DIV_WRAPPER_CLASS)[0]
 
@@ -92,63 +95,113 @@ class ComponentEditUser extends ComponentBase
 		saveButton = @element.getElementsByClassName(ComponentEditUser.BUTTON_SAVE_CLASS)[0]
 		cancelButton = @element.getElementsByClassName(ComponentEditUser.BUTTON_CANCEL_CLASS)[0]
 
-		saveButton.addEventListener ComponentBase.EventType.CLICK, @fireSave
+		saveButton.addEventListener ComponentBase.EventType.CLICK, () =>
+			@handleSaveClick()
+			@fire ComponentEditUser.EventType.SAVE, null
+		cancelButton.addEventListener ComponentBase.EventType.CLICK, () =>
+			@fire ComponentEditUser.EventType.SAVE, null
 		return
 
 
-	fireSave: () =>
-		@fire ComponentEditUser.EventType.SAVE, null, @
-		return
 
 
-	repaintTeams: () ->
+	handleSaveClick: () ->
+		#TODO: dodělat endpoint na editaci dat uživatele a na mazání a přidávání týmů (jesli už nejsou)
+		console.log 'ukládám změny -> taky dodělat odeslání změn údajů na backend'
+
+
+
+
+	createTeamItems: () ->
 		for item, i in @teams
-			div = document.createElement 'div'
-			div.className = ComponentEditUser.ITEM_WRAPPER_CLASS
-			span = document.createElement 'span'
-			span.innerHTML = "#{item.department}/#{item.team}"
-
-			if @editable is yes
-				button = document.createElement 'button'
-				button.innerHTML = 'x'
-				button.addEventListener ComponentBase.EventType.CLICK, @removeItem, no
-				span.appendChild button
-
-			checkbox = new ComponentCheckBox 'Manager', item.is_admin, @editable
-			@checkboxes.push checkbox
-
-			div.appendChild checkbox.getElement()
-			div.appendChild span
-			@teamWrapper.appendChild div
-
+			@teamWrapper.appendChild @getTeamItemDom item, i
 
 		if @teams.length is 0
 			@teamWrapper.innerHTML = 'There is no team this user is in'
 
 		if @editable is yes
+			@createNewTeamDom()
+
+		return
+
+
+
+	getTeamItemDom: (team, index) ->
+		div = document.createElement 'div'
+		div.className = ComponentEditUser.ITEM_WRAPPER_CLASS
+		span = document.createElement 'span'
+		span.innerHTML = "#{team.department}/#{team.team}"
+
+		if @editable is yes
 			button = document.createElement 'button'
-			button.innerHTML = '+'
-			button.className = 'down-left-corner'
-			button.addEventListener ComponentBase.EventType.CLICK, @addItem, no
-			@teamWrapper.appendChild document.createElement 'br'
-			@teamWrapper.appendChild button
-			@teamWrapper.appendChild document.createElement 'br'
+			button.innerHTML = 'x'
+			button.addEventListener ComponentBase.EventType.CLICK, do (index) =>
+					(event) =>
+						@teams[index] = null
+						event.target.parentElement?.parentElement?.style.display = 'none'
+			, no
+			span.appendChild button
+
+		checkbox = new ComponentCheckBox 'Manager', team.is_admin, @editable
+		@checkboxes.push checkbox
+
+		div.appendChild checkbox.getElement()
+		div.appendChild span
+		return div
 
 
 
-	removeItem: (event) =>
-		event.target.parentElement?.parentElement?.style.display = 'none'
-		#@repaintTeams()
+
+	createNewTeamDom: () ->
+		data = ComponentFilterFormatter.factory.createTeamDropdownsData app?.bulk?.departments, app?.bulk?.teams
+		@newTeamFilter = new ComponentFilter data, ['department', 'team']
+		@addChild 'teamFilter', @newTeamFilter, {el: @newTeamWrapper}
+		@newTeamFilter.render @newTeamWrapper
+
+		@newTeamCheckBox = new ComponentCheckBox 'Manager', true, true
+		this.addChild 'newTeamCheckBox', @newTeamCheckBox, {el: @newTeamWrapper}
+		@newTeamCheckBox.render @newTeamWrapper
+
+		button = document.createElement 'button'
+		button.innerHTML = '+'
+		button.className = 'down-left-corner'
+		button.addEventListener ComponentBase.EventType.CLICK, @addItem, no
+		@newTeamWrapper.appendChild document.createElement 'br'
+		@newTeamWrapper.appendChild button
+		@newTeamWrapper.appendChild document.createElement 'br'
+		return
+
+
+
 
 	addItem: () =>
-		console.log 'přidávám item  -> nutno dodělat' #TODO: Dodělat přidávání itemu
-		#@repaintTeams()
+		status = @newTeamFilter.getStatus()
+		if status.team isnt ComponentDropdown.EmptyOption
+			isIn = no
+			(isIn = true; break) for team in @teams when status.team.id is team?.id_team
+			if isIn is no
+				@teams.push
+					is_admin: @newTeamCheckBox.isChecked()
+					department: status.department.value
+					id_department: status.department.id
+					team: status.team.value
+					id_team: status.team.id
+				index = @teams.length - 1;
+				@teamWrapper.appendChild @getTeamItemDom @teams[index], index
+			else
+				@addNotification 'User is allready in this team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error
+		else
+			@addNotification 'You have to choose a team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error
+		return
+
+
 
 
 
 ComponentEditUser.WRAPPER_CLASS = 'edit-user'
 ComponentEditUser.ITEM_WRAPPER_CLASS = 'edit-user-team-item'
 ComponentEditUser.TEAM_WRAPPER_CLASS = 'team-wrapper'
+ComponentEditUser.NEW_TEAM_WRAPPER_CLASS = 'new-team-wrapper'
 ComponentEditUser.USER_INFO_WRAPPER_CLASS = 'user-info-wrapper'
 ComponentEditUser.INPUT_NAME_CLASS = 'input-name'
 ComponentEditUser.INPUT_SURNAME_CLASS = 'input-surname'

@@ -54,9 +54,11 @@ class ComponentAddTask extends ComponentBase
 		if data.name? is 'error'
 			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
 				ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@fire ComponentAddTask.EventType.SAVE_FAIL, null
 		else
 			@addNotification 'Saving was successful!', ComponentAddTask.NOTIFICATION_DURATION,
 				NotificationCenter.EventType.success
+			@fire ComponentAddTask.EventType.SAVE_SUCCESS, null
 		return
 
 

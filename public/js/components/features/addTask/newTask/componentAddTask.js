@@ -74,8 +74,10 @@
     ComponentAddTask.prototype.onSave = function(data) {
       if ((data.name != null) === 'error') {
         this.addNotification("Something messed up during saving!\n error code: " + (data.code != null), ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error);
+        this.fire(ComponentAddTask.EventType.SAVE_FAIL, null);
       } else {
         this.addNotification('Saving was successful!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.success);
+        this.fire(ComponentAddTask.EventType.SAVE_SUCCESS, null);
       }
     };
 

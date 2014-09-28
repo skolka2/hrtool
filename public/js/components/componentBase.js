@@ -177,4 +177,5 @@ ComponentBase.EventType = {
 };
 ComponentBase.CLICK_EVENT = 'click';
 ComponentBase.NotificationCenter = null;
+ComponentBase.DEFAULT_NOTIFICATION_DURATION = 3000;
 

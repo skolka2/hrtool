@@ -29,7 +29,7 @@
     function ComponentTaskListsInView(title, listCompleted, listNotCompleted, useFilter) {
       this.title = title;
       this.useFilter = useFilter;
-      ComponentTaskListsInView.__super__.constructor.apply(this, arguments);
+      ComponentTaskListsInView.__super__.constructor.call(this);
       this.listCompleted = listCompleted();
       this.listNotCompleted = listNotCompleted();
       this.taskFilter = null;
@@ -56,7 +56,7 @@
       hideAll = new ComponentHide(outerHideHeader, listsWrapper, false);
       hideAll.render(outerHideWrapper);
       if (this.useFilter) {
-        this.taskFilterData = ComponentFilterFormatter.factory.createTeamDropdowns(this.departments, this.teams);
+        this.taskFilterData = ComponentFilterFormatter.factory.createTeamDropdownsData(this.departments, this.teams);
         this.taskFilter = new ComponentFilter(this.taskFilterData, ['department', 'team']);
         this.taskFilter.render(listsWrapper);
         this.listen(ComponentFilter.EventType.UPDATED, this.taskFilter, this.handleFilterUpdate);

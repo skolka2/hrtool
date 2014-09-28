@@ -147,32 +147,33 @@ module.exports = ComponentTableFactory =
 				title: 'Functions',
 				keys: ['id_user'],
 				formatter: (params) ->
-					div = document.createElement('div')
+					div = document.createElement 'div'
 					div.className = 'functions-div'
-					button = document.createElement('button')
-					button.innerHTML = 'View Tasks'
-					div.appendChild(button)
 
-					button = document.createElement('button')
-					button.innerHTML = 'Add New Task'
-					div.appendChild(button)
-					popup = ComponentPopupFactory.getNewTaskPopup(button)
-					popup.render(document.getElementById('popup-wrapper'))
+					buttonV = document.createElement 'button'
+					buttonV.innerHTML = 'View Tasks'
 
-					button = document.createElement('button')
-					button.innerHTML = 'Edit'
-					div.appendChild(button)
-					popup = ComponentPopupFactory.getUserEditPopup(button, params[0])
-					popup.render(document.getElementById('popup-wrapper'))
+					buttonA = document.createElement 'button'
+					buttonA.innerHTML = 'Add New Task'
+					buttonA.addEventListener 'click', (ev) ->
+						popup = ComponentPopupFactory.getNewTaskPopup()
+						popup.open()
+					, no
 
-					button = document.createElement('button')
-					button.innerHTML = 'Remove'
-					div.appendChild(button)
+					buttonE = document.createElement 'button'
+					buttonE.innerHTML = 'Edit'
+					buttonE.addEventListener 'click', (ev) ->
+						popup = ComponentPopupFactory.getUserEditPopup params[0]
+						popup.open()
+					, no
 
+					buttonR = document.createElement 'button'
+					buttonR.innerHTML = 'Remove'
+
+					div.appendChild buttonV
+					div.appendChild buttonA
+					div.appendChild buttonE
+					div.appendChild buttonR
 					return div
-				}
+			}
 		]
-
-
-
-
