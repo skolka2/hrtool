@@ -68,7 +68,11 @@ ComponentDropdown.prototype._handleListOpen = function () {
 
         /*Close list on click in body (outside of span)*/
         this._listEl.style.visibility = 'visible';
-        this.searchEl.focus();
+
+        if(this.useSearch) {
+            this.searchEl.focus();
+        }
+
         var onClick;
         onClick = function (ev) {
             if (this.getElement() === ev.target || this.getElement().contains(ev.target)) {
