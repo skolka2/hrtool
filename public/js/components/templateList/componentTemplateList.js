@@ -119,7 +119,7 @@ ComponentTemplateList.prototype.addRow = function (data) {
     this.getElement().appendChild(jadeTask); //because I need addChild to exist div
 
     //create department and team
-    var div = jadeTask.getElementsByClassName(divsName.id_department).item();
+    var div = jadeTask.getElementsByClassName(divsName.id_department).item(0);
     this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
     dropdown.render(div);
     return jadeTask;
@@ -172,19 +172,19 @@ ComponentTemplateList.prototype.handleOnClick = function (ev) {
             this.handleEditText(objectData);
         }
         else if (target.classList.contains("dropDownItem")) {
-            rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+            rowEl.getElementsByClassName("save").item(0).innerHTML = "Save";
         }
     }
 };
 
 ComponentTemplateList.prototype.handleEditText = function (data) {
-    data.rowEl.getElementsByClassName("save").item().innerHTML = "Save";
+    data.rowEl.getElementsByClassName("save").item(0).innerHTML = "Save";
 };
 
 ComponentTemplateList.prototype.handleButtonSave = function (data) {
 
-    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item();
-    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item();
+    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item(0);
+    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item(0);
     var dropStatus = this.dropdowns[data.id].getStatus();
     var error = false;
     if(titleEl.value == ""){

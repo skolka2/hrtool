@@ -109,21 +109,21 @@ ComponentTaskImplicit.prototype.createDom = function () {
     this.element = wrapper;
 
     //Create Department and Team
-    var div = wrapper.getElementsByClassName(divsName.department_team).item();
+    var div = wrapper.getElementsByClassName(divsName.department_team).item(0);
     this.addChild(divsName.department_team + this.dropdown.componentId, this.dropdown, {el: div});
     this.dropdown.render(div);
 
     //Create buddy Department and Team
-    div = wrapper.getElementsByClassName(divsName.buddy_department_team).item();
+    div = wrapper.getElementsByClassName(divsName.buddy_department_team).item(0);
     this.addChild(divsName.buddy_department_team + this.dropdown.componentId, this.buddy_dropdown, {el: div});
     this.buddy_dropdown.render(div);
 
     //create task start at
-    div = wrapper.getElementsByClassName(divsName.task_start).item();
+    div = wrapper.getElementsByClassName(divsName.task_start).item(0);
     div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
     //create task length
-    div = wrapper.getElementsByClassName(divsName.task_length).item();
+    div = wrapper.getElementsByClassName(divsName.task_length).item(0);
     div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
     wrapper.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
@@ -172,7 +172,7 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
             this.handleEditText(objectData);
         }
         else if (target.classList.contains("dropDownItem")) {
-            rowEl.getElementsByClassName("save").item().innerHTML = "Add";
+            rowEl.getElementsByClassName("save").item(0).innerHTML = "Add";
         }
     }
 };
@@ -180,13 +180,13 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
 ComponentTaskImplicit.prototype.handleEditText = function (data) {
     data.object.disabled = false;
     data.object.focus();
-    data.rowEl.getElementsByClassName("save").item().innerHTML = "Add";
+    data.rowEl.getElementsByClassName("save").item(0).innerHTML = "Add";
 };
 
 ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
     data.object.innerHTML = "Saving";
-    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item();
-    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item();
+    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item(0);
+    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item(0);
     var error = false;
     if (lengthEl.value == "") {
         var newDiv = document.createElement('div');
