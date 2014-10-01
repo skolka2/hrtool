@@ -147,7 +147,7 @@ ComponentBase.prototype.setInvalidInputClass = function(element){
     element = element || this.element;
     this._invalidInputs.push(element);
     element.classList.add(Const.INVALID_INPUT_CLASS);
-    element.addEventListener('click', this.handleFocusEvent.bind(this));
+    element.addEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent.bind(this));
 };
 
 ComponentBase.prototype.handleFocusEvent = function(e){
@@ -161,7 +161,7 @@ ComponentBase.prototype.handleFocusEvent = function(e){
         }
     }
     element.classList.remove(Const.INVALID_INPUT_CLASS);
-    element.removeEventListener('click', this.handleFocusEvent.bind(this));
+    element.removeEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent.bind(this));
 };
 
 
@@ -173,6 +173,6 @@ ComponentBase.EventType = {
     BLUR: "blur",
     DOMContentLoaded: "DOMContentLoaded"
 };
-
+ComponentBase.CLICK_EVENT = 'click';
 ComponentBase.NotificationCenter = null;
 

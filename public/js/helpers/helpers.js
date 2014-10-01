@@ -69,7 +69,7 @@ var helper = module.exports = {
         getDateInputFormat: function(date){
             var getMonth = date.getMonth();
             var getDate = date.getDate();
-            var month = getMonth < 10 ? '0' + (getMonth + 1) : getMonth + 1;
+            var month = getMonth < 9 ? '0' + (getMonth + 1) : getMonth + 1;
             var day = getDate < 10 ? '0' + getDate : getDate;
             return date.getFullYear() + '-' + month + '-' + day;
         }

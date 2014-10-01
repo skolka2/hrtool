@@ -1,4 +1,5 @@
 var ViewBase =  require('./viewBase');
+var ComponentBase = require('../components/componentBase');
 var ComponentCheckBox = require('../components/features/componentCheckBox');
 var ComponentTaskImplicit = require('../components/features/addTask/componentTaskImplicit');
 var ComponentHide = require('../components/features/componentHide');
@@ -86,7 +87,7 @@ ViewTest.prototype.render = function(){
 
     var notificationButton1 = document.createElement('button');
     notificationButton1.innerText = "OK";
-    notificationButton1.addEventListener('click', (function(event){
+    notificationButton1.addEventListener(ComponentBase.CLICK_EVENT, (function(event){
         component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.success);
     }));
 
@@ -94,7 +95,7 @@ ViewTest.prototype.render = function(){
 
     var notificationButton2 = document.createElement('button');
     notificationButton2.innerText = "ERR";
-    notificationButton2.addEventListener('click', (function(event){
+    notificationButton2.addEventListener(ComponentBase.CLICK_EVENT, (function(event){
         component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.error);
     }));
 
@@ -102,7 +103,7 @@ ViewTest.prototype.render = function(){
 
     var notificationButton3 = document.createElement('button');
     notificationButton3.innerText = "budiž";
-    notificationButton3.addEventListener('click', (function(event){
+    notificationButton3.addEventListener(ComponentBase.CLICK_EVENT, (function(event){
         component.addNotification(event.toString(), 3000, ComponentNotificationCenter.EventType.neutral);
     }));
 

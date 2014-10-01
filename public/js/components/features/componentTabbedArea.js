@@ -53,7 +53,7 @@ ComponentTabbedArea.prototype.createDom = function(){
     }
     this.element.appendChild(ul);
     this.element.appendChild(divWrapper);
-    this.element.addEventListener('click', this.handleClickEvent.bind(this), false);
+    this.element.addEventListener(ComponentBase.CLICK_EVENT, this.handleClickEvent.bind(this), false);
 };
 
 

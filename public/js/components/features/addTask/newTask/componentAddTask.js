@@ -100,9 +100,9 @@ ComponentAddTask.prototype.createDom = function(){
     this.addChild('tabbedArea', this._tabbedAreaComponent, {el: tabbedAreaDiv});
 
     var button = this.element.getElementsByClassName(jadeData.saveButtonClass)[0];
-    button.addEventListener('click', this.handleSaveClickEvent.bind(this), false);
+    button.addEventListener(ComponentBase.CLICK_EVENT, this.handleSaveClickEvent.bind(this), false);
 
-    this.element.addEventListener('click', this.handleClickEvent.bind(this), false);
+    this.element.addEventListener(ComponentBase.CLICK_EVENT, this.handleClickEvent.bind(this), false);
 };
 
 
@@ -163,7 +163,8 @@ ComponentAddTask.prototype.handleSaveClickEvent = function(){
 
 ComponentAddTask.prototype.checkInputs = function(userStatus, taskStatus, dateFrom, length, selectedTab){
     var ret = true;
-    var now = new Date();
+    var date = new Date();
+    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
 
     if(userStatus.department.id === -1){
         this.addNotification(document.createTextNode('User department wasn\'t picked!'),
@@ -205,8 +206,7 @@ ComponentAddTask.prototype.checkInputs = function(userStatus, taskStatus, dateFr
         ret = false;
     }
 
-    if(dateFrom == 'Invalid Date' || dateFrom.getFullYear() < now.getFullYear() || dateFrom.getMonth() < now.getMonth()
-        || dateFrom.getDate() < now.getDate()){
+    if(dateFrom == 'Invalid Date' || dateFrom.getTime() < today.getTime()){
         this.addNotification(document.createTextNode('Date wasn\'t fill correctly!'),
             ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error);
         this.setInvalidInputClass(this._dateInput);
@@ -264,11 +264,11 @@ ComponentAddTask.prototype.checkInputs = function(userStatus, taskStatus, dateFr
 
 
 
-ComponentAddTask.prototype.handleClickEvent = function(e){
-    var type = e.srcElement.type;
+ComponentAddTask.prototype.handleClickEvent = function(event){
+    var type = event.target.type;
     if(type === 'text' || type === 'textarea' || type === 'number' || type === 'date'){
-        if(e.srcElement.className === 'invalid-input'){
-            e.srcElement.className = null;
+        if(event.target.className === 'invalid-input'){
+            event.target.className = null;
         }
     }
 };

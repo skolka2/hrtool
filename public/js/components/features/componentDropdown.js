@@ -235,7 +235,7 @@ ComponentDropdown.prototype.getIsEnabled = function() {
 ComponentDropdown.prototype.setInvalidInputClass = function(){
     if(this.getIsEnabled()) {
         this._selectedTextElement.classList.add(Const.INVALID_INPUT_CLASS);
-        this._selectedTextElement.addEventListener('click', this.handleFocusEvent);
+        this._selectedTextElement.addEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent);
     }
 };*/
 
