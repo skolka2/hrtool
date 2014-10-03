@@ -59,3 +59,5 @@ ComponentNotificationCenter.EventType = {
     neutral: 'notification-neutral',
     error: 'notification-error'
 };
+
+ComponentNotificationCenter.DEFAULT_TIME = 3000;

@@ -105,6 +105,16 @@ var ComponentFilterFormatter = {
                 ComponentFilterFormatter.transform(users, 'id_user', 'full_name', ['id_department', 'id_team'])
             ]);
             return res
+        },
+        createTeamRoleDropdowns : function(departments, role, teams){
+            var res = ComponentFilterFormatter.format([
+                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
+                ComponentFilterFormatter.transform(role, 'id_department_role', 'title', ['id_department']),
+                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
+                
+            ]);
+            return res;
+
         }
     }
 };

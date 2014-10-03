@@ -12,6 +12,8 @@ var ComponentNotificationCenter = require('../components/componentNotificationCe
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
+var ComponentFormAddUser = require('../components/forms/componentFormAddUser');
+
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -27,7 +29,8 @@ ViewTest.prototype.render = function(){
 
     //Neckar view___________________________________________________________________________
 
-//Fanda View START
+ //Fanda View START
+
     
     var fandaDiv = document.createElement('div');
     fandaDiv.id = "fanda-div";
@@ -54,15 +57,23 @@ ViewTest.prototype.render = function(){
     var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
     b.render(viewWrapper);
 
+    var divForm = document.createElement('div');
+    divForm.innerHTML = "<br/><br/><br/><br/>ComponentFormAddUser...<br><br>";
+
+    
+    var form = new ComponentFormAddUser();
+    form.render(divForm);
+
+    
+    fandaDiv.appendChild(divForm);
+    var tab = document.createElement("div");
+    tab.innerHTML = "<br><br><br><br><br><br><br><br>";
+    fandaDiv.appendChild(tab);
     mainWrapper.appendChild(fandaDiv);
     //Fanda View END
 
     //Witz view___________________________________________________________________________
 
-
-    this.component = new ComponentCheckBox("CheckBox");
-    var el = document.createElement('div');
-    el.innerHTML = 'This view contains component CheckBox.<br><br>';
     var body = document.getElementsByTagName('body')[0];
     var witzDiv = document.createElement('div');
     witzDiv.id = "witz-div"
@@ -109,27 +120,6 @@ ViewTest.prototype.render = function(){
 
     witzDiv.appendChild(notificationButton3);
 
-
-
-
-
-
-
-
-	var viewWrapper = document.createElement('div');
-	viewWrapper.className = "view-wraper";
-	viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
-
-	mainWrapper.appendChild(viewWrapper);
-	var div = document.createElement("div");
-	var c = new ComponentCheckBox("CheckBox");
-    var d = new ComponentCheckBox("CheckBox");
-
-    div.appendChild(c.getElement());
-    div.appendChild(d.getElement());
-
-	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
-    b.render(viewWrapper);
     //___________________________________________________________________________
 
 //Zibby:

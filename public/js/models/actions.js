@@ -58,7 +58,6 @@ hrtool.actions = {
      	var mediator = new Mediator();
      	mediator.loadData('tasks/finish', data, model);
      },
-
     getUsers : function(model, data){
         var mediator = new Mediator();
         mediator.loadData('user/get-all', data, model);
@@ -72,5 +71,14 @@ hrtool.actions = {
     insertNewTemplate : function(model, data){
         var mediator = new Mediator();
         mediator.loadData('template/insert', data, model);
+    },
+    saveFormAddUser: function (model, data) {
+        var mediator = new Mediator();
+        mediator.loadData('user/insert', data, model);
+    },
+    getHR: function(model, data) {
+        var mediator = new Mediator();
+        mediator.loadData('user/get/HR', data, model);
     }
+
 };
