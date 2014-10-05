@@ -24,7 +24,7 @@ ComponentTemplateList.prototype.createDom = function() {
 ComponentTemplateList.prototype.onLoad = function (data) {
     this.element.innerHTML = "";
     this.data = data;
-    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
+    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdownsData(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
 
     //Creating header titles and append to the div
     jadeHeaderData = {

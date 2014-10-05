@@ -1,11 +1,11 @@
 var ComponentBase = require('../componentBase');
 
-var ComponentCheckBox = module.exports =  function(labelText,checked){
+var ComponentCheckBox = module.exports =  function(labelText,checked, editable){
 	ComponentBase.apply(this);
 	this.super = ComponentBase;
 	this.labelText =  "";
-	
 
+    this.editable = editable != null ? editable : true;
 	if(!!labelText){
 		this.labelText = labelText;
 	}
@@ -54,7 +54,8 @@ ComponentCheckBox.prototype._setCheckClass = function(){
 
 //Tells what happens when we click on CheckBox
 ComponentCheckBox.prototype.handleOnClick = function(){
-	this.setChecked(!this.checked);
+    if(this.editable === true)
+	    this.setChecked(!this.checked);
 
 }
 
@@ -70,6 +71,10 @@ ComponentCheckBox.prototype.setChecked = function(checked){
 	this.checked = checked;
 	this._setCheckClass();
 	this.fire(ComponentBase.EventType.CHANGE,this.checked);
+}
+
+ComponentCheckBox.prototype.isChecked = function(){
+    return this.checked;
 }
 
 ComponentCheckBox.checkBoxClass = {

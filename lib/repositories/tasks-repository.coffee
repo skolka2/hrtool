@@ -110,4 +110,30 @@ module.exports = (dbClient) ->
 			params = [userId]
 
 			dbClient.queryAll sql, params, next
+		getImplicitTasks: (queryData, next) ->
+			unless queryData.sortBy in ['id_task_implicit','title', 'description', 'start_day', 'duration']
+				return next 'wrong name column'
+
+			if 'ASC' isnt queryData.sort_way and 'DESC' isnt queryData.sort_way
+				return next 'wrong order way (it suppose to be ASC or DESC)'
+			filterQuery = ' ';
+			if queryData?
+				if queryData.filterData?
+					if queryData.filterData.filter1?
+						filterQuery += "WHERE ti.id_department = #{@getValidInt(queryData.filterData.filter1)}"
+						if queryData.filterData.filter2?
+							filterQuery += " AND ti.id_team = #{@getValidInt(queryData.filterData.filter2)}"
+
+			dbClient.queryAll """SELECT ti.*, tt.title, tt.description FROM tasks_implicit  ti
+				JOIN task_templates tt ON tt.id_task_template = ti.id_task_template
+				 #{filterQuery}
+				ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $1 LIMIT $2""", [queryData.offset, queryData.limit], next
+
+
+		getValidInt:(n) ->
+			if n % 1 is 0
+				return n
+			else
+				return 0
 	}
+

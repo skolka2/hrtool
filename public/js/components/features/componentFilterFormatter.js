@@ -83,7 +83,7 @@ var ComponentFilterFormatter = {
          * @param templates - data for third dropdown
          * @returns {*} - data for componentFilter
          */
-        createTemplateDropdowns : function(departments, teams, templates){
+        createTemplateDropdownsData : function(departments, teams, templates){
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
@@ -91,14 +91,14 @@ var ComponentFilterFormatter = {
             ]);
             return res;
         },
-        createTeamDropdowns : function(departments, teams){
+        createTeamDropdownsData : function(departments, teams){
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
             ]);
             return res;
         },
-        createNewTaskDropdowns : function(departments, teams, users){
+        createUsersDropdownsData : function(departments, teams, users){
             var res = ComponentFilterFormatter.format([
                 ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
                 ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),

@@ -16,7 +16,7 @@ ComponentTaskImplicit.prototype.constructor = ComponentTaskImplicit;
 
 ComponentTaskImplicit.prototype.createDom = function () {
     var divsName = ComponentTaskImplicit.ListDivs;
-    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdowns(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
+    var dropDownData = ComponentFilterFormatter.factory.createTeamDropdownsData(this.helper.bulk.getData(['departments']), this.helper.bulk.getData(['teams']));
     var dataMap = this._getSelectedItem(this.data, dropDownData);
     this.dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);
     this.buddy_dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);

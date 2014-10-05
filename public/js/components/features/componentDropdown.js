@@ -57,6 +57,7 @@ ComponentDropdown.State = {
  */
 ComponentDropdown.prototype._handleListOpen = function () {
     if(this._enabled) {
+        this._selectedTextElement.classList.remove(ComponentBase.INVALID_INPUT_CLASS);
         if (this._listEl.style.visibility === 'visible') {
             this._listEl.style.visibility = 'hidden';
             if(this.useSearch) {
@@ -234,14 +235,6 @@ ComponentDropdown.prototype.setEnabled = function(enabled) {
 ComponentDropdown.prototype.getIsEnabled = function() {
     return this._enabled;
 };
-
-/*
-ComponentDropdown.prototype.setInvalidInputClass = function(){
-    if(this.getIsEnabled()) {
-        this._selectedTextElement.classList.add(Const.INVALID_INPUT_CLASS);
-        this._selectedTextElement.addEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent);
-    }
-};*/
 
 /**
  * Function that handles search after changing input from user

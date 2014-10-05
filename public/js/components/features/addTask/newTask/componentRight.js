@@ -1,69 +1,77 @@
-var ComponentBase = require('../../../componentBase');
-var ComponentFilterFormatter = require('../../componentFilterFormatter');
-var ComponentFilter = require('../../componentFilter');
-var hrtool = require('../../../../models/actions');
-var Model = require('../../../../models/model');
+(function() {
+  var ComponentBase, ComponentFilter, ComponentFilterFormatter, ComponentRight, Model, hrtool,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-var ComponentRight = function() {
-    ComponentBase.prototype.constructor.call(this);
-    this.super = ComponentBase;
-    this.setModel(new Model(ComponentRight.EventType.GET_DATA), ComponentRight.EventType.GET_DATA);
-    hrtool.actions.getTemplatesData(this.model);
-};
+  ComponentBase = require('../../../componentBase');
 
-ComponentRight.prototype = Object.create(ComponentBase.prototype);
-ComponentRight.constructor = ComponentRight;
+  ComponentFilterFormatter = require('../../componentFilterFormatter');
 
+  ComponentFilter = require('../../componentFilter');
 
+  hrtool = require('../../../../models/actions');
 
-ComponentRight.prototype.onLoad = function(templates){
-    this._templates = templates;
-    var departments = this.helper.bulk.getData(['departments']);
-    var teams = this.helper.bulk.getData(['teams']);
-    var data = ComponentFilterFormatter.factory.createTemplateDropdowns(departments, teams, templates);
+  Model = require('../../../../models/model');
 
-    this._componentFilter = new ComponentFilter(data, ['department', 'team', 'task_template']);
-    this.addChild('componentFilter', this._componentFilter, {el: this.element});
-    this._componentFilter.render(this.element);
-};
+  ComponentRight = (function(_super) {
+    __extends(ComponentRight, _super);
 
-
-
-/**
- * Creates component's DOM. Inserts html elements into one <div>
- */
-ComponentRight.prototype.createDom = function() {
-    this.element = document.createElement('div');
-    this.element.className = ComponentRight.WRAPPER_CLASS;
-
-    var headline = document.createElement('span');
-    headline.className = ComponentRight.HEADLINE_CLASS;
-    headline.innerHTML = 'Choose saved task';
-    this.element.appendChild(headline);
-
-};
-
-
-ComponentRight.prototype.getSelectedTemplate = function(id){
-    for(var i = 0; i < this._templates.length; i++){
-        if(this._templates[i].id_task_template === id){
-            return this._templates[i];
-        }
+    function ComponentRight() {
+      ComponentRight.__super__.constructor.call(this);
+      this.setModel(new Model(ComponentRight.EventType.GET_USERS), ComponentRight.EventType.GET_USERS);
+      hrtool.actions.getTemplatesData(this.model);
     }
-};
 
+    ComponentRight.prototype.onLoad = function(templates) {
+      var data, departments, teams;
+      this._templates = templates;
+      departments = this.helper.bulk.getData(['departments']);
+      teams = this.helper.bulk.getData(['teams']);
+      data = ComponentFilterFormatter.factory.createTemplateDropdownsData(departments, teams, templates);
+      this._componentFilter = new ComponentFilter(data, ['department', 'team', 'task_template']);
+      this.addChild('componentFilter', this._componentFilter, {
+        el: this.element
+      });
+      return this._componentFilter.render(this.element);
+    };
 
+    ComponentRight.prototype.createDom = function() {
+      var headline;
+      this.element = document.createElement('div');
+      this.element.className = ComponentRight.WRAPPER_CLASS;
+      headline = document.createElement('span');
+      headline.className = ComponentRight.HEADLINE_CLASS;
+      headline.innerHTML = 'Choose saved task';
+      return this.element.appendChild(headline);
+    };
 
-ComponentRight.prototype.getStatus = function(){
-    return this._componentFilter.getStatus();
-};
+    ComponentRight.prototype.getSelectedTemplate = function(id) {
+      var template, _i, _len, _ref;
+      _ref = this._templates;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        template = _ref[_i];
+        if (template.id_task_template === id) {
+          return template;
+        }
+      }
+    };
 
+    ComponentRight.prototype.getStatus = function() {
+      return this._componentFilter.getStatus();
+    };
 
+    return ComponentRight;
 
-ComponentRight.WRAPPER_CLASS = 'task-template-div';
-ComponentRight.HEADLINE_CLASS = 'task-template-headline';
-ComponentRight.EventType = {
+  })(ComponentBase);
+
+  ComponentRight.WRAPPER_CLASS = 'task-template-div';
+
+  ComponentRight.HEADLINE_CLASS = 'task-template-headline';
+
+  ComponentRight.EventType = {
     GET_DATA: 'template/get-all'
-};
+  };
 
-module.exports = ComponentRight;
+  module.exports = ComponentRight;
+
+}).call(this);

@@ -7,14 +7,16 @@ var helper = require('../helpers/helpers');
 var ComponentFilter = require('../components/features/componentFilter');
 var Model = require('../models/model');
 var ComponentNotificationCenter = require('../components/componentNotificationCenter');
+var ComponentTableFactory = require('../components/table/componentTableFactory');
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
 var CoffeeTest = require('../coffee_test/test.js');
 var ComponentPopup = require('../components/componentPopup');
 var ComponentPopupFactory = require('../components/componentPopupFactory');
-var ComponentTaskListFactory = require('../components/tasks/componentTaskListFactory');
-var ComponentTaskListsInView = require('../components/tasks/componentTaskListsInView');
+var ComponentFilterFormatter = require('../components/features/componentFilterFormatter');
+var ComponentTableWrapper = require('../components/table/componentTableWrapper');
+var ComponentTextInput = require('../components/features/componentTextInput');
 var ComponentStatusBarFactory = require('../components/features/componentStatusBarFactory');
 
 var ViewTest =  module.exports = function(){
@@ -159,14 +161,21 @@ ViewTest.prototype.render = function(){
     //___________________________________________________________________________
 
 //Zibby:
-   /* var zibbyDiv = document.createElement('div');
+    var zibbyDiv = document.createElement('div');
     zibbyDiv.id = 'zibby';
     zibbyDiv.innerHTML = '<h3>Zibby div</h3>';
 
-    var component = new ComponentAddTask();
+    var filterData = ComponentFilterFormatter.factory.createTeamDropdownsData(
+        this.helper.bulk.getDepartmentData(),
+        this.helper.bulk.getTeamData()
+    );
+    var component = new ComponentTableWrapper(
+        ComponentTableFactory.createUsersTable(),
+        new ComponentFilter(filterData),
+        new ComponentTextInput('Type name'));
     mainWrapper.appendChild(zibbyDiv);
     component.render(zibbyDiv);
-    zibbyDiv.appendChild(document.createElement('br'));*/
+    zibbyDiv.appendChild(document.createElement('br'));
 
 //Zibby END
 
@@ -187,9 +196,34 @@ ViewTest.prototype.render = function(){
 
 
      //simunek cool view_____________________________________
-     //example of jade template 
-     mainWrapper.appendChild(helper.tpl.create("templates/example",{label:"testfunguje"}));
+     //example of jade template
+    var marekDiv = document.createElement('div');
+    marekDiv.id = 'zibby';
+    marekDiv.innerHTML = '<h3>marekDiv div</h3>';
+    // mainWrapper.appendChild(helper.tpl.create("templates/example",{label:"testfunguje"}));
+   // var table = ComponentTableFactory.implicitTable();
+   
 
+   
+    //mainWrapper.appendChild(table.element);
+
+
+
+    var filterData1 = ComponentFilterFormatter.factory.createTeamDropdownsData(
+        this.helper.bulk.getDepartmentData(),
+        this.helper.bulk.getTeamData()
+    );
+    var component1 = new ComponentTableWrapper(
+        ComponentTableFactory.implicitTable(),
+        new ComponentFilter(filterData1),
+        new ComponentTextInput('Type name'));
+    mainWrapper.appendChild(marekDiv);
+    component1.render(marekDiv);
+    marekDiv.appendChild(document.createElement('br'));
+
+
+   
+    //mainWrapper.appendChild(table1.element);
      //simunek view piece out_____________________________________
 
 };

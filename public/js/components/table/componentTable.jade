@@ -1,0 +1,7 @@
+div.header-table
+    div.header-row
+        each    item in array
+            if    item.sortKey
+                div.header-column.sortable.ASC(sort-by=item.sortKey)= 	item.title
+            else
+                div.header-column(sort-by=item.sortKey)= 	item.title

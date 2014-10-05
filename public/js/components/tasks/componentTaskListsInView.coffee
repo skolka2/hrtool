@@ -40,7 +40,7 @@ class ComponentTaskListsInView extends ComponentBase
 		hideAll.render outerHideWrapper
 
 		if @useFilter
-			@taskFilterData = ComponentFilterFormatter.factory.createTeamDropdowns @departments, @teams
+			@taskFilterData = ComponentFilterFormatter.factory.createTeamDropdownsData @departments, @teams
 			@taskFilter = new ComponentFilter @taskFilterData, ['department', 'team']
 			@taskFilter.render listsWrapper
 			@listen ComponentFilter.EventType.UPDATED, @taskFilter, @handleFilterUpdate

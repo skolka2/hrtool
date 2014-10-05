@@ -53,8 +53,15 @@ module.exports = function(grunt) {
 		watch:{
 			app: {
 				files: ["public/**", '!public/dist/**'],
-				tasks: ['default']
+				tasks: ['dev'],
+				options: {
+					spawn: false,
+				}
+				
 			}
+
+
+
 		}
 
 	});

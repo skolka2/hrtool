@@ -147,7 +147,7 @@ ComponentBase.prototype.setInvalidInputClass = function(element){
     element = element || this.element;
     this._invalidInputs.push(element);
     element.classList.add(Const.INVALID_INPUT_CLASS);
-    element.addEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent.bind(this));
+    element.addEventListener(ComponentBase.EventType.CLICK, this.handleFocusEvent.bind(this));
 };
 
 ComponentBase.prototype.handleFocusEvent = function(e){
@@ -161,15 +161,17 @@ ComponentBase.prototype.handleFocusEvent = function(e){
         }
     }
     element.classList.remove(Const.INVALID_INPUT_CLASS);
-    element.removeEventListener(ComponentBase.CLICK_EVENT, this.handleFocusEvent.bind(this));
+    element.removeEventListener(ComponentBase.EventType.CLICK, this.handleFocusEvent.bind(this));
 };
 
 
 ComponentBase.mainWrapper = "main-wrapper";
+ComponentBase.INVALID_INPUT_CLASS = 'invalid-input';
 ComponentBase.EventType = {
 	CLICK: "click",
 	CHANGE: "change",
     ONKEYPRESS: "keypress",
+    KEYUP: 'keyup',
     BLUR: "blur",
     DOMContentLoaded: "DOMContentLoaded"
 };
