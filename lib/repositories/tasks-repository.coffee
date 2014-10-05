@@ -135,17 +135,5 @@ module.exports = (dbClient) ->
 				return n
 			else
 				return 0
-
-		getImplicitTasks: (params, next) ->
-			unless params.sortBy in ['id_task_implicit','title', 'description', 'start_day', 'duration']
-				return next 'wrong name column'
-
-			if 'ASC' isnt params.sort_way and 'DESC' isnt params.sort_way
-				return next 'wrong order way (it suppose to be ASC or DESC)'
-
-			dbClient.queryAll """SELECT ti.*, tt.title, tt.description FROM tasks_implicit  ti
-				JOIN task_templates tt ON tt.id_task_template = ti.id_task_template
-				ORDER BY #{params.sortBy} #{params.sort_way} OFFSET $1 LIMIT $2""", [params.offset, params.limit], next
-
-
 	}
+

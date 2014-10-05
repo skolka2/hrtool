@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
   var ComponentBase, ComponentFilter, ComponentFilterFormatter, ComponentNotificationCenter, ComponentTemplateList, Model, helper, hrtool,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
