@@ -13,7 +13,8 @@ var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
 var CoffeeTest = require('../coffee_test/test.js');
-
+var ComponentPopup = require('../components/componentPopup');
+var ComponentPopupFactory = require('../components/componentPopupFactory');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -35,8 +36,7 @@ ViewTest.prototype.render = function(){
 
     //Neckar view___________________________________________________________________________
 
- //Fanda View START
-
+//Fanda View START
     
     var fandaDiv = document.createElement('div');
     fandaDiv.id = "fanda-div";
@@ -117,6 +117,42 @@ ViewTest.prototype.render = function(){
 
     witzDiv.appendChild(notificationButton3);
 
+   var popupTrigger = document.createElement('span');
+    popupTrigger.innerHTML = "<strong>POPUP</strong>";
+    witzDiv.appendChild(document.createElement('br'));
+    witzDiv.appendChild(popupTrigger);
+    /*var popupInside = document.createElement('div');
+    popupInside.innerHTML = '<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQClHUQfxCE3QBav93MB_r2j5zE00Jqn_LwhHrqPWQc6cKZwDFX" />';*/
+
+
+    var specialOpenClose = {
+        open: {
+            src: component,
+            type: ComponentFilter.EventType.UPDATED
+        }
+    };
+    var popup = ComponentPopupFactory.getCheckBoxPopup(popupTrigger, specialOpenClose);
+    popup.render(document.body);
+
+
+
+
+
+
+	var viewWrapper = document.createElement('div');
+	viewWrapper.className = "view-wraper";
+	viewWrapper.innerHTML = "Test view to see how componentHide works...<br><br>";
+
+	mainWrapper.appendChild(viewWrapper);
+	var div = document.createElement("div");
+	var c = new ComponentCheckBox("CheckBox");
+    var d = new ComponentCheckBox("CheckBox");
+
+    div.appendChild(c.getElement());
+    div.appendChild(d.getElement());
+
+	var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
+    b.render(viewWrapper);
     //___________________________________________________________________________
 
 //Zibby:

@@ -1,0 +1,47 @@
+.popup-main {
+  z-index: -100;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(30, 30, 30, 0.8);
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: none;
+  align-content: center;
+}
+
+.popup-main.popup-opened {
+  z-index: 100;
+  display: block;
+}
+
+.popup-container {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  top: 150px;
+  text-align: center;
+}
+
+.popup-container > * {
+  display: inline-block;
+}
+
+.popup-close-cross {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  background-image: url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxISERQUDRIPFQ0VFRUVDQ4XFhQWGQ0XFxYZGhUdFBUbKCggHyYxJxQVLT0hJSksMi4zGCs1ODMvNygwNCsBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAEYARgMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQQFBgcCAwj/xAA1EAABBAECAwQHBwUAAAAAAAABAAIDBBEFEiExURNBYXEGBxQiYoGhMkJSgpGx4SMzNFNy/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ANxQhcOcg6JXBkTWezhR82ogd6CZ7VdB6rg1ZvUJ5BfB70EyClTWGfKcNKDpCEIEcUytTYCdSFQuqS4BQReo33FwZEC6Vxwxg7/NRGvXaFAA6xZc6cjIqRl37N975kgI1DWhQ0+xqDgDO4mKmD/1tH1DifBqyv1aUqWqWp49ZfK67MN1aUvI3O4l2PHlgdAguMXrN0FxDXVLkbf9uPs+JLJC76K20WRzRe0aRY9or/fiJy9nlyOfhIysn0L1SWX6o+raDm04SHzWRwEsZJ2bD1OD5YPReVr0jr6TrG7RC/2Fm2O1HuLm2ME9pgnn3YPUeKDc9J1EPAIP8KwQSZVRvBrLLJIcdhZZ2jMctwxux5hzT8yrHQkyEEmEJGlCDiXkq9rI90+SscgURqMOQUGW+tqMu9H6pYPdjsjtfh/vMOfzOH6rMPV36K2NQuMZWLo2xua+ayOHs4ByC0/i4cB1W+MpxTRz0Ln+PYyYXfgeenjkAjxWUyXtT9HGWKrYmdnM4mK9tJzwwC13LOByPIoNk1PVa98XNMqW3M1BkQa+UYzkjjg/exwDtuMb+BB5fLetaVLUnfBZaWzRnDh16EHvB6rrSNZmrWGWYHkWGO3B/PcT9rd1zk581rGiaNa165Hf1SGOChE1u44LfaQ05AGeY8eWEF4jicylpMbwRK2u3eO9u2KMOz8yFatNHAKBM3tNgytH9Fo7OuPhHM/M/QBWalHgIHzEJWhCBSE2sRZTpckIKxqmmB4II/hMRcsRt7OaOOzBy2ScHY6bsEH5hW6SHKaSUge5BUIWU2ODodGqNlHEP2wt2nwcG5Tyc2LOBOWth7oGZDfzHmf28FPigOi94qgCBjp9INAwFMRMwljiwvUBAoQhCAQhCBMJC1CECbUoCEIOkIQgEIQg/9k=");
+  background-size: contain;
+  -webkit-filter: opacity(50%);
+  margin-left: 10px;
+}
+
+.popup-inner {
+  background-color: rgba(255, 255, 255, 0.85);
+  min-height: 150px;
+}
+
+.popup-close-cross:hover {
+  -webkit-filter: brightness(100%);
+}
