@@ -1,31 +1,30 @@
-div(class="#{wrapper.className}")
+div.implicit-task
     //- creating title
     div(class="#{title.wrapper.className}")
-        span(class="#{title.title.className}")
-            | #{title.title.text}
+        span.head
+            | Title:
         span
             | #{title.data.text}
     //- creating departments and teams
     div(class="#{dAt.wrapper.className}")
-        span(class="#{dAt.title.className}")
-            | #{dAt.title.text}
+        span.head
+            | Department and Team:
     //- creating buddy departments and teams
     div(class="#{bDaT.wrapper.className}")
-        span(class="#{bDaT.title.className}")
-            | #{bDaT.title.text}
+        span.head
+            | Buddy department and Team:
     //- creating start
     div(class="#{start.wrapper.className}")
-        span(class="#{start.title.className}")
-            | #{start.title.text}
+        span.head
+            | Task starts:
         input(class="#{start.data.className}", type='number', min='0')
     //- creating length
     div(class="#{length.wrapper.className}")
-        span(class="#{length.title.className}")
-            | #{length.title.text}
+        span.head
+            | Task length(days):
         input(class="#{length.data.className}", type='number', min='0')
     //- creating add button
     div(class="#{save.wrapper.className}")
-        span(class="#{save.title.className}")
-            | #{save.title.text}
-        button(class="#{save.data.className}")
-            | #{save.data.text}
+        span.head
+        button(class="button save")
+            | Add

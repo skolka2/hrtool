@@ -21,16 +21,9 @@ ComponentTaskImplicit.prototype.createDom = function () {
     this.dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);
     this.buddy_dropdown = new ComponentFilter(dataMap.dd, ['department', 'teams']);
 
-    var jadeWrapper = {
-        className: "implicit-task"
-    };
     var jadeTitle = {
         wrapper: {
             className: divsName.title
-        },
-        title: {
-            className: "head",
-            text: "Title:"
         },
         data:{
             text: this.data.title
@@ -39,28 +32,16 @@ ComponentTaskImplicit.prototype.createDom = function () {
     var jadeDaT = {
         wrapper: {
             className: divsName.department_team
-        },
-        title: {
-            className: "head",
-            text: "Department and Team:"
         }
     };
     var jadeBuddyDaT = {
         wrapper: {
             className: divsName.buddy_department_team
-        },
-        title: {
-            className: "head",
-            text: "Buddy department and Team:"
         }
     };
     var jadeStart = {
         wrapper: {
             className: divsName.task_start
-        },
-        title: {
-            className: "head",
-            text: "Task starts:"
         },
         data:{
             text: this.data.title,
@@ -71,31 +52,17 @@ ComponentTaskImplicit.prototype.createDom = function () {
         wrapper: {
             className: divsName.task_length
         },
-        title: {
-            className: "head",
-            text: "Task length(days):"
-        },
         data:{
             text: this.data.title,
             className:  divsName.task_length + " text"
-            //atribs: {min: {key: "min", value: "0"}}
         }
     };
     var jadeSave = {
         wrapper: {
             className: divsName.route
-        },
-        title: {
-            className: "head",
-            text: "Task length(days):"
-        },
-        data:{
-            text: "Add",
-            className:  "button save"
         }
     };
     var jadeData = {
-        wrapper: jadeWrapper,
         title: jadeTitle,
         dAt: jadeDaT,
         bDaT: jadeBuddyDaT,
@@ -109,21 +76,21 @@ ComponentTaskImplicit.prototype.createDom = function () {
     this.element = wrapper;
 
     //Create Department and Team
-    var div = wrapper.getElementsByClassName(divsName.department_team).item(0);
+    var div = wrapper.getElementsByClassName(divsName.department_team)[0];
     this.addChild(divsName.department_team + this.dropdown.componentId, this.dropdown, {el: div});
     this.dropdown.render(div);
 
     //Create buddy Department and Team
-    div = wrapper.getElementsByClassName(divsName.buddy_department_team).item(0);
+    div = wrapper.getElementsByClassName(divsName.buddy_department_team)[0];
     this.addChild(divsName.buddy_department_team + this.dropdown.componentId, this.buddy_dropdown, {el: div});
     this.buddy_dropdown.render(div);
 
     //create task start at
-    div = wrapper.getElementsByClassName(divsName.task_start).item(0);
+    div = wrapper.getElementsByClassName(divsName.task_start)[0];
     div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
     //create task length
-    div = wrapper.getElementsByClassName(divsName.task_length).item(0);
+    div = wrapper.getElementsByClassName(divsName.task_length)[0];
     div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
     wrapper.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
@@ -172,7 +139,7 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
             this.handleEditText(objectData);
         }
         else if (target.classList.contains("dropDownItem")) {
-            rowEl.getElementsByClassName("save").item(0).innerHTML = "Add";
+            rowEl.getElementsByClassName("save")[0].innerHTML = "Add";
         }
     }
 };
@@ -180,13 +147,13 @@ ComponentTaskImplicit.prototype.handleOnClick = function (ev) {
 ComponentTaskImplicit.prototype.handleEditText = function (data) {
     data.object.disabled = false;
     data.object.focus();
-    data.rowEl.getElementsByClassName("save").item(0).innerHTML = "Add";
+    data.rowEl.getElementsByClassName("save")[0].innerHTML = "Add";
 };
 
 ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
     data.object.innerHTML = "Saving";
-    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text").item(0);
-    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text").item(0);
+    var lengthEl = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_length + " text")[0];
+    var start = data.rowEl.getElementsByClassName(ComponentTaskImplicit.ListDivs.task_start + " text")[0];
     var error = false;
     if (lengthEl.value == "") {
         var newDiv = document.createElement('div');

@@ -29,11 +29,7 @@ ComponentTemplateList.prototype.onLoad = function (data) {
     //Creating header titles and append to the div
     jadeHeaderData = {
         header: true,
-        wrapper: {
-            className: "template-header"
-        },
         data: {
-            className: "template-header-item",
             items: ComponentTemplateList.TemplateListDivs
         }
     };
@@ -69,7 +65,7 @@ ComponentTemplateList.prototype.addRow = function (data) {
         },
         data: {
             className: divsName.title + " text",
-            value: data.data[divsName.title ]
+            value: data.data[divsName.title]
         }
     };
 
@@ -79,7 +75,7 @@ ComponentTemplateList.prototype.addRow = function (data) {
         },
         data: {
             className: divsName.description + " text",
-            value: data.data[divsName.description ]
+            value: data.data[divsName.description]
         }
     };
     var jadeDaT = {
@@ -91,16 +87,10 @@ ComponentTemplateList.prototype.addRow = function (data) {
     var jadeSave = {
         wrapper: {
             className: divsName.route
-        },
-        data:{
-            text: "Save",
-            className:  "button save"
         }
     };
     var jadeDelete = {
         data:{
-            text: "Delete",
-            className:  "button delete",
             implicit: !!data.data.implicit
         }
     };
@@ -119,7 +109,7 @@ ComponentTemplateList.prototype.addRow = function (data) {
     this.getElement().appendChild(jadeTask); //because I need addChild to exist div
 
     //create department and team
-    var div = jadeTask.getElementsByClassName(divsName.id_department).item(0);
+    var div = jadeTask.getElementsByClassName(divsName.id_department)[0];
     this.addChild(divsName.id_department + dropdown.componentId, dropdown, {el: div});
     dropdown.render(div);
     return jadeTask;
@@ -172,19 +162,19 @@ ComponentTemplateList.prototype.handleOnClick = function (ev) {
             this.handleEditText(objectData);
         }
         else if (target.classList.contains("dropDownItem")) {
-            rowEl.getElementsByClassName("save").item(0).innerHTML = "Save";
+            rowEl.getElementsByClassName("save")[0].innerHTML = "Save";
         }
     }
 };
 
 ComponentTemplateList.prototype.handleEditText = function (data) {
-    data.rowEl.getElementsByClassName("save").item(0).innerHTML = "Save";
+    data.rowEl.getElementsByClassName("save")[0].innerHTML = "Save";
 };
 
 ComponentTemplateList.prototype.handleButtonSave = function (data) {
 
-    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text").item(0);
-    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text").item(0);
+    var titleEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.title + " text")[0];
+    var descEl = data.rowEl.getElementsByClassName(ComponentTemplateList.TemplateListDivs.description + " text")[0];
     var dropStatus = this.dropdowns[data.id].getStatus();
     var error = false;
     if(titleEl.value == ""){

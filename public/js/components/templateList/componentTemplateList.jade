@@ -1,7 +1,7 @@
 if header
-    div(class="#{wrapper.className}")
+    div.template-header
         each item in data.items
-            span(class="#{data.className}")
+            span.template-header-item
                 if data.items.id_department == item
                     | department and team
                 else
@@ -20,7 +20,7 @@ else
         div(class="#{dAt.wrapper.className}")
         //- creating save button and delete button
         div(class="#{save.wrapper.className}")
-            button(class="#{save.data.className}")
-                | #{save.data.text}
-            button(class="#{bdelete.data.className}", implicit= "#{bdelete.data.implicit}")
-                | #{bdelete.data.text}
+            button(class="button save")
+                | Save
+            button(class="button delete", implicit= "#{bdelete.data.implicit}")
+                | Delete
