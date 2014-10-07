@@ -155,10 +155,24 @@ ComponentAddTask.prototype.handleSaveClickEvent = function(){
             date_from: this._dateInput.value,
             date_to: dateTo
         });
+        this.clearInputs();
     }
 };
 
 
+ComponentAddTask.prototype.clearInputs = function(){
+    this._lengthInput.value = '';
+    this._dateInput.value = this.helper.format.getDateInputFormat(new Date());
+    this._componentFilter.unselectAll();
+    this._buddyDropdown.setSelection(ComponentDropdown.EmptyOption);
+
+    this._leftComponent._title.value = '';
+    this._leftComponent._text.value = '';
+    this._leftComponent._saveAsNew.setChecked(false);
+    this._leftComponent._filter.unselectAll();
+    this._leftComponent._filter.setActive(false);
+    this._rightComponent._componentFilter.unselectAll();
+};
 
 
 ComponentAddTask.prototype.checkInputs = function(userStatus, taskStatus, dateFrom, length, selectedTab){
