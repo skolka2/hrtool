@@ -5,7 +5,17 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		less:{
+        coffee: {
+            compile: {
+                expand: true,
+                flatten: false,
+                cwd: 'public/js',
+                src: ['**/*.coffee'],
+                dest: 'public/js',
+                ext: '.js'
+            }
+        },
+        less:{
 			develop:{
 				options:{
 					compress: false,
@@ -49,12 +59,13 @@ module.exports = function(grunt) {
 
 	});
 
+grunt.loadNpmTasks('grunt-contrib-coffee');
 grunt.loadNpmTasks('grunt-contrib-watch');
 grunt.loadNpmTasks("grunt-webpack");
 grunt.loadNpmTasks ('grunt-contrib-less');
 
 grunt.registerTask("default", ["dev"]);
-grunt.registerTask("dev", ["less:develop","webpack"]);
-grunt.registerTask("release", ["less:production","webpack"]);
+grunt.registerTask("dev", ["coffee","less:develop","webpack"]);
+grunt.registerTask("release", ["coffee","less:production","webpack"]);
 
 };

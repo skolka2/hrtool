@@ -18,14 +18,15 @@
     "socket.io": "^1.0.6"
   },
   "devDependencies": {
-    "jade-loader": "git+https://github.com/davidmoravek/jade-loader.git",
     "glob": "^4.0.5",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
+    "grunt-contrib-coffee": "^0.12.0",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-less": "^0.11.4",
     "grunt-contrib-watch": "~0.5.1",
     "grunt-webpack": "^1.0.8",
+    "jade-loader": "git+https://github.com/davidmoravek/jade-loader.git",
     "webpack": "^1.4.0-beta2"
   }
 }

@@ -13,6 +13,7 @@ var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
 var ComponentFormAddUser = require('../components/forms/componentFormAddUser');
+var CoffeeTest = require('../coffee_test/test.js');
 
 
 var ViewTest =  module.exports = function(){
@@ -26,6 +27,12 @@ ViewTest.prototype.constructor = ViewTest;
 ViewTest.prototype.render = function(){
     this.super.prototype.render.apply(this, arguments);
     var mainWrapper = document.getElementById(this.super.mainWrapper);
+
+
+    //HONZA VIEW
+
+    var testik = new CoffeeTest('nu info');
+    testik.addTrigger(mainWrapper);
 
     //Neckar view___________________________________________________________________________
 
