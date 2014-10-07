@@ -46,7 +46,7 @@ ComponentNavBar.prototype.createMenu = function(){
         menu.appendChild(homeEl);
         var tasksEl = this.helper.dom.createElement('<a href="#taskAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
         menu.appendChild(tasksEl);
-        var peopleEl = this.helper.dom.createElement('<a href="#poopleAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>People</div></a>');
+        var peopleEl = this.helper.dom.createElement('<a href="#peopleAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>People</div></a>');
         menu.appendChild(peopleEl);
         if(this.helper.bulk.getData(['user', 'id_user_role']) === Const.ADMINISTRATOR){
             var depEl = this.helper.dom.createElement('<a href="#departmentAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Departments</div></a>');
