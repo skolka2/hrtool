@@ -1,39 +1,44 @@
-BaseComponent = require("./componentBase");
-module.exports = class ComponentPopup extends BaseComponent
+ComponentBase = require "./componentBase"
+module.exports = class ComponentPopup extends ComponentBase
 
-  constructor: (@triggerEl, @insideComponent) ->
-    super
-    @insideEl = @insideComponent.element
-    @triggerEl.addEventListener 'click', @open.bind(@), false
-    @rendered = false
+	constructor: (@triggerEl, @insideComponent) ->
+		super()
+		@insideEl = @insideComponent.element
+		@triggerEl.addEventListener ComponentBase.CLICK_EVENT, @open, no
+		@rendered = no
 
-  open: ->
-    @mainDiv.classList.add 'popup-opened'
-    @mainDiv.addEventListener 'click', @handleOuterClick.bind(@), false
-    @fire 'popup_open', {}
+	open: =>
+		popups = document.getElementsByClassName 'popup-container'
+		for popup in popups
+			popup.style.display = 'none'
 
-  handleOuterClick: (ev) ->
-    if ev.target is @mainDiv or ev.target is @container or ev.target is @closeCrossDiv
-      @mainDiv.classList.remove 'popup-opened'
+		@mainDiv.classList.add 'popup-opened'
+		@container.style.display = 'block'
+		@mainDiv.addEventListener ComponentBase.CLICK_EVENT, @handleOuterClick, no
+		@fire ComponentPopup.eventType.OPEN, {}
 
-  close: ->
-    @fire 'popup_close', {}
+	handleOuterClick: (ev) =>
+		@mainDiv.classList.remove 'popup-opened' if not @innerDiv.contains ev.target
 
-  createDom: ->
-    @mainDiv = document.createElement 'div'
-    @container = document.createElement 'div'
-    @innerDiv = document.createElement 'div'
-    @closeCrossDiv = document.createElement 'div'
+	close: ->
+		@fire ComponentPopup.eventType.CLOSE, {}
 
-    @mainDiv.className = 'popup-main'
-    @container.className = 'popup-container'
-    @innerDiv.className =  'popup-inner'
-    @closeCrossDiv.className = 'popup-close-cross'
+	createDom: ->
+		@mainDiv = document.getElementById 'popup-wrapper'
+		@container = document.createElement 'div'
+		@innerDiv = document.createElement 'div'
+		@closeCrossDiv = document.createElement 'div'
+		@container.className = 'popup-container'
+		@innerDiv.className =	'popup-inner'
+		@closeCrossDiv.className = 'popup-close-cross'
 
-    @addChild 'popup_' + @insideComponent.componentId, @insideComponent, {'el': @innerDiv}
+		@addChild 'popup_' + @insideComponent.componentId, @insideComponent, {'el': @innerDiv}
 
-    @container.appendChild @innerDiv
-    @container.appendChild @closeCrossDiv
-    @mainDiv.appendChild @container
-    
-    @element = @mainDiv
+		@container.appendChild @innerDiv
+		@container.appendChild @closeCrossDiv
+
+		@element = @container
+
+	ComponentPopup.eventType =
+		CLOSE: 'popup_close'
+		OPEN: 'popup-open'

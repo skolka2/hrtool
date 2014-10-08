@@ -1,15 +1,13 @@
 ComponentPopup = require './componentPopup'
-ComponentCheckBox = require './features/componentCheckBox';
+ComponentCheckBox = require './features/componentCheckBox'
+ComponentFilter = require './features/componentFilter'
 
 module.exports = ComponentPopupFactory =
-  getCheckBoxPopup:(popupTrigger, specialOpenClose) ->
-    popupCheckbox = new ComponentCheckBox "test", true
-    popup = new ComponentPopup(popupTrigger, popupCheckbox, specialOpenClose);
+	getCheckBoxPopup:(popupTrigger, filter) ->
+		popupCheckbox = new ComponentCheckBox "test", true
+		popup = new ComponentPopup(popupTrigger, popupCheckbox)
 
-    handleOpenClose = (type) ->
-      if specialOpenClose? and specialOpenClose[type]? and specialOpenClose[type].src? and specialOpenClose[type].type?
-        popup.listen specialOpenClose[type].type, specialOpenClose[type].src, popup[type].bind(popup)
+		if filter?
+			popup.listen ComponentFilter.EventType.UPDATED, filter, popup.open
 
-    handleOpenClose 'open'
-    handleOpenClose 'close'
-    return popup
+		return popup

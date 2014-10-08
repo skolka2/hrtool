@@ -71,7 +71,6 @@ ViewTest.prototype.render = function(){
 
     //Witz view___________________________________________________________________________
 
-    var body = document.getElementsByTagName('body')[0];
     var witzDiv = document.createElement('div');
     witzDiv.id = "witz-div"
     witzDiv.innerHTML = '<br/><h2>Witz\'s view</h2>';
@@ -117,22 +116,13 @@ ViewTest.prototype.render = function(){
 
     witzDiv.appendChild(notificationButton3);
 
-   var popupTrigger = document.createElement('span');
+    var popupTrigger = document.createElement('span');
     popupTrigger.innerHTML = "<strong>POPUP</strong>";
     witzDiv.appendChild(document.createElement('br'));
     witzDiv.appendChild(popupTrigger);
-    /*var popupInside = document.createElement('div');
-    popupInside.innerHTML = '<img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQClHUQfxCE3QBav93MB_r2j5zE00Jqn_LwhHrqPWQc6cKZwDFX" />';*/
 
-
-    var specialOpenClose = {
-        open: {
-            src: component,
-            type: ComponentFilter.EventType.UPDATED
-        }
-    };
-    var popup = ComponentPopupFactory.getCheckBoxPopup(popupTrigger, specialOpenClose);
-    popup.render(document.body);
+    var popup = ComponentPopupFactory.getCheckBoxPopup(popupTrigger, component);
+    popup.render(document.getElementById('popup-wrapper'));
 
 
 
