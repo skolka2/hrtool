@@ -1,21 +1,22 @@
-var ComponentCheckBox, ComponentPopup, ComponentPopupFactory;
+(function() {
+  var ComponentCheckBox, ComponentFilter, ComponentPopup, ComponentPopupFactory;
 
-ComponentPopup = require('./componentPopup');
+  ComponentPopup = require('./componentPopup');
 
-ComponentCheckBox = require('./features/componentCheckBox');
+  ComponentCheckBox = require('./features/componentCheckBox');
 
-module.exports = ComponentPopupFactory = {
-    getCheckBoxPopup: function(popupTrigger, specialOpenClose) {
-        var handleOpenClose, popup, popupCheckbox;
-        popupCheckbox = new ComponentCheckBox("test", true);
-        popup = new ComponentPopup(popupTrigger, popupCheckbox, specialOpenClose);
-        handleOpenClose = function(type) {
-            if ((specialOpenClose != null) && (specialOpenClose[type] != null) && (specialOpenClose[type].src != null) && (specialOpenClose[type].type != null)) {
-                popup.listen(specialOpenClose[type].type, specialOpenClose[type].src, popup[type].bind(popup));
-            }
-        };
-        handleOpenClose('open');
-        handleOpenClose('close');
-        return popup;
+  ComponentFilter = require('./features/componentFilter');
+
+  module.exports = ComponentPopupFactory = {
+    getCheckBoxPopup: function(popupTrigger, filter) {
+      var popup, popupCheckbox;
+      popupCheckbox = new ComponentCheckBox("test", true);
+      popup = new ComponentPopup(popupTrigger, popupCheckbox);
+      if (filter != null) {
+        popup.listen(ComponentFilter.EventType.UPDATED, filter, popup.open);
+      }
+      return popup;
     }
-};
+  };
+
+}).call(this);
