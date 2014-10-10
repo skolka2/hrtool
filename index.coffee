@@ -1,7 +1,7 @@
 debug = require('debug') 'hrtool:index'
-config = require 'config.json'
+config = require './config.json'
 epg = require 'easy-pg'
-dbClient = epg config.connString
+dbClient = epg config.conString
 express = require 'express.io'
 passport = require 'passport'
 {Strategy} = require 'passport-google'
@@ -56,5 +56,23 @@ app.get '/handshake', (req, res, next) ->
 		return next err if err
 		res.json data: response
 
+
+app.get '/auth/google', passport.authenticate 'google'
+
+app.get '/auth/google/return',
+	passport.authenticate 'google', {
+		successRedirect: '/',
+		failureRedirect: '/'
+	}
+
+app.get '/logout', (req, res) ->
+	req.logout()
+	res.redirect '/'
+
+
 app.use (error, req, res, next) ->
 	return res.json {error} if error
+
+
+app.listen config.port
+console.log "Server listens on port #{config.port}"
