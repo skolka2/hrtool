@@ -7,3 +7,7 @@ config.json
 public/main.js
 public/dist/*
 npm-debug.log
+public/js/components/features/componentSelectFactory.js
+public/js/components/features/componentSelect.js
+public/js/components/componentPopupFactory.js
+public/js/components/componentPopup.js

@@ -66,6 +66,18 @@ ViewTest.prototype.render = function(){
 
     var tab = document.createElement("div");
     tab.innerHTML = "<br><br><br><br><br><br><br><br>";
+
+    var divSelector = document.createElement("div");
+    divSelector.innerHTML = "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>ComponentSelect...<br><br>";
+
+
+    var trigger = document.createElement('span');
+    trigger.innerHTML = "<strong>Open popup with select</strong>";
+    var selectPopup = ComponentPopupFactory.getSelectDepTeamPopup(trigger);
+    selectPopup.render(document.getElementById('popup-wrapper'));
+    divSelector.appendChild(trigger);
+    fandaDiv.appendChild(divSelector);
+
     fandaDiv.appendChild(tab);
     mainWrapper.appendChild(fandaDiv);
     //Fanda View END
