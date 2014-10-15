@@ -10,10 +10,11 @@ CREATE TABLE tasks
     completed BOOLEAN DEFAULT FALSE,
     date_from DATE NOT NULL,
     date_to DATE NOT NULL,
+    date_finished DATE,
     id_user INTEGER NOT NULL,
     id_buddy INTEGER NOT NULL DEFAULT 1,
-        id_team INTEGER,
-    id_department INTEGER
+    id_team INTEGER,
+    id_department INTEGER NOT NULL
 );
  
 DROP TABLE IF EXISTS task_templates CASCADE;

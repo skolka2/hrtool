@@ -4,6 +4,7 @@ epg = require 'easy-pg'
 dbClient = epg config.conString
 express = require 'express.io'
 passport = require 'passport'
+csv = require 'to-csv'
 mailer = require './lib/mailer'
 {Strategy} = require 'passport-google'
 
@@ -71,6 +72,23 @@ app.get '/logout', (req, res) ->
 	res.redirect '/'
 
 mailer tasksRepository, userRepository
+app.get '/app/get/peopleExport', (req, res) ->
+	params = req.query
+	userRepository.getUsersTasksForCSV params, (err, result) =>
+		return res.json {err} if err
+		if result?
+			fileName = 'people'
+			if result.length is 0
+				result = [{error: "no data"}]
+			else
+				if params.user?
+					fileName += '-' + result[0].last_name + result[0].first_name
+				else
+					fileName += '-' + result[0].department_title if params.department?
+					fileName += '-' + result[0].team_title if params.team?
+
+			res.attachment(fileName + '.csv')
+			res.send(csv(result, {headers: true}))
 
 app.use (error, req, res, next) ->
 	return res.json {error} if error

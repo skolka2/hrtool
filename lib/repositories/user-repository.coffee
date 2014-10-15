@@ -88,6 +88,9 @@ module.exports = (dbClient) ->
 				FROM users u
 				LEFT JOIN users u2 ON u.id_buddy = u2.id_user
 				WHERE u.id_user=$1""", [idUser], next
+		
+	
+	
 		getAllUsersForTable : (queryData, userIdRole, next) ->
 			i = 1;
 			query = "SELECT DISTINCT sel.*
@@ -161,4 +164,45 @@ module.exports = (dbClient) ->
 				LEFT JOIN teams t ON ut.id_team = t.id_team
 				WHERE u.id_user=$1
 				LIMIT 1""", [idUser], next
+			
+			
+		getUsersTasksForCSV: (params, next) ->
+			args = []
+			whereString = ''
+			if params.department?
+				whereString += ' WHERE d.id_department = $1'
+				args.push params.department
+				if params.team?
+					whereString += ' AND t.id_team = $2'
+					args.push params.team
+					if params.user?
+						whereString += ' AND u.id_user = $3'
+						args.push params.user
+
+
+			dbClient.queryAll 'SELECT first_name,
+							last_name,
+							department_title,
+							team_title,
+							is_admin,
+							to_char(started_at, \'dd.mm.yyyy\'),
+							tasks_after_sum,
+							tasks_finished_sum,
+							tasks_unfinished_sum,
+							tasks_unfinished_sum + tasks_finished_sum + tasks_after_sum AS all_sum
+						FROM (SELECT
+							ut.id_user,
+							d.title AS department_title,
+							t.title AS team_title,
+							is_admin,
+							count(CASE WHEN date_to < current_date AND NOT completed THEN 1 END) AS tasks_after_sum,
+							count(CASE WHEN completed THEN 1 END) AS tasks_finished_sum,
+							count(CASE WHEN date_to > current_date AND NOT completed THEN 1 END) AS tasks_unfinished_sum
+
+							FROM users_teams ut
+							JOIN teams t ON t.id_team = ut.id_team
+							JOIN departments d ON d.id_department = t.id_department ' + activeUsers\
+					+' JOIN tasks ta ON ta.id_user = ut.id_user ' + whereString +
+					'	GROUP BY d.title, t.title, ut.id_user, is_admin) inside
+								JOIN users u ON u.id_user = inside.id_user', args, next
 	}
