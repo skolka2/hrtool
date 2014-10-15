@@ -1,4 +1,5 @@
 var ViewBase =  require('./viewBase');
+var ComponentFormAddUser = require('../components/forms/componentFormAddUser');
 
 var ViewPeopleAdmin = module.exports = function() {
 	ViewBase.call(this);
@@ -15,7 +16,14 @@ ViewPeopleAdmin.prototype.render = function() {
 
 	var viewWrapper = document.createElement('div');
 	viewWrapper.className = "view-wraper";
-	viewWrapper.innerHTML = "People Admin View";
+	viewWrapper.innerTHTML = "People Admin View";
+
+    var divForm = document.createElement('div');
+    divForm.innerHTML = "<br/><br/><br/><br/>ComponentFormAddUser...<br><br>";
+    viewWrapper.appendChild(divForm);
+
+    var form = new ComponentFormAddUser();
+    form.render(divForm);
 
 	mainWrapper.appendChild(viewWrapper);
 }

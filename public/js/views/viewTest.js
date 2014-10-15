@@ -12,7 +12,6 @@ var ComponentNotificationCenter = require('../components/componentNotificationCe
 var hrtool = require('../models/actions');
 var ComponentAddTask = require('../components/features/addTask/newTask/componentAddTask');
 var ComponentDropdown = require('../components/features/componentDropdown');
-var ComponentFormAddUser = require('../components/forms/componentFormAddUser');
 var CoffeeTest = require('../coffee_test/test.js');
 
 
@@ -64,15 +63,6 @@ ViewTest.prototype.render = function(){
     var b = new ComponentHide(helper.dom.createElement("<div>Tittel</div>"),div,false);
     b.render(viewWrapper);
 
-    var divForm = document.createElement('div');
-    divForm.innerHTML = "<br/><br/><br/><br/>ComponentFormAddUser...<br><br>";
-
-    
-    var form = new ComponentFormAddUser();
-    form.render(divForm);
-
-    
-    fandaDiv.appendChild(divForm);
     var tab = document.createElement("div");
     tab.innerHTML = "<br><br><br><br><br><br><br><br>";
     fandaDiv.appendChild(tab);
