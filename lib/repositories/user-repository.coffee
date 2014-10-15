@@ -62,7 +62,7 @@ module.exports = (dbClient) ->
 		getHR : (email, next)->
 			dbClient.queryAll 'SELECT id_user, first_name,last_name FROM users WHERE is_hr ORDER BY last_name', next
 
-		getUsersTasksForCSV: (params, next) ->
+	    getUsersTasksForCSV: (params, next) ->
 			args = []
 			whereString = ''
 			if params.department?
