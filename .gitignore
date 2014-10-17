@@ -6,16 +6,4 @@ config.json
 .ntvs_analysis.dat.tmp
 public/dist/*
 npm-debug.log
-public/js/components/*.js
-public/js/models/*.js
-public/js/observer/.*js
-public/js/router/.*js
-public/js/views/viewBase.js
-public/js/views/viewDefault.js
-public/js/views/viewDepartments.js
-public/js/views/viewExport.js
-public/js/views/viewImplicitTasks.js
-public/js/views/viewPeople.js
-public/js/views/viewTasks.js
-public/js/views/viewTemplates.js
-public/js/views/viewTest.js
+*.js

@@ -1,5 +1,5 @@
 ComponentBase = require '../../../componentBase' 
-ComponentLeft = require './componentLeft' 
+ComponentLeft = require './componentLeft'
 ComponentRight = require './componentRight' 
 ComponentTabbedArea = require '../../componentTabbedArea' 
 ComponentFilterFormatter = require '../../componentFilterFormatter' 

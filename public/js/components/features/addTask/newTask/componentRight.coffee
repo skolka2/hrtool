@@ -4,7 +4,6 @@ ComponentFilter = require '../../componentFilter'
 hrtool = require '../../../../models/actions'
 Model = require '../../../../models/model'
 
-
 class ComponentRight extends ComponentBase
 	constructor: () ->
 		super();

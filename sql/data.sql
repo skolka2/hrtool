@@ -52,9 +52,9 @@ INSERT INTO users (first_name, last_name, email,started_at, id_user_role,id_depa
 VALUES
 ('Jan', 'Koren', 'jan.koren@socialbakers.com','2012-01-02', (SELECT id_user_role FROM user_roles WHERE title='Team manager'), (SELECT id_department_role FROM department_roles WHERE title='product owner'),TRUE),
 ('David', 'Moravek', 'david.moravek@socialbakers.com','2014-02-14', (SELECT id_user_role FROM user_roles WHERE title='Administrator'),(SELECT id_department_role FROM department_roles WHERE title='scrum master'),TRUE),
-('Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'),FALSE),
-('Marek', 'Simunek', 'marek.simunek@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='backend'),FALSE),
 ('Vladimir', 'Neckar', 'vladimir.neckar@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'),FALSE),
+('Marek', 'Simunek', 'marek.simunek@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='backend'),FALSE),
+('Vladimir', 'Laznicka', 'vladimir.laznicka@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'),FALSE),
 ('Frantisek', 'Kolenak', 'frantisek.kolenak@socialbakers.com','2014-07-14', (SELECT id_user_role FROM user_roles WHERE title='User'),(SELECT id_department_role FROM department_roles WHERE title='frontend'),FALSE);
 
 INSERT INTO users (first_name, last_name, email,started_at, id_user_role, id_buddy, id_department_role)
