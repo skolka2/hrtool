@@ -96,6 +96,7 @@ hrtool.actions = {
         var mediator = new Mediator();
         mediator.loadData('user/get/HR', data, model);
     },
+
     getManagerTaskData: function(model) {
     	var mediator = new Mediator();
     	mediator.loadData('tasks/teams/list', {}, model);
@@ -109,5 +110,10 @@ hrtool.actions = {
     getManagerTaskDataNotCompleted: function(model, data) {
         var mediator = new Mediator();
         mediator.loadData('tasks/teams/list/not-completed', data, model);
+    },
+
+    getTasksCount: function(model) {
+        var mediator = new Mediator();
+        mediator.loadData('tasks/count', {}, model);
     }
-}
+};

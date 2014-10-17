@@ -25,6 +25,12 @@ module.exports = (dbClient) ->
 
 			params = [userId]
 
+			sql = 'SELECT t.*, u.email AS buddy_email, u.last_name AS buddy_last_name, u.first_name AS buddy_first_name
+						  FROM tasks t
+						  LEFT JOIN users u ON u.id_user= t.id_buddy
+						  WHERE t.id_user=$1'
+			params = [userId];
+
 			if next is null
 				next = completed
 				completed = null
@@ -94,4 +100,14 @@ module.exports = (dbClient) ->
 
 		insertNewTask : (taskData, next) ->
 			dbClient.insertOne 'tasks', taskData, next
+
+		getCountOfTasks: (userId, next) ->
+			sql = 'SELECT
+				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1) AS all_tasks,
+				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1 AND t.completed) AS finished_tasks,
+				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1 AND NOT t.completed AND current_date > t.date_to) AS deadline_tasks'
+
+			params = [userId]
+
+			dbClient.queryAll sql, params, next
 	}

@@ -15,6 +15,7 @@ var ComponentPopup = require('../components/componentPopup');
 var ComponentPopupFactory = require('../components/componentPopupFactory');
 var ComponentTaskListFactory = require('../components/tasks/componentTaskListFactory');
 var ComponentTaskListsInView = require('../components/tasks/componentTaskListsInView');
+var ComponentStatusBarFactory = require('../components/features/componentStatusBarFactory');
 
 var ViewTest =  module.exports = function(){
     ViewBase.call(this,null);
@@ -173,6 +174,9 @@ ViewTest.prototype.render = function(){
     myUserLists.render(divVladLaz);
     myBuddyLists.render(divVladLaz);
     myManagerLists.render(divVladLaz);
+
+    var myStatusBar = ComponentStatusBarFactory.createStatusBar();
+    myStatusBar.render(divVladLaz);
 
     mainWrapper.appendChild(divVladLaz);
     //LAZ END

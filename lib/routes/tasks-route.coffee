@@ -50,3 +50,6 @@ module.exports = (router, tasksRepository) ->
 
 	router.register 'tasks/insert', (req, next) ->
 		tasksRepository.insertNewTask req.data, next
+
+	router.register 'tasks/count', (req, next) ->
+		tasksRepository.getCountOfTasks req.session.passport.user.id_user, next
