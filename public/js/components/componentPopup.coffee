@@ -21,6 +21,8 @@ module.exports = class ComponentPopup extends ComponentBase
 		@mainDiv.classList.remove 'popup-opened' if not @innerDiv.contains ev.target
 
 	close: ->
+		@container.style.display = 'none'
+		@mainDiv.classList.remove 'popup-opened'
 		@fire ComponentPopup.eventType.CLOSE, {}
 
 	createDom: ->
