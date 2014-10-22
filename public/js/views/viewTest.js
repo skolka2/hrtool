@@ -167,14 +167,6 @@ ViewTest.prototype.render = function(){
     titleVladLaz.innerText = "Testovaci pisecek Vladimira Laznicky:";
     divVladLaz.appendChild(titleVladLaz);
 
-    var myUserLists = new ComponentTaskListsInView("Your tasks:", ComponentTaskListFactory.UserTaskList.createCompleted, ComponentTaskListFactory.UserTaskList.createNotCompleted);
-    var myBuddyLists = new ComponentTaskListsInView("Tasks, for which you are buddy:", ComponentTaskListFactory.BuddyTaskList.createCompleted, ComponentTaskListFactory.BuddyTaskList.createNotCompleted);
-    var myManagerLists = new ComponentTaskListsInView("Tasks of people from your departments/teams:", ComponentTaskListFactory.ManagerTaskList.createCompleted, ComponentTaskListFactory.ManagerTaskList.createNotCompleted, true);
-
-    myUserLists.render(divVladLaz);
-    myBuddyLists.render(divVladLaz);
-    myManagerLists.render(divVladLaz);
-
     var myStatusBar = ComponentStatusBarFactory.createStatusBar();
     myStatusBar.render(divVladLaz);
 
