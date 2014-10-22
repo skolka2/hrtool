@@ -72,7 +72,7 @@ module.exports = (dbClient) ->
 					whereString += ' AND t.id_team = $2'
 					args.push params.team
 					if params.user?
-						whereString += ' AND u.id_user = $3'
+						whereString += ' AND ut.id_user = $3'
 						args.push params.user
 
 
