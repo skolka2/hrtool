@@ -1,0 +1,13 @@
+if logedIn
+    div#navbar-user
+        a(href='mailto:'+email) #{firstName} #{lastName}
+        a(href="/logout") Logout
+        div.navbar-menu#navbar-menu
+
+
+
+hrBuddy: '<a href="mailto:'  + this.helper.bulk.getData(['hrBuddy', 'email']) + '">' + this.helper.bulk.getData(['hrBuddy', 'first_name']) + " " + this.helper.bulk.getData(['hrBuddy', 'last_name']) + '</a>',
+    user: '<a href="' + ComponentNavBar.USER_PAGE + this.helper.bulk.getData(['user', 'id_user']) + '">' + this.helper.bulk.getData(['user', 'first_name']) + " " + this.helper.bulk.getData(['user', 'last_name']) + '</a>'
+
+else
+    a(href="/login") Login
