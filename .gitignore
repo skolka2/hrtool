@@ -11,3 +11,11 @@ public/js/components/features/componentSelectFactory.js
 public/js/components/features/componentSelect.js
 public/js/components/componentPopupFactory.js
 public/js/components/componentPopup.js
+public/js/components/features/componentStatusBar.js
+public/js/components/features/componentStatusBarFactory.js
+public/js/components/tasks/componentTaskList.js
+public/js/components/tasks/componentTaskListFactory.js
+public/js/components/tasks/componentTaskListsInView.js
+public/js/components/tasks/taskDetails/componentBaseTaskDetail.js
+public/js/components/tasks/taskDetails/componentUserTaskDetail.js
+public/js/components/componentNavBar.js

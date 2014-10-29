@@ -1,13 +1,23 @@
-if logedIn
-    div#navbar-user
-        a(href='mailto:'+email) #{firstName} #{lastName}
-        a(href="/logout") Logout
-        div.navbar-menu#navbar-menu
-
-
-
-hrBuddy: '<a href="mailto:'  + this.helper.bulk.getData(['hrBuddy', 'email']) + '">' + this.helper.bulk.getData(['hrBuddy', 'first_name']) + " " + this.helper.bulk.getData(['hrBuddy', 'last_name']) + '</a>',
-    user: '<a href="' + ComponentNavBar.USER_PAGE + this.helper.bulk.getData(['user', 'id_user']) + '">' + this.helper.bulk.getData(['user', 'first_name']) + " " + this.helper.bulk.getData(['user', 'last_name']) + '</a>'
-
+if loggedIn
+    div
+        a(href='mailto:'+HRemail) #{HRfirstName} #{HRlastName}
+        //- MENU
+        #navbar-menu
+            if userRoleID === teamManagerID || userRoleID === administratorID
+                a(href="#")
+                    .navbar-menu-item Home
+                a(href="#taskAdmin")
+                    .navbar-menu-item Tasks
+                a(href="#peopleAdmin")
+                    .navbar-menu-item People
+                a(href="#departmentAdmin")
+                    .navbar-menu-item Departments
+            else
+                a(href="#taskAdmin")
+                    .navbar-menu-item Tasks
+        //- end of MENU
+        #navbar-user
+            a(href='/User/user='+userID) #{userFirstName} #{userLastName}
+            a(href="/logout") Logout
 else
     a(href="/login") Login
