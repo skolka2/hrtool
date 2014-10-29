@@ -5,7 +5,7 @@ class ViewDefault extends ViewBase
 		super()
 
 	render: ->
-		super()		
+		super()
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		div = document.createElement "div"
 		div.id = "ViewDefault"
