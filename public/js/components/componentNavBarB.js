@@ -42,18 +42,18 @@ ComponentNavBar.prototype.createMenu = function(){
     var menu = document.createElement('div');
     menu.id = ComponentNavBar.MENU_CLASS;
     if(this.helper.bulk.getData(['user', 'id_user_role']) === Const.TEAM_MANAGER || this.helper.bulk.getData(['user', 'id_user_role']) === Const.ADMINISTRATOR){
-        var homeEl = this.helper.dom.createElement('<a href="#"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Home</div></a>');
+        var homeEl = this.helper.dom.createElement('<a href="#home"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Home</div></a>');
         menu.appendChild(homeEl);
-        var tasksEl = this.helper.dom.createElement('<a href="#taskAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
+        var tasksEl = this.helper.dom.createElement('<a href="#tasks"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
         menu.appendChild(tasksEl);
-        var peopleEl = this.helper.dom.createElement('<a href="#peopleAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>People</div></a>');
+        var peopleEl = this.helper.dom.createElement('<a href="#people"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>People</div></a>');
         menu.appendChild(peopleEl);
         if(this.helper.bulk.getData(['user', 'id_user_role']) === Const.ADMINISTRATOR){
-            var depEl = this.helper.dom.createElement('<a href="#departmentAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Departments</div></a>');
+            var depEl = this.helper.dom.createElement('<a href="#templates"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Departments</div></a>');
             menu.appendChild(depEl);
         }
     }else{
-        var tasksEl = this.helper.dom.createElement('<a href="#taskAdmin"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
+        var tasksEl = this.helper.dom.createElement('<a href="#tasks"><div class=' + ComponentNavBar.MENU_ITEM_CLASS + '>Tasks</div></a>');
         menu.appendChild(tasksEl);
     }
 
