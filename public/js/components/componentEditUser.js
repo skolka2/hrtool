@@ -222,10 +222,10 @@
           index = this.teams.length - 1;
           this.teamWrapper.appendChild(this.getTeamItemDom(this.teams[index], index));
         } else {
-          this.addNotification('User is allready in this team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error);
+          this.addNotification('User is allready in this team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error);
         }
       } else {
-        this.addNotification('You have to choose a team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error);
+        this.addNotification('You have to choose a team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error);
       }
     };
 

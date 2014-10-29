@@ -1,29 +1,54 @@
-﻿var ViewHome = require('../views/viewHome');
-var ViewDepartmentAdmin = require('../views/viewDepartmentAdmin');
-var ViewPeopleAdmin = require('../views/viewPeopleAdmin');
-var ViewTaskAdmin = require('../views/viewTaskAdmin');
-var ViewTest =require('../views/viewTest');
-var ViewDefault =require('../views/viewDefault');
+(function() {
+  var RouterConfig, ViewDefault, ViewDepartments, ViewExport, ViewHome, ViewImplicitTasks, ViewPeople, ViewTasks, ViewTemplates, ViewTest;
 
-var RouterConfig = module.exports = function () { }
+  ViewHome = require('../views/viewHome');
 
-RouterConfig.prototype.setView = function(data) {
-    var curView;
-    //if you wat to add parameters, use data.parameters
-    switch (data.view) {
+  ViewDepartments = require('../views/viewDepartments');
+
+  ViewPeople = require('../views/viewPeople');
+
+  ViewTasks = require('../views/viewTasks');
+
+  ViewTest = require('../views/viewTest');
+
+  ViewDefault = require('../views/viewDefault');
+
+  ViewExport = require('../views/viewExport');
+
+  ViewImplicitTasks = require('../views/viewImplicitTasks');
+
+  ViewTemplates = require('../views/viewTemplates');
+
+  RouterConfig = (function() {
+    function RouterConfig() {}
+
+    RouterConfig.prototype.setView = function(data) {
+      switch (data.view) {
         case 'home':
-            return curView = new ViewHome();
-        case 'departmentAdmin':
-            return curView = new ViewDepartmentAdmin();
-        case 'peopleAdmin':
-            return curView = new ViewPeopleAdmin();
-        case 'taskAdmin':
-            return curView = new ViewTaskAdmin();
+          return new ViewHome();
+        case 'departments':
+          return new ViewDepartments();
+        case 'people':
+          return new ViewPeople();
+        case 'tasks':
+          return new ViewTasks();
+        case 'export':
+          return new ViewExport();
+        case 'implicit_tasks':
+          return new ViewImplicitTasks();
+        case 'templates':
+          return new ViewTemplates();
         case 'test':
-            return curView = new ViewTest();
-        case 'test':
-            return curView = new ViewTest();
+          return new ViewTest();
         default:
-            return new ViewHome();
-    }
-}
+          return new ViewHome();
+      }
+    };
+
+    return RouterConfig;
+
+  })();
+
+  module.exports = RouterConfig;
+
+}).call(this);

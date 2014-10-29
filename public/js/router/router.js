@@ -1,56 +1,70 @@
-﻿var RouterConfig = require('./routerConfig');
-var ViewBase = require('../views/viewBase');
-var ComponentBase = require('../components/componentBase');
-var Router = module.exports = function () {
-}
+(function() {
+  var ComponentBase, Router, RouterConfig, ViewBase;
 
-Router.prototype.init = function () {
-    this.routerConfig = new RouterConfig();
-    this.changeView();
-};
+  RouterConfig = require('./routerConfig');
 
-Router.prototype.getPath = function () {
+  ViewBase = require('../views/viewBase');
 
-    var url = window.location.hash;
-    if (url != "") {
-        var map = {};
-        var output = {
-            view: "", parameters: ""
-        };
-        var arr = url.split('?');
-        //get parameters
+  ComponentBase = require('../components/componentBase');
+
+  Router = (function() {
+    function Router() {}
+
+    Router.prototype.init = function() {
+      this.routerConfig = new RouterConfig();
+      this.changeView();
+    };
+
+    Router.prototype.getPath = function() {
+      var arr, index, map, output, pair, params, url, v, vars, _i, _len;
+      url = window.location.hash;
+      output = {
+        view: "",
+        parameters: ""
+      };
+      if (url !== "") {
+        map = {};
+        arr = url.split('?');
         if (arr[1]) {
-            var params = arr[1];
-            var vars = params.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                map[pair[0]] = pair[1];
-            }
-            output['parameters'] = map;
+          params = arr[1];
+          vars = params.split("&");
+          for (_i = 0, _len = vars.length; _i < _len; _i++) {
+            v = vars[_i];
+            pair = v.split("=");
+            map[pair[0]] = pair[1];
+          }
+          output['parameters'] = map;
         }
-        //get views
-        var index = arr[0].lastIndexOf('#');
+        index = arr[0].lastIndexOf('#');
         output['view'] = arr[0].substring(index + 1);
-        return output;
-    }
-    else return { view: "", parameters: "" };
-}
+      }
+      return output;
+    };
 
-Router.prototype.changeView = function () {
-    this.view = this.routerConfig.setView(this.getPath());
-    var _this = this;
-    var mainWrapper = document.getElementById(ViewBase.mainWrapper);
-    if (mainWrapper != null) {
+    Router.prototype.changeView = function() {
+      var mainWrapper;
+      this.view = this.routerConfig.setView(this.getPath());
+      mainWrapper = document.getElementById(ViewBase.mainWrapper);
+      if (mainWrapper) {
         mainWrapper.innerHTML = '';
         this.view.render();
-    }
-    else {
-        document.addEventListener(ComponentBase.EventType.DOMContentLoaded, function () {
+      } else {
+        document.addEventListener(ComponentBase.EventType.DOMContentLoaded, (function(_this) {
+          return function() {
             document.removeEventListener(ComponentBase.EventType.DOMContentLoaded, arguments.callee, false);
-            if (mainWrapper != null) {
-                mainWrapper.innerHTML = '';
-                _this.view.render();
+            if (mainWrapper) {
+              mainWrapper.innerHTML = '';
+              return _this.view.render();
             }
-        }, false);
-    }
-};
+          };
+        })(this), false);
+      }
+    };
+
+    return Router;
+
+  })();
+
+  module.exports = Router;
+
+}).call(this);

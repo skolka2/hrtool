@@ -189,9 +189,9 @@ class ComponentEditUser extends ComponentBase
 				index = @teams.length - 1;
 				@teamWrapper.appendChild @getTeamItemDom @teams[index], index
 			else
-				@addNotification 'User is allready in this team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'User is allready in this team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error
 		else
-			@addNotification 'You have to choose a team!', ComponentBase.DEFAULT_NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'You have to choose a team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error
 		return
 
 

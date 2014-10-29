@@ -1,2 +1,8 @@
-var app= {};
- module.exports = app;
+(function() {
+  var app;
+
+  app = {};
+
+  module.exports = app;
+
+}).call(this);

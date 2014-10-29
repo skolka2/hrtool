@@ -1,261 +1,208 @@
-var ComponentBase = require('../componentBase');
-var helper = require('../../helpers/helpers');
-var Const = require('../../helpers/constants');
-/**
- * DropDown class: creates clickable span contaning selected item and
- * a list (ul - with visibility set on 'hidden' by default) of selectable items.
- * The list is shown when the span is clicked. After that it can be hidden by
- * clicking on an item of the list (this item is accessible in this.selected
- * now) or by clicking anywhere else in the body (this.selected remains
- * unchanged).
- * @param {object} data
- * @returns {ComponentDropdown}
- */
-var ComponentDropdown = module.exports = function(data, useSearch) {
-    ComponentBase.prototype.constructor.call(this);
-    this.super = ComponentBase;
-    this.selected = "";
-    this._enabled = true;
+(function() {
+  var ComponentBase, ComponentDropdown, Const, helper,
+    __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-    this.useSearch = false;
-    this.searchEl = null;
+  ComponentBase = require('../componentBase');
 
-    if(useSearch != null || data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT) {
+  helper = require('../../helpers/helpers');
+
+  Const = require('../../helpers/constants');
+
+  ComponentDropdown = (function(_super) {
+    __extends(ComponentDropdown, _super);
+
+    function ComponentDropdown(data, useSearch) {
+      this.handleSearch = __bind(this.handleSearch, this);
+      this._handleListOpen = __bind(this._handleListOpen, this);
+      ComponentDropdown.__super__.constructor.call(this);
+      this.selected = '';
+      this._enabled = true;
+      this.searchEl = null;
+      this.useSearch = false;
+      this._map = [];
+      if (useSearch === null || data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT) {
         this.useSearch = useSearch;
+      }
+      this._selectedTextElement = document.createElement('div');
+      this._selectedTextElement.id = 'component-' + this.componentId + 'dropdown-button';
+      this._selectedTextElement.className = 'dropdown-button ' + ComponentDropdown.State.ENABLED;
+      this._listEl = document.createElement('ul');
+      this._listEl.className = 'dropDownButton';
+      this._listEl.style.visibility = 'hidden';
+      this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._handleListOpen, false);
+      this.changeData(data);
     }
 
-    this._map = [];
-
-    this._selectedTextElement = document.createElement('div');
-    this._selectedTextElement.id = 'component-' + this.componentId + 'dropdown-button';
-    this._selectedTextElement.className = 'dropdown-button ' + ComponentDropdown.State.ENABLED;
-
-    this._listEl = document.createElement('ul');
-    this._listEl.className = 'dropDownButton';
-    this._listEl.style.visibility = 'hidden';
-
-    this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._handleListOpen.bind(this), false);
-    this.changeData(data);
-};
-
-
-ComponentDropdown.prototype = new ComponentBase();
-ComponentDropdown.prototype.constructor = ComponentDropdown;
-
-ComponentDropdown.EventType = {
-    CHANGE: 'dropdown-change'
-};
-
-ComponentDropdown.State = {
-    ENABLED: 'dropdown',
-    DISABLED: 'dropdown disabled'
-};
-
-/**
- * Shows the list of items provided in data object
- * @returns {undefined}
- */
-ComponentDropdown.prototype._handleListOpen = function () {
-    if(this._enabled) {
-        this._selectedTextElement.classList.remove(ComponentBase.INVALID_INPUT_CLASS);
+    ComponentDropdown.prototype._handleListOpen = function() {
+      var onClick;
+      if (this._enabled === true) {
         if (this._listEl.style.visibility === 'visible') {
-            this._listEl.style.visibility = 'hidden';
-            if(this.useSearch) {
-                this.searchEl.value = "";
-                this.handleSearch();
-            }
-            return;
+          this._listEl.style.visibility = 'hidden';
+          if (this.useSearch === true) {
+            this.searchEl.value = "";
+            this.handleSearch();
+          }
+          return;
         }
-
-        /*Close list on click in body (outside of span)*/
         this._listEl.style.visibility = 'visible';
-
-        if(this.useSearch) {
-            this.searchEl.focus();
+        if (this.useSearch === true) {
+          this.searchEl.focus();
         }
-
-        var onClick;
-        onClick = function (ev) {
-            if (this.getElement() === ev.target || this.getElement().contains(ev.target)) {
-                this._makeSelection(ev, onClick);
+        onClick = (function(_this) {
+          return function(ev) {
+            if (_this.getElement() === ev.target || _this.getElement().contains(ev.target)) {
+              return _this._makeSelection(ev, onClick);
+            } else {
+              _this._listEl.style.visibility = 'hidden';
+              if (_this.useSearch === true) {
+                _this.searchEl.value = "";
+                _this.handleSearch();
+              }
+              return document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
             }
-            else {
-                this._listEl.style.visibility = 'hidden';
-                if(this.useSearch) {
-                    this.searchEl.value = "";
-                    this.handleSearch();
-                }
-                document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
-            }
-        }.bind(this);
-
+          };
+        })(this);
         document.body.addEventListener(ComponentBase.EventType.CLICK, onClick, false);
-    }
-};
+      }
+    };
 
-/**
- *
- * @param {object} data Object containing data with keys 'selected' and 'items',
- * where items is an object or array with items to be shown as options.
- * @returns {undefined}
- */
-ComponentDropdown.prototype._fillWithData = function(data) {
-    this._map = [];
-
-    if(this.useSearch) {
-        var userInput = document.createElement('input');
-        userInput.setAttribute("type","text");
+    ComponentDropdown.prototype._fillWithData = function(data) {
+      var div, empty, i, item, li, text, userInput, _i, _len;
+      this._map = [];
+      if (this.useSearch === true) {
+        userInput = document.createElement('input');
+        userInput.setAttribute("type", "text");
         userInput.placeholder = "Search:";
         userInput.className = "dropDownItem userInput";
-
         this._listEl.appendChild(userInput);
         this.searchEl = userInput;
-        this.searchEl.addEventListener("keyup", this.handleSearch.bind(this));
-    }
-
-    if(data === ComponentDropdown.EmptyOption)
+        this.searchEl.addEventListener("keyup", this.handleSearch);
+      }
+      if (data === ComponentDropdown.EmptyOption) {
         this.setEnabled(false);
-    var li = document.createElement('li');
-    li.className = 'dropDownItem deselector';
-    li.innerHTML = "Clear...";
-    var empty = ComponentDropdown.EmptyOption;
-    this._map.push({
+      }
+      li = document.createElement('li');
+      li.className = 'dropDownItem deselector';
+      li.innerHTML = "Clear...";
+      empty = ComponentDropdown.EmptyOption;
+      this._map.push({
         el: li,
         value: empty,
         searchValue: empty.value
-    });
-
-    var text = document.createTextNode("");
-    li.appendChild(text);
-
-    this._listEl.appendChild(li);
-    this.setSelection(empty);
-    var div = document.createElement('div');
-    div.className = 'dropdown-item-wrapper';
-
-    for(var i = 0; i < data.length; i++) {
-        var li = document.createElement('li');
+      });
+      text = document.createTextNode('');
+      li.appendChild(text);
+      this._listEl.appendChild(li);
+      this.setSelection(empty);
+      div = document.createElement('div');
+      div.className = 'dropdown-item-wrapper';
+      for (i = _i = 0, _len = data.length; _i < _len; i = ++_i) {
+        item = data[i];
+        li = document.createElement('li');
         li.className = 'dropDownItem';
         this._map.push({
-            el: li,
-            value: data[i],
-            searchValue: helper.format.getUniversalString(data[i].value).toLowerCase().replace(/\s/g, "")
+          el: li,
+          value: item,
+          searchValue: helper.format.getUniversalString(item.value).toLowerCase().replace(/\s/g, "")
         });
-
-        var text = document.createTextNode(data[i].value);
+        text = document.createTextNode(item.value);
         li.appendChild(text);
-
-        //this._listEl.appendChild(li);
         div.appendChild(li);
-
-        if(data[i].selected) {
-            this.setSelection(data[i]);
+        if (item.selected) {
+          this.setSelection(item);
         }
-    }
+      }
+      this._listEl.appendChild(div);
+    };
 
-    this._listEl.appendChild(div);
-};
-
-/**
- * Sets new label and saves selected item into this.selected
- */
-ComponentDropdown.prototype.setSelection = function(selectedItem) {
-    this.selected = selectedItem;
-    if(selectedItem.value === "") {
+    ComponentDropdown.prototype.setSelection = function(selectedItem) {
+      this.selected = selectedItem;
+      if (selectedItem.value === '') {
         this._selectedTextElement.innerHTML = "Select...";
-    }
-    else {
+      } else {
         this._selectedTextElement.innerHTML = selectedItem.value;
-    }
-    this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
-};
+      }
+      this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+    };
 
-/**
- * Verifies correct form of data object and if it's OK, calls the function
- * filling list with data.
- * @param {object} data Object containing data with keys 'selected' and 'items',
- * where items is an object or array with items to be shown as options.
- * @returns {undefined}
- */
-ComponentDropdown.prototype.changeData = function (data) {
-    this._listEl.innerHTML = "";
-    this._fillWithData(data);
-};
-/**
- * When an option is clicked, this function changes selected item
- * @param {element} src source of event ComponentBase.EventType.CLICK
- * @param {function} onClick function to remove from eventListener binded on body
- * @returns {undefined}
- */
-ComponentDropdown.prototype._makeSelection = function (src, onClick) {
-    var selection = this._map.filter(function(item){
-            return item.el === src.target}
-    );
+    ComponentDropdown.prototype.changeData = function(data) {
+      this._listEl.innerHTML = "";
+      this._fillWithData(data);
+    };
 
-    if(selection.length > 0) {
+    ComponentDropdown.prototype._makeSelection = function(src, onClick) {
+      var selection;
+      selection = this._map.filter(function(item) {
+        return item.el === src.target;
+      });
+      if (selection.length > 0) {
         this.setSelection(selection[0].value);
-
         this._listEl.style.visibility = 'hidden';
         document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
         this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
-    }
-};
+      }
+    };
 
-/**
- * Creates component's DOM. Inserts html elements into one <div>
- * @returns {undefined}
- */
-ComponentDropdown.prototype.createDom = function() {
-    this.element = document.createElement("div");
-    this.element.id = 'component-' + this.componentId;
-    this.element.className = 'dropDownDiv';
+    ComponentDropdown.prototype.createDom = function() {
+      this.element = document.createElement("div");
+      this.element.id = 'component-' + this.componentId;
+      this.element.className = 'dropDownDiv';
+      this.element.appendChild(this._selectedTextElement);
+      this.element.appendChild(this._listEl);
+    };
 
-    this.element.appendChild(this._selectedTextElement);
-    this.element.appendChild(this._listEl);
-};
+    ComponentDropdown.prototype.setEnabled = function(enabled) {
+      var selection;
+      this._enabled = enabled;
+      selection = this._selectedTextElement.classList;
+      if (enabled) {
+        return selection.remove("disabled");
+      } else {
+        return selection.add("disabled");
+      }
+    };
 
-/**
- * Sets dropdown's property enabled (it is clickable if true)
- * @param enabled true/false - enabled/disabled
- */
-ComponentDropdown.prototype.setEnabled = function(enabled) {
-    this._enabled = enabled;
-    var selection = this._selectedTextElement.classList;
-    if (enabled) {
-        selection.remove("disabled");
-    }
-    else {
-        selection.add("disabled");
-    }
-};
-/**
- * Returns true if enabled, false otherwise
- * @returns {boolean|*}
- */
-ComponentDropdown.prototype.getIsEnabled = function() {
-    return this._enabled;
-};
+    ComponentDropdown.prototype.getIsEnabled = function() {
+      return this._enabled;
+    };
 
-/**
- * Function that handles search after changing input from user
- */ 
-ComponentDropdown.prototype.handleSearch = function() {
-    for(var i = 0; i < this._map.length; i++) {
-        var stringFromMap = this._map[i].searchValue;
-        var stringFromInput = helper.format.getUniversalString(this.searchEl.value).toLowerCase().replace(/\s/g, "");
-
-        if(stringFromMap.indexOf(stringFromInput) == -1) {
-            this._map[i].el.style.display = "none";
+    ComponentDropdown.prototype.handleSearch = function() {
+      var item, stringFromInput, stringFromMap, _i, _len, _ref;
+      _ref = this._map;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        stringFromMap = item.searchValue;
+        stringFromInput = helper.format.getUniversalString(this.searchEl.value).toLowerCase().replace(/\s/g, "");
+        if (stringFromMap.indexOf(stringFromInput === -1)) {
+          item.el.style.display = "none";
+        } else {
+          item.el.style.display = "list-item";
         }
-        else {
-            this._map[i].el.style.display = "list-item";
-        }
-    }
-};
+      }
+    };
 
-ComponentDropdown.EmptyOption = {
+    return ComponentDropdown;
+
+  })(ComponentBase);
+
+  ComponentDropdown.EventType = {
+    CHANGE: 'dropdown-change'
+  };
+
+  ComponentDropdown.State = {
+    ENABLED: 'dropdown',
+    DISABLED: 'dropdown disabled'
+  };
+
+  ComponentDropdown.EmptyOption = {
     value: "",
     id: -1
-};
+  };
 
-ComponentDropdown.SEARCH_FROM_ITEMS_COUNT = 10;
+  ComponentDropdown.SEARCH_FROM_ITEMS_COUNT = 10;
+
+  module.exports = ComponentDropdown;
+
+}).call(this);

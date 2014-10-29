@@ -2,7 +2,7 @@ module.exports = (router, templateRepository) ->
 	router.register 'template/insert', (req, next) ->
 		templateRepository.insertTemplate req.data, next
 
-	router.register 'template/delete', (req, res) ->
+	router.register 'template/delete', (req, next) ->
 		unless req.data.is_task_template
 			templateRepository.deleteTemplate req.data, next
 		else

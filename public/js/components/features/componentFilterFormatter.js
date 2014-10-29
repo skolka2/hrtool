@@ -1,122 +1,92 @@
-var ComponentFilterFormatter = {
-    /**
-     * Function will transform general object to object for dropdown
-     * @param data - object of objects to transform
-     * @param idKey - key in general object which value will be used as value of key id in result object
-     * @param valueKey - key in general object which value will be used as value of key value in result object
-     * @param [dependencyKeys] - array of dependency keys for each dropdown
-     * @returns {{}} - object for dropdown
-     */
-    transform: function (data, idKey, valueKey, dependencyKeys) {
-        var id = '';
-        var res = {};
-        for (var i in data) {
-            var item = {};
-            item = {
-                id: data[i][idKey],
-                value: data[i][valueKey]
-            };
-            if (dependencyKeys) {
-                for (var j = 0; j < dependencyKeys.length; j++) {
-                    id += data[i][dependencyKeys[j]] || 'global';
-                    if (j !== dependencyKeys.length - 1) id += '-';
-                }
-            }
-            res[id] = res[id] || [];
-            res[id].push(item);
-            id = '';
-        }
-        return res;
-    },
-    /**
-     * Function will delete items in dropdowns for which there is no items in last dropdowns
-     * @param data - array of objects for dropdowns
-     * @param notDeletedDropdowns - array of indexes of dropdowns which cannot be deleted from
-     * @returns {*} - data object for componentFilter
-     */
-    format: function (data) {
-        var allowedIds = new Array(data.length);
-        var processed = [data.length - 1];
-        for(var i = 0; i < allowedIds.length; i++){
-            allowedIds[i] = {};
-        }
+(function() {
+  var ComponentFilterFormatter;
 
-        for (var i = data.length - 1; i >= 0; i--){
-            if (i !== data.length - 1 && allowedIds[i] && processed[i]) {
-                for (var j in data[i]) {
-                    var dropItems = data[i][j];
-                    for (var k = dropItems.length - 1; k >= 0; k--) {
-                        if (!allowedIds[i][dropItems[k].id]) {
-                            dropItems.splice(k, 1);
-                        }
-                    }
-                    if (dropItems.length === 0) {
-                        delete data[i][j];
-                    }
-                }
+  ComponentFilterFormatter = {
+    transform: function(data, idKey, valueKey, dependencyKeys) {
+      var depKey, id, item, j, key, obj, res, _i, _len;
+      id = '';
+      res = {};
+      for (key in data) {
+        item = data[key];
+        obj = {
+          id: item[idKey],
+          value: item[valueKey]
+        };
+        if (dependencyKeys != null) {
+          for (j = _i = 0, _len = dependencyKeys.length; _i < _len; j = ++_i) {
+            depKey = dependencyKeys[j];
+            id += item[depKey] || 'global';
+            if (j !== dependencyKeys.length - 1) {
+              id += '-';
             }
-            var keys = Object.keys(data[i]);
-            for (var j = 0; j < keys.length; j++) {
-                var keyArr = keys[j].split('-');
-                var added = false;
-                var k;
-                for(k = 0; k < keyArr.length; k++){
-                    if (keyArr[k] === 'global' && k - 1 >= 0) {
-                        allowedIds[k - 1][keyArr[k - 1]] = true;
-                        added = true;
-                        break;
-                    }
-                }
-                if(!added){
-                    allowedIds[k - 1][keyArr[k - 1]] = true;
-                    processed[k - 1] = true;
-                }
-            }
+          }
         }
-        return data;
+        if (res[id] == null) {
+          res[id] = [];
+        }
+        res[id].push(obj);
+        id = '';
+      }
+      return res;
     },
-    factory : {
-        /**
-         * Function will create data for componentFilter using functions transform and format
-         * @param departments - data for first dropdown
-         * @param teams - data for second dropdown
-         * @param templates - data for third dropdown
-         * @returns {*} - data for componentFilter
-         */
-        createTemplateDropdownsData : function(departments, teams, templates){
-            var res = ComponentFilterFormatter.format([
-                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
-                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
-                ComponentFilterFormatter.transform(templates, 'id_task_template', 'title', ['id_department', 'id_team'])
-            ]);
-            return res;
-        },
-        createTeamDropdownsData : function(departments, teams){
-            var res = ComponentFilterFormatter.format([
-                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
-                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
-            ]);
-            return res;
-        },
-        createUsersDropdownsData : function(departments, teams, users){
-            var res = ComponentFilterFormatter.format([
-                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
-                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
-                ComponentFilterFormatter.transform(users, 'id_user', 'full_name', ['id_department', 'id_team'])
-            ]);
-            return res
-        },
-        createTeamRoleDropdowns : function(departments, role, teams){
-            var res = ComponentFilterFormatter.format([
-                ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
-                ComponentFilterFormatter.transform(role, 'id_department_role', 'title', ['id_department']),
-                ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
-                
-            ]);
-            return res;
-
+    format: function(data) {
+      var added, allowedIds, dataItem, dropItem, dropItems, i, k, key, keyArr, keyPart, processed, _i, _j, _k, _l, _len, _ref;
+      allowedIds = new Array(data.length);
+      processed = [data.length - 1];
+      for (i = _i = 0, _ref = allowedIds.length; _i < _ref; i = _i += 1) {
+        allowedIds[i] = {};
+      }
+      for (i = _j = data.length - 1; _j >= 0; i = _j += -1) {
+        dataItem = data[i];
+        if (i !== data.length - 1 && allowedIds[i] && processed[i]) {
+          for (key in dataItem) {
+            dropItems = dataItem[key];
+            for (k = _k = dropItems.length - 1; _k >= 0; k = _k += -1) {
+              dropItem = dropItems[k];
+              if (!allowedIds[i][dropItem.id]) {
+                dropItems.splice(k, 1);
+              }
+            }
+            if (dropItems.length === 0) {
+              delete data[i][key];
+            }
+          }
         }
+        for (key in dataItem) {
+          keyArr = key.split('-');
+          added = false;
+          for (k = _l = 0, _len = keyArr.length; _l < _len; k = ++_l) {
+            keyPart = keyArr[k];
+            if (keyPart === 'global' && k - 1 >= 0) {
+              allowedIds[k - 1][keyArr[k - 1]] = true;
+              added = true;
+              break;
+            }
+          }
+          if (added === false) {
+            allowedIds[k - 1][keyArr[k - 1]] = true;
+            processed[k - 1] = true;
+          }
+        }
+      }
+      return data;
+    },
+    factory: {
+      createTemplateDropdownsData: function(departments, teams, templates) {
+        return ComponentFilterFormatter.format([ComponentFilterFormatter.transform(departments, 'id_department', 'title'), ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']), ComponentFilterFormatter.transform(templates, 'id_task_template', 'title', ['id_department', 'id_team'])]);
+      },
+      createTeamDropdownsData: function(departments, teams) {
+        return ComponentFilterFormatter.format([ComponentFilterFormatter.transform(departments, 'id_department', 'title'), ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])]);
+      },
+      createUsersDropdownsData: function(departments, teams, users) {
+        return ComponentFilterFormatter.format([ComponentFilterFormatter.transform(departments, 'id_department', 'title'), ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']), ComponentFilterFormatter.transform(users, 'id_user', 'full_name', ['id_department', 'id_team'])]);
+      },
+      createTeamRoleDropdownsData: function(departments, role, teams) {
+        return ComponentFilterFormatter.format([ComponentFilterFormatter.transform(departments, 'id_department', 'title'), ComponentFilterFormatter.transform(role, 'id_department_role', 'title', ['id_department']), ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])]);
+      }
     }
-};
+  };
 
-module.exports = ComponentFilterFormatter;
+  module.exports = ComponentFilterFormatter;
+
+}).call(this);

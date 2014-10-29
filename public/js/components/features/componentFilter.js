@@ -1,144 +1,153 @@
-var ComponentBase = require('../componentBase');
-var ComponentDropdown = require('./componentDropdown');
-var helper = require('../../helpers/helpers');
+(function() {
+  var ComponentBase, ComponentDropdown, ComponentFilter, helper,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-var ComponentFilter  =  module.exports =  function(data, keys, searchable) {
-    ComponentBase.prototype.constructor.call(this);
-    this.super = ComponentBase;
+  ComponentBase = require('../componentBase');
 
-    this._keys = keys;
-    this._status = [];
-    this._data = data;
-    this._dropdowns = [];
+  ComponentDropdown = require('./componentDropdown');
 
-    var cachedLength = data.length;
-    if(searchable == null) {
-        searchable = Array.apply(null, new Array(cachedLength)).map(Boolean.prototype.valueOf, false);
-    }
+  helper = require('../../helpers/helpers');
 
-    var initData;
-    var newDropdown;
-    for(var i = 0; i < data.length; i++) {
-        initData = this._initData(i);
-        newDropdown = new ComponentDropdown(initData, searchable[i]);
+  ComponentFilter = (function(_super) {
+    __extends(ComponentFilter, _super);
 
+    function ComponentFilter(_data, _keys, searchable) {
+      var i, newDropdown, _i, _ref;
+      this._data = _data;
+      this._keys = _keys;
+      ComponentFilter.__super__.constructor.call(this);
+      this._status = [];
+      this._dropdowns = [];
+      searchable = searchable ? searchable : searchable = Array.apply(null, new Array(this._data.length)).map(Boolean.prototype.valueOf, false);
+      for (i = _i = 0, _ref = this._data.length; _i < _ref; i = _i += 1) {
+        newDropdown = new ComponentDropdown(this._initData(i), searchable[i]);
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
-
         this.listen(ComponentDropdown.EventType.CHANGE, newDropdown, this._filterData);
+      }
     }
-};
 
-ComponentFilter.prototype = new ComponentBase();
-ComponentFilter.constructor = ComponentFilter;
-
-ComponentFilter.prototype._initData = function(i) {
-    var data = this._data[i];
-    var selection = this._getSelection(i);
-
-    if(data[selection]) {
+    ComponentFilter.prototype._initData = function(i) {
+      var data, global, items, key, keyLength, keys, selection, _i;
+      data = this._data[i];
+      selection = this._getSelection(i);
+      if (data[selection]) {
         return data[selection];
-    }
-
-    var keys = Object.keys(data);
-    var key = keys.length > 0 ? keys[0] : '';
-
-    var keyLength = key.split('-').length;
-    keyLength = keyLength === 1 && key.length === 0 ? 0 : keyLength;
-    var global = '';
-
-    for(var i = 0; i < keyLength; i++) {
+      }
+      keys = Object.keys(data);
+      key = keys.length > 0 ? keys[0] : '';
+      keyLength = key.split('-').length;
+      keyLength = keyLength === 1 && key.length === 0 ? 0 : keyLength;
+      global = '';
+      for (i = _i = 0; _i < keyLength; i = _i += 1) {
         global += 'global-';
-    }
-
-    if(global.length > 0)
+      }
+      if (global.length > 0) {
         global = global.substring(0, global.length - 1);
+      }
+      items = data[global] || ComponentDropdown.EmptyOption;
+      return items;
+    };
 
-    var items = data[global] || ComponentDropdown.EmptyOption;
-    return items;
-};
-
-ComponentFilter.prototype.getStatus = function () {
-    if(!this._keys)
+    ComponentFilter.prototype.getStatus = function() {
+      var i, item, res, _i, _len, _ref;
+      if (!this._keys) {
         return this._status;
-    var res = {};
-    for(var i = 0; i < this._keys.length; i++){
-        res[this._keys[i]] = this._status[i];
-    }
-    return res;
-};
+      }
+      res = {};
+      _ref = this._keys;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        item = _ref[i];
+        res[item] = this._status[i];
+      }
+      return res;
+    };
 
-ComponentFilter.prototype._filterData = function(selected, src) {
-    var dropdown;
-    var data;
-    var selection;
-    var alreadyLoaded;
-    for(var i = 0; i < this._dropdowns.length; i++) {
-        dropdown = this._dropdowns[i];
-        if(src < dropdown.componentId ) {
-            selection = this._getSelection(i);
-            data = this._data[i][selection];
-            data = data ? data : ComponentDropdown.EmptyOption;
-            alreadyLoaded = data !== ComponentDropdown.EmptyOption && data.filter(function(item) {
-                return item === dropdown.selected;
-            }).length > 0;
-            if(!alreadyLoaded) {
-                dropdown.changeData(data);
-                dropdown.setSelection(ComponentDropdown.EmptyOption);
-            }
-            this._status[i] = dropdown.selected;
-            dropdown.setEnabled(data !== ComponentDropdown.EmptyOption);
-        } else if(src === dropdown.componentId) {
-            if(this._status[i] === selected) {
-                return;
-            }
-            this._status[i] = selected;
+    ComponentFilter.prototype._filterData = function(selected, src) {
+      var alreadyLoaded, data, dropdown, i, selection, _i, _len, _ref;
+      _ref = this._dropdowns;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        dropdown = _ref[i];
+        if (src < dropdown.componentId) {
+          selection = this._getSelection(i);
+          data = this._data[i][selection];
+          data = data ? data : ComponentDropdown.EmptyOption;
+          alreadyLoaded = data !== ComponentDropdown.EmptyOption && data.filter(function(item) {
+            return item === dropdown.selected;
+          }).length > 0;
+          if (!alreadyLoaded) {
+            dropdown.changeData(data);
+            dropdown.setSelection(ComponentDropdown.EmptyOption);
+          }
+          this._status[i] = dropdown.selected;
+          dropdown.setEnabled(data !== ComponentDropdown.EmptyOption);
+        } else if (src === dropdown.componentId) {
+          if (this._status[i] === selected) {
+            return;
+          }
+          this._status[i] = selected;
         }
-    }
-    this.fire(ComponentFilter.EventType.UPDATED, this.getStatus());
-};
+      }
+      this.fire(ComponentFilter.EventType.UPDATED, this.getStatus());
+    };
 
-ComponentFilter.prototype._getSelection = function(depth) {
-    var selection = '';
-    var randomKey = Object.keys(this._data[depth])[0];
-    if(randomKey) {
-        var length = randomKey === '' ? 0 : randomKey.split("-").length;
-        var oneSelected;
-        for (var i = 0; i < length; i++) {
-            oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
-            selection += oneSelected === -1 ? 'global' : oneSelected;
-            selection += '-';
+    ComponentFilter.prototype._getSelection = function(depth) {
+      var i, length, oneSelected, randomKey, selection, _i;
+      selection = '';
+      randomKey = Object.keys(this._data[depth])[0];
+      if (randomKey) {
+        length = randomKey === '' ? 0 : randomKey.split("-").length;
+        for (i = _i = 0; _i < length; i = _i += 1) {
+          oneSelected = helper.obj.getData(this._dropdowns[i], ['selected', 'id']);
+          selection += oneSelected === -1 ? 'global' : oneSelected;
+          selection += '-';
         }
+        if (selection.length > 0) {
+          selection = selection.substring(0, selection.length - 1);
+        }
+      }
+      return selection;
+    };
 
-        if (selection.length > 0)
-            selection = selection.substring(0, selection.length - 1);
-    }
-    return selection;
-};
+    ComponentFilter.prototype.createDom = function() {
+      var dropdown, mainDiv, _i, _len, _ref;
+      mainDiv = document.createElement('div');
+      mainDiv["class"] = "filtrable-task";
+      _ref = this._dropdowns;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        dropdown = _ref[_i];
+        this.addChild('dropdown' + dropdown.componentId, dropdown, {
+          'el': mainDiv
+        });
+      }
+      this.element = mainDiv;
+    };
 
-ComponentFilter.prototype.createDom = function() {
-    var mainDiv = document.createElement('div');
-    mainDiv.class = "filtrable-task";
+    ComponentFilter.prototype.unselectAll = function() {
+      var firstDropdown;
+      firstDropdown = this._dropdowns[0];
+      firstDropdown.setSelection(ComponentDropdown.EmptyOption);
+      this._filterData(ComponentDropdown.EmptyOption, firstDropdown.componentId);
+    };
 
-    for(var i = 0; i < this._dropdowns.length; i++) {
-        this.addChild('dropdown' + this._dropdowns[i].componentId, this._dropdowns[i], {'el': mainDiv});
-    }
+    ComponentFilter.prototype.setActive = function(active) {
+      var dropdown, _i, _len, _ref;
+      _ref = this._dropdowns;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        dropdown = _ref[_i];
+        dropdown.setEnabled(active);
+      }
+    };
 
-    this.element = mainDiv;
-};
+    return ComponentFilter;
 
-ComponentFilter.prototype.unselectAll = function() {
-    var firstDropdown = this._dropdowns[0];
-    firstDropdown.setSelection(ComponentDropdown.EmptyOption);
-    this._filterData(ComponentDropdown.EmptyOption, firstDropdown.componentId);
-};
+  })(ComponentBase);
 
-ComponentFilter.prototype.setActive = function(active) {
-    for(var i = 0; i < this._dropdowns.length; i++) {
-        this._dropdowns[i].setEnabled(active);
-    }
-};
-
-ComponentFilter.EventType = {
+  ComponentFilter.EventType = {
     UPDATED: 'new_selection'
-};
+  };
+
+  module.exports = ComponentFilter;
+
+}).call(this);

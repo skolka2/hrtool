@@ -5,14 +5,13 @@ class ViewDefault extends ViewBase
 		super()
 
 	render: ->
-		super()
-		
+		super()		
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		div = document.createElement "div"
 		div.id = "ViewDefault"
 		div.innerText = "This is default view, you should not be seeing this (you should see other views instead)."
 		mainWrapper.appendChild div
-		
 		return
+
 
 module.exports = ViewDefault

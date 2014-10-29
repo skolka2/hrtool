@@ -67,23 +67,23 @@
 
     ComponentTable.prototype.onLoad = function(data) {
       var dataLimit, divTable, i, _i;
-      this.data = data;
-      dataLimit = this.reqData.limit === this.data.length ? this.data.length - 1 : this.data.length;
       divTable = this.getDivTable();
+      this.getDivLoadMore();
+      if (this.reqData.limit === data.length) {
+        dataLimit = data.length - 1;
+        this.divLoadMore.style.display = 'block';
+      } else {
+        dataLimit = data.length;
+        this.divLoadMore.style.display = 'none';
+      }
       for (i = _i = 0; _i < dataLimit; i = _i += +1) {
-        this.addRow(this.data[i], divTable);
+        this.addRow(data[i], divTable);
       }
       this.reqData.offset += dataLimit;
-      if (this.data.length === this.reqData.limit) {
-        this.getDivLoadMore();
-      } else {
-        this.getElement().removeChild(this.getDivLoadMore());
-        this.divLoadMore = null;
-      }
     };
 
     ComponentTable.prototype.getDivTable = function() {
-      if (this.divTable === void 0) {
+      if (this.divTable == null) {
         this.divTable = document.createElement("div");
         this.divTable.className = 'table';
         this.getElement().appendChild(this.divTable);
@@ -92,7 +92,7 @@
     };
 
     ComponentTable.prototype.getDivLoadMore = function() {
-      if (this.divLoadMore === null) {
+      if (this.divLoadMore == null) {
         this.divLoadMore = document.createElement('div');
         this.divLoadMore.className = 'load-more';
         this.divLoadMore.innerHTML = "load more..";
@@ -103,18 +103,21 @@
     };
 
     ComponentTable.prototype.addRow = function(data, divTable) {
-      var divCol, i, innerCol, j, params, row, tableStruct, _i, _j, _ref, _ref1, _results;
+      var divCol, innerCol, item, params, row, tableStruct, _i, _j, _len, _len1, _ref, _ref1, _results;
       row = document.createElement("div");
       row.className = 'table-row';
       divTable.appendChild(row);
+      _ref = this.headerTitles;
       _results = [];
-      for (i = _i = 0, _ref = this.headerTitles.length; _i < _ref; i = _i += +1) {
-        tableStruct = this.headerTitles[i];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tableStruct = _ref[_i];
         divCol = document.createElement("div");
         divCol.className = 'table-column';
         params = [];
-        for (j = _j = 0, _ref1 = tableStruct.keys.length; _j < _ref1; j = _j += +1) {
-          params.push(data[tableStruct.keys[j]]);
+        _ref1 = tableStruct.keys;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          item = _ref1[_j];
+          params.push(data[item]);
         }
         innerCol = helper.dom.createElement(tableStruct.formatter(params));
         divCol.appendChild(innerCol);
