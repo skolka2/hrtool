@@ -49,20 +49,20 @@ class ComponentTable extends ComponentBase
 
 
 	onLoad : (data) ->
-		@data = data
-		# decide if there is another data to loadMore
-		dataLimit = if @reqData.limit is @data.length then @data.length - 1 else @data.length
 		divTable = @getDivTable()
+		# decide if there is another data to loadMore
+		if @reqData.limit is data.length
+			dataLimit = data.length - 1
+			@getDivLoadMore()
+			@divLoadMore.style.display = 'block'
+		else
+			dataLimit = data.length
+			@divLoadMore.style.display = 'none'
+
 		for i in [0...dataLimit] by +1
-				@addRow(@data[i], divTable)
+			@addRow(data[i], divTable)
 
 		@reqData.offset += dataLimit
-
-		if @data.length is @reqData.limit
-				@getDivLoadMore()
-		else
-				@getElement().removeChild @getDivLoadMore()
-				@divLoadMore = null
 		return
 
 #	div with data
@@ -76,7 +76,7 @@ class ComponentTable extends ComponentBase
 
 # div for loadmore functionality
 	getDivLoadMore :() ->
-		if @divLoadMore is null
+		if not @divLoadMore?
 			@divLoadMore = document.createElement('div')
 			@divLoadMore.className = 'load-more'
 			@divLoadMore.innerHTML = "load more.."
@@ -92,13 +92,12 @@ class ComponentTable extends ComponentBase
 		row = document.createElement("div")
 		row.className = 'table-row'
 		divTable.appendChild(row)
-		for i in [0...@headerTitles.length] by +1
-			tableStruct = @headerTitles[i]
+		for tableStruct in @headerTitles
 			divCol = document.createElement("div")
 			divCol.className = 'table-column'
 			params = []
-			for j in [0...tableStruct.keys.length] by +1
-				params.push(data[tableStruct.keys[j]])
+			for item in tableStruct.keys
+				params.push(data[item])
 			innerCol = helper.dom.createElement(tableStruct.formatter(params))
 			divCol.appendChild innerCol
 			row.appendChild divCol
