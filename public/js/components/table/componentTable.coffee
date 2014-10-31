@@ -50,10 +50,10 @@ class ComponentTable extends ComponentBase
 
 	onLoad : (data) ->
 		divTable = @getDivTable()
+		@getDivLoadMore()
 		# decide if there is another data to loadMore
 		if @reqData.limit is data.length
 			dataLimit = data.length - 1
-			@getDivLoadMore()
 			@divLoadMore.style.display = 'block'
 		else
 			dataLimit = data.length
@@ -67,7 +67,7 @@ class ComponentTable extends ComponentBase
 
 #	div with data
 	getDivTable :() ->
-		if @divTable is undefined
+		if not @divTable?
 			@divTable = document.createElement("div")
 			@divTable.className = 'table'
 			@getElement().appendChild(@divTable)
