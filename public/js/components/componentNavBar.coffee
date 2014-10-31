@@ -6,10 +6,7 @@ module.exports = class ComponentNavBar extends ComponentBase
 
 	constructor: ->
 		super()
-
-
 	createDom: ->
-		div = document.getElementById ComponentNavBar.ID
 		loggedIn = no
 		loggedIn = yes if app and app.bulk
 		jadeData =
@@ -23,14 +20,14 @@ module.exports = class ComponentNavBar extends ComponentBase
 			HRfirstName: @helper.bulk.getData ['hrBuddy', 'first_name']
 			HRlastName: @helper.bulk.getData ['hrBuddy', 'last_name']
 			loggedIn : !!app and !!app.bulk
-		template = @helper.tpl.create "components/componentNavBar", jadeData
-		div.appendChild template
+
+		@element = @helper.tpl.create "components/componentNavBar", jadeData
+
 	render: ->
 		if !@rendered
-			document.getElementById('navbar').innerHTML = '<a href="/auth/google" id="login-button">Login</a>'
-			document.getElementById('login-button').style.display = 'none'
-			@rendered = true
-			@createDom()
+			div = document.getElementById ComponentNavBar.ID
+			div.innerHTML = ""
+			super div
 
 
 

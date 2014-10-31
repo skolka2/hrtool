@@ -1,7 +1,6 @@
 if loggedIn
-    div
+    .navbar
         a(href='mailto:'+HRemail) #{HRfirstName} #{HRlastName}
-        //- MENU
         #navbar-menu
             if userRoleID === teamManagerID || userRoleID === administratorID
                 a(href="#")
@@ -20,4 +19,5 @@ if loggedIn
             a(href='/User/user='+userID) #{userFirstName} #{userLastName}
             a(href="/logout") Logout
 else
-    a(href="/login") Login
+    .navbar
+        a(href='/auth/google' id='login-button' class='login-button') Login
