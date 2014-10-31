@@ -72,7 +72,7 @@ grunt.loadNpmTasks("grunt-webpack");
 grunt.loadNpmTasks ('grunt-contrib-less');
 
 grunt.registerTask("default", ["dev"]);
-grunt.registerTask("dev", ["coffee","less:develop","webpack"]);
+grunt.registerTask("dev", ["coffee","less:develop","webpack", "watch"]);
 grunt.registerTask("release", ["coffee","less:production","webpack"]);
 
 };

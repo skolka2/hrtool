@@ -4,7 +4,7 @@ Model = require '../../models/model'
 hrtool = require '../../models/actions'
 
 
-class ComponentTable	extends ComponentBase
+class ComponentTable extends ComponentBase
 	constructor: (tableFormat, tableSettings)->
 		super()
 		@_action = tableSettings.actionFunc
