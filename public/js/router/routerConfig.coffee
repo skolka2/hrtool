@@ -13,7 +13,7 @@ class RouterConfig
 	setView: (data) ->
 		switch data.view
 			when 'home' then new ViewHome()
-			when 'templates' then new ViewDepartmentAdmin()
+			when 'departments' then new ViewDepartmentAdmin()
 			when 'people' then new ViewPeopleAdmin()
 			when 'tasks' then new ViewTaskAdmin()
 			when 'export' then new ViewExport()

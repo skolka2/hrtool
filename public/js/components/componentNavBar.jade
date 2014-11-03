@@ -5,14 +5,20 @@ if loggedIn
             if userRoleID === teamManagerID || userRoleID === administratorID
                 a(href="#")
                     .navbar-menu-item Home
-                a(href="#taskAdmin")
+                a(href="#tasks")
                     .navbar-menu-item Tasks
-                a(href="#peopleAdmin")
+                a(href="#people")
                     .navbar-menu-item People
-                a(href="#departmentAdmin")
+                a(href="#template")
+                    .navbar-menu-item Templates
+                a(href="#implicit")
+                    .navbar-menu-item Implicit Tasks
+                a(href="#departments")
                     .navbar-menu-item Departments
+                a(href="#export")
+                    .navbar-menu-item Export
             else
-                a(href="#taskAdmin")
+                a(href="#tasks")
                     .navbar-menu-item Tasks
         //- end of MENU
         #navbar-user
