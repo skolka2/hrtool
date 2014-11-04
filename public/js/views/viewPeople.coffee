@@ -1,5 +1,6 @@
 ViewBase =  require './viewBase'
-ComponentFormAddUser = require '../components/forms/componentFormAddUser'
+ComponentBase = require '../components/componentBase'
+ComponentPopupFactory = require '../components/componentPopupFactory'
 ComponentFilterFormatter = require '../components/features/componentFilterFormatter'
 ComponentFilter = require '../components/features/componentFilter'
 ComponentTableWrapper = require '../components/table/componentTableWrapper'
@@ -18,25 +19,28 @@ class ViewPeople extends ViewBase
 		viewWrapper.className = "view-wraper"
 		viewWrapper.innerHTML = "People Admin View"
 
+		addUserButton = document.createElement 'button'
+		addUserButton.innerHTML = "Add new user"
+		addUserButton.addEventListener ComponentBase.CLICK_EVENT, @handleAddUserPopup
+		viewWrapper.appendChild addUserButton
+		viewWrapper.appendChild document.createElement 'br'
+
 		tableDiv = document.createElement 'div'
 		tableDiv.innerHTML = "Table of users"
 		viewWrapper.appendChild tableDiv
-		viewWrapper.appendChild document.createElement 'br'
-
-		divForm = document.createElement 'div'
-		divForm.innerHTML = "<br/><br/><br/><br/>ComponentFormAddUser...<br><br>"
-		viewWrapper.appendChild divForm
 		viewWrapper.appendChild document.createElement 'br'
 
 		filterData = ComponentFilterFormatter.factory.createTeamDropdownsData @helper.bulk.getDepartmentData(), @helper.bulk.getTeamData()
 		userTable = new ComponentTableWrapper ComponentTableFactory.createUsersTable(), new ComponentFilter(filterData), new ComponentTextInput 'Type name'
 		userTable.render tableDiv
 
-		form = new ComponentFormAddUser()
-		form.render divForm
-
 		mainWrapper.appendChild viewWrapper
 		
+		return
+
+	handleAddUserPopup: (ev) =>
+		addUserPopup = ComponentPopupFactory.getNewUserPopup()
+		addUserPopup.open()
 		return
 
 module.exports = ViewPeople

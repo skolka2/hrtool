@@ -5,6 +5,7 @@ ComponentSelectFactory = require './features/componentSelectFactory'
 ComponentSelect= require './features/componentSelect'
 ComponentEditUser = require './componentEditUser'
 ComponentAddTask = require './features/addTask/newTask/componentAddTask'
+ComponentFormAddUser = require './forms/componentFormAddUser'
 ComponentBase = require './componentBase'
 
 module.exports = ComponentPopupFactory =
@@ -34,3 +35,9 @@ module.exports = ComponentPopupFactory =
 		popup = new ComponentPopup(componentAddTask)
 		popup.listen ComponentAddTask.EventType.SAVE_SUCCESS, componentAddTask, popup.close
 		return popup
+
+	getNewUserPopup: ->
+		componentAddUser = new ComponentFormAddUser()
+		popup = new ComponentPopup(componentAddUser)
+		popup.listen ComponentFormAddUser.EventType.SAVE, componentAddUser, popup.close
+		popup
