@@ -2,7 +2,7 @@ ViewBase =  require './viewBase'
 ComponentAddTask = require '../components/features/addTask/newTask/componentAddTask'
 ComponentHide = require '../components/features/componentHide'
 
-class ViewTaskAdmin extends ViewBase
+class ViewTasks extends ViewBase
 	constructor: ->
 		super()
 
@@ -25,4 +25,4 @@ class ViewTaskAdmin extends ViewBase
 		
 		return
 
-module.exports = ViewTaskAdmin
+module.exports = ViewTasks

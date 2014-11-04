@@ -1,17 +1,31 @@
-var ViewBase =  require('./viewBase');
+(function() {
+  var ViewBase, ViewDefault,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-var ViewDefault =  module.exports = function(){
-	ViewBase.call(this,null);
-	this.super = ViewBase;
-}
-ViewDefault.prototype = new ViewBase();
-ViewDefault.prototype.constructor = ViewDefault;
+  ViewBase = require('./viewBase');
 
-ViewDefault.prototype.render = function(){
-	this.super.prototype.render.apply(this, arguments);
-	var mainWrapper = document.getElementById(this.super.mainWrapper);
-	var div = document.createElement("div");
-	div.id = "ViewDefault";
-	div.innerText = "This is default view, you should not be seeing this (you should see other views instead).";
-	mainWrapper.appendChild(div);
-};
+  ViewDefault = (function(_super) {
+    __extends(ViewDefault, _super);
+
+    function ViewDefault() {
+      ViewDefault.__super__.constructor.call(this);
+    }
+
+    ViewDefault.prototype.render = function() {
+      var div, mainWrapper;
+      ViewDefault.__super__.render.call(this);
+      mainWrapper = document.getElementById(ViewBase.mainWrapper);
+      div = document.createElement("div");
+      div.id = "ViewDefault";
+      div.innerText = "This is default view, you should not be seeing this (you should see other views instead).";
+      mainWrapper.appendChild(div);
+    };
+
+    return ViewDefault;
+
+  })(ViewBase);
+
+  module.exports = ViewDefault;
+
+}).call(this);

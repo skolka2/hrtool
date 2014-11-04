@@ -37,19 +37,18 @@ class Router
 
 	changeView: ->
 		@view = @routerConfig.setView @getPath()
-		_this = @
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 
 		if mainWrapper
 			mainWrapper.innerHTML = ''
-			this.view.render()
+			@view.render()
 
 		else
-			document.addEventListener ComponentBase.EventType.DOMContentLoaded, ->
+			document.addEventListener ComponentBase.EventType.DOMContentLoaded, =>
 				document.removeEventListener ComponentBase.EventType.DOMContentLoaded, arguments.callee, false
 				if mainWrapper
 					mainWrapper.innerHTML = ''
-					_this.view.render()
+					@view.render()
 			, false
 
 		return

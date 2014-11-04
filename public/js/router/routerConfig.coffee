@@ -1,24 +1,24 @@
 ViewHome = require '../views/viewHome'
-ViewDepartmentAdmin = require '../views/viewDepartmentAdmin'
-ViewPeopleAdmin = require '../views/viewPeopleAdmin'
-ViewTaskAdmin = require '../views/viewTaskAdmin'
+ViewDepartments = require '../views/viewDepartments'
+ViewPeople = require '../views/viewPeople'
+ViewTasks = require '../views/viewTasks'
 ViewTest = require '../views/viewTest'
 ViewDefault = require '../views/viewDefault'
 ViewExport = require '../views/viewExport'
 ViewImplicitTasks = require '../views/viewImplicitTasks'
-ViewTemplateTasks = require '../views/ViewTemplateTasks'
+ViewTemplates = require '../views/viewTemplates'
 
 class RouterConfig
 
 	setView: (data) ->
 		switch data.view
 			when 'home' then new ViewHome()
-			when 'departments' then new ViewDepartmentAdmin()
-			when 'people' then new ViewPeopleAdmin()
-			when 'tasks' then new ViewTaskAdmin()
+			when 'departments' then new ViewDepartments()
+			when 'people' then new ViewPeople()
+			when 'tasks' then new ViewTasks()
 			when 'export' then new ViewExport()
-			when 'implicit' then new ViewImplicitTasks()
-			when 'template' then new ViewTemplateTasks()
+			when 'implicit_tasks' then new ViewImplicitTasks()
+			when 'templates' then new ViewTemplates()
 			when 'test' then new ViewTest()
 			else new ViewHome()
 

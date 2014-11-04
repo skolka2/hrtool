@@ -1,34 +1,45 @@
-var EventEmitter = require('../observer/ObservableComponent');
-var helper = require('../helpers/helpers');
-var ComponentNavBar = require('../components/componentNavBar');
+(function() {
+  var ComponentNavBar, EventEmitter, ViewBase, helper,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-var ViewBase = module.exports =	function(){
+  EventEmitter = require('../observer/ObservableComponent');
 
-	EventEmitter.apply(this);
-	this.super = EventEmitter;
-	this.helper = helper;
-};	
+  helper = require('../helpers/helpers');
 
-ViewBase.prototype = new EventEmitter();
-ViewBase.prototype.constructor = ViewBase;
+  ComponentNavBar = require('../components/componentNavBar');
 
+  ViewBase = (function(_super) {
+    __extends(ViewBase, _super);
 
-ViewBase.prototype.render = function(){
-    var navBar = new ComponentNavBar();
-    navBar.render();
+    function ViewBase() {
+      ViewBase.__super__.constructor.call(this);
+      this.helper = helper;
+    }
 
-	this.base = document.getElementById(ViewBase.mainWrapper);
-	if(this.base != null){ //checks if, in body, exists main-wrapper
-		while( this.base.childNodes.length > 0 ){
-     		this.base.removeChild(this.base.childNodes[0])
-		}
-	}
-	else{	//Adds main-wrapper
-		var body = document.getElementsByTagName("body")[0];
-		var div = document.createElement("div");
-		div.id = ViewBase.mainWrapper;
-		body.appendChild(div);
-	}
-};
+    ViewBase.mainWrapper = "main-wrapper";
 
-ViewBase.mainWrapper = "main-wrapper";
+    ViewBase.prototype.render = function() {
+      var baseEl, body, div, navBar;
+      navBar = new ComponentNavBar();
+      navBar.render();
+      baseEl = document.getElementById(ViewBase.mainWrapper);
+      if (baseEl) {
+        while (baseEl.childNodes.length > 0) {
+          baseEl.removeChild(this.baseEl.childNodes[0]);
+        }
+      } else {
+        body = document.getElementsByTagName("body")[0];
+        div = document.createElement("div");
+        div.id = ViewBase.mainWrapper;
+        body.appendChild(div);
+      }
+    };
+
+    return ViewBase;
+
+  })(EventEmitter);
+
+  module.exports = ViewBase;
+
+}).call(this);

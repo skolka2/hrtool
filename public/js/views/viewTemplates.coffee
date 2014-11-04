@@ -1,7 +1,7 @@
 ViewBase =  require './viewBase'
 ComponentTemplateListFactory = require '../components/templateList/componentTemplateListFactory'
 
-class ViewTemplateTasks extends ViewBase
+class ViewTemplates extends ViewBase
 	constructor: ->
 		super()
 
@@ -27,4 +27,4 @@ class ViewTemplateTasks extends ViewBase
 
 		return
 
-module.exports = ViewTemplateTasks
+module.exports = ViewTemplates

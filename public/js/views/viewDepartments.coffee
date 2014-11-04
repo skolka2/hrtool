@@ -1,6 +1,6 @@
 ViewBase =  require './viewBase'
 
-class ViewDepartmentAdmin extends ViewBase
+class ViewDepartments extends ViewBase
 	constructor: ->
 		super()
 
@@ -15,4 +15,4 @@ class ViewDepartmentAdmin extends ViewBase
 		
 		return
 
-module.exports = ViewDepartmentAdmin
+module.exports = ViewDepartments

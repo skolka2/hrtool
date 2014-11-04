@@ -13,11 +13,11 @@ class ViewBase extends EventEmitter
 		navBar = new ComponentNavBar()
 		navBar.render()
 
-		@base = document.getElementById ViewBase.mainWrapper
+		baseEl = document.getElementById ViewBase.mainWrapper
 
-		if @base
-			while @base.childNodes.length > 0
-				@base.removeChild this.base.childNodes[0]
+		if baseEl
+			while baseEl.childNodes.length > 0
+				baseEl.removeChild this.baseEl.childNodes[0]
 		else
 			body = document.getElementsByTagName("body")[0]
 			div = document.createElement "div"

@@ -26,7 +26,7 @@
 
     ViewImplicitTasks.prototype.render = function() {
       var addTaskDiv, componentTaskImplicit, dataForImplicit, filterData, mainWrapper, tableDiv, tasksTable, viewWrapper;
-      ViewImplicitTasks.__super__.render.call(this, arguments);
+      ViewImplicitTasks.__super__.render.call(this);
       mainWrapper = document.getElementById(ViewBase.mainWrapper);
       viewWrapper = document.createElement('div');
       viewWrapper.className = "view-wraper";

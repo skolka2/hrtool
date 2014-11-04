@@ -6,7 +6,7 @@ ComponentTableWrapper = require '../components/table/componentTableWrapper'
 ComponentTextInput = require '../components/features/componentTextInput'
 ComponentTableFactory = require '../components/table/componentTableFactory'
 
-class ViewPeopleAdmin extends ViewBase
+class ViewPeople extends ViewBase
 	constructor: ->
 		super()
 
@@ -39,4 +39,4 @@ class ViewPeopleAdmin extends ViewBase
 		
 		return
 
-module.exports = ViewPeopleAdmin
+module.exports = ViewPeople
