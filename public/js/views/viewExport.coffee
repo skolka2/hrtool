@@ -5,12 +5,14 @@ class ViewExport extends ViewBase
 		super()
 
 	render: ->
-		super arguments
+		super()
+
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"
 		viewWrapper.innerHTML = "Exports view"
 		mainWrapper.appendChild viewWrapper
+		
 		return
 
 module.exports = ViewExport

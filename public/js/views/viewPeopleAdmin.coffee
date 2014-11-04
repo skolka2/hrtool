@@ -11,7 +11,8 @@ class ViewPeopleAdmin extends ViewBase
 		super()
 
 	render: ->
-		super arguments
+		super()
+
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"
@@ -35,6 +36,7 @@ class ViewPeopleAdmin extends ViewBase
 		form.render divForm
 
 		mainWrapper.appendChild viewWrapper
+		
 		return
 
 module.exports = ViewPeopleAdmin

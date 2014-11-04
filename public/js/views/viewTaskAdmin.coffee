@@ -7,13 +7,13 @@ class ViewTaskAdmin extends ViewBase
 		super()
 
 	render: ->
+		super()
 
-		super arguments
 		mainWrapper = document.getElementById ViewBase.mainWrapper
-		viewWrapper = document.createElement('div')
+		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"
 		viewWrapper.innerHTML = "Task Admin View"
-		viewWrapper.appendChild document.createElement('br')
+		viewWrapper.appendChild document.createElement 'br'
 
 		div = document.createElement 'div'
 		component = new ComponentAddTask()
@@ -22,6 +22,7 @@ class ViewTaskAdmin extends ViewBase
 		hide.render viewWrapper
 
 		mainWrapper.appendChild viewWrapper
+		
 		return
 
 module.exports = ViewTaskAdmin

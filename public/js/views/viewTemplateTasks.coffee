@@ -6,7 +6,8 @@ class ViewTemplateTasks extends ViewBase
 		super()
 
 	render: ->
-		super arguments
+		super()
+		
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"

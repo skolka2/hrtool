@@ -5,12 +5,14 @@ class ViewDepartmentAdmin extends ViewBase
 		super()
 
 	render: ->
-		super arguments
+		super()
+
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"
 		viewWrapper.innerHTML = "Department Admin View"
 		mainWrapper.appendChild viewWrapper
+		
 		return
 
 module.exports = ViewDepartmentAdmin

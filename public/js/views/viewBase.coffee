@@ -24,4 +24,6 @@ class ViewBase extends EventEmitter
 			div.id = ViewBase.mainWrapper
 			body.appendChild div
 
+		return
+
 module.exports = ViewBase
