@@ -230,6 +230,7 @@ ComponentFormAddUser.prototype.handleFormSent = function(data){
 			hrtool.actions.getHR(this.model);
 		}
 		this.reset();
+		this.fire(ComponentFormAddUser.EventType.SAVE, null);
 
 	}
 	else {
