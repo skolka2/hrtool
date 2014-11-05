@@ -1,8 +1,8 @@
 app = require './app'
 Router = require './router/router'
 router = null
-do ->
 
+do ->
 	$.get "/handshake", (data) ->
 		if !data.error
 			app.bulk = data.data
@@ -12,9 +12,10 @@ do ->
 		window.onhashchange = ->
 			if router? then router.changeView()
 	else
-		do ->
-			storedHash = window.location.hash
-			window.setInterval ( ->
-				if window.location.hash != storedHash
-					if router?
-						router.changeView()) , 100
+		storedHash = window.location.hash
+		window.setInterval () ->
+			if window.location.hash != storedHash
+				if router?
+					router.changeView()
+		, 100
+	return
