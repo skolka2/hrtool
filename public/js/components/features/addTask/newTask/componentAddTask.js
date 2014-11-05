@@ -30,10 +30,12 @@
   ComponentAddTask = (function(_super) {
     __extends(ComponentAddTask, _super);
 
-    function ComponentAddTask() {
+    function ComponentAddTask(_preselectedUserId) {
+      this._preselectedUserId = _preselectedUserId;
       this.handleDropdownChange = __bind(this.handleDropdownChange, this);
       this.handleClickEvent = __bind(this.handleClickEvent, this);
       this.handleSaveClickEvent = __bind(this.handleSaveClickEvent, this);
+      this.onTeamsLoad = __bind(this.onTeamsLoad, this);
       ComponentAddTask.__super__.constructor.call(this);
       this._leftComponent = new ComponentLeft();
       this._rightComponent = new ComponentRight();
@@ -46,7 +48,7 @@
     }
 
     ComponentAddTask.prototype.onLoad = function(data) {
-      var buddies, data2, departments, item, teams, users, _i, _len;
+      var buddies, buddies2, data2, departments, item, teams, teamsModel, users, _i, _len;
       departments = this.helper.bulk.getDepartmentData();
       teams = this.helper.bulk.getTeamData();
       users = {};
@@ -63,12 +65,23 @@
       });
       this._componentFilter.render(this._personWrapper);
       this.listen(ComponentDropdown.EventType.CHANGE, this._componentFilter, this.handleDropdownChange);
-      buddies = ComponentFilterFormatter.transform(buddies, 'id_user', 'full_name');
-      this._buddyDropdown = new ComponentDropdown(buddies[''], true);
+      buddies2 = ComponentFilterFormatter.transform(buddies, 'id_user', 'full_name');
+      this._buddyDropdown = new ComponentDropdown(buddies2[''], true);
       this.addChild('buddyDropdown', this._buddyDropdown, {
         el: this._personWrapper
       });
       this._buddyDropdown.render(this._personWrapper);
+      if (this._preselectedUserId != null) {
+        teamsModel = new Model(ComponentAddTask.EventType.GET_USER_TEAMS);
+        this.listen(ComponentAddTask.EventType.GET_USER_TEAMS, teamsModel, this.onTeamsLoad);
+        hrtool.actions.getBasicUserInfo(teamsModel, {
+          id_user: this._preselectedUserId
+        });
+      }
+    };
+
+    ComponentAddTask.prototype.onTeamsLoad = function(data) {
+      this._componentFilter.selectItems([data.id_department, data.id_team, this._preselectedUserId]);
     };
 
     ComponentAddTask.prototype.onSave = function(data) {
@@ -298,6 +311,7 @@
 
   ComponentAddTask.EventType = {
     GET_USERS: 'user/get-all',
+    GET_USER_TEAMS: 'user/get-basic-info',
     INSERT_NEW_TEMPLATE: 'template/insert',
     INSERT_NEW_TASK: 'tasks/insert',
     SAVE_SUCCESS: 'save-success',

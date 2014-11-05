@@ -14,18 +14,16 @@ class ComponentEditUser extends ComponentBase
 		@teams = []
 		@checkboxes = []
 
-
 		model = new Model ComponentEditUser.EventType.GET_USERS
 		@setModel model, ComponentEditUser.EventType.GET_USERS
 		hrtool.actions.getUserTeams @model, {id_user: idUser}
 
 		infoModel = new Model ComponentEditUser.EventType.GET_INFO
-		hrtool.actions.getBasicUserInfo infoModel, {id_user: idUser}
 		@listen ComponentEditUser.EventType.GET_INFO, infoModel, @onInfoLoad
+		hrtool.actions.getBasicUserInfo infoModel, {id_user: idUser}
 
-		usersModel = new Model ComponentEditUser.EventType.GET_USERS
-		hrtool.actions.getUsers usersModel
-		@listen ComponentEditUser.EventType.GET_USERS, usersModel, @onUsersLoad
+		@usersModel = new Model ComponentEditUser.EventType.GET_USERS
+		@listen ComponentEditUser.EventType.GET_USERS, @usersModel, @onUsersLoad
 
 
 
@@ -48,22 +46,27 @@ class ComponentEditUser extends ComponentBase
 
 		@userRoleWrapper = @element.getElementsByClassName(ComponentEditUser.USER_ROLE_WRAPPER_CLASS)[0]
 
-		dropData = ComponentFilterFormatter.transform app.bulk.userRoles, 'id_user_role', 'title'
+		dropData = ComponentFilterFormatter.transform app?.bulk?.userRoles, 'id_user_role', 'title'
 		@userRoleDropdown = new ComponentDropdown dropData['']
+		@userRoleDropdown.setSelectionById data.id_user_role
 		@addChild 'userRoleDropDown', @userRoleDropdown, {el: @userRoleWrapper}
 		@userRoleDropdown.render @userRoleWrapper
+
+		@idBuddy = data.id_buddy;
+		hrtool.actions.getUsers @usersModel
 		return
 
 
 	onUsersLoad: (data) ->
 		users = {}
-		users[item.unique_id] = item for item in data
+		users[item.id_user] = item for item in data
 
 		@buddySelectWrapper = @element.getElementsByClassName(ComponentEditUser.BUDDY_SELECT_WRAPPER_CLASS)[0]
-		usersData = ComponentFilterFormatter.factory.createUsersDropdownsData app.bulk.departments, app.bulk.teams, users
-		@buddyFilter = new ComponentFilter usersData, ['department', 'team', 'user']
-		@addChild 'buddyFilter', @buddyFilter, {el: @buddySelectWrapper}
-		@buddyFilter.render @buddySelectWrapper
+		usersData = ComponentFilterFormatter.transform users, 'id_user', 'full_name'
+		@buddyDropdown = new ComponentDropdown usersData[''], true
+		@buddyDropdown.setSelectionById @idBuddy
+		@addChild 'buddyDropdown', @buddyDropdown, {el: @buddySelectWrapper}
+		@buddyDropdown.render @buddySelectWrapper
 		return
 
 

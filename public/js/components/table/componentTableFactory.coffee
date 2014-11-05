@@ -156,7 +156,7 @@ module.exports = ComponentTableFactory =
 					buttonA = document.createElement 'button'
 					buttonA.innerHTML = 'Add New Task'
 					buttonA.addEventListener 'click', (ev) ->
-						popup = ComponentPopupFactory.getNewTaskPopup()
+						popup = ComponentPopupFactory.getNewTaskPopup(params[0])
 						popup.open()
 					, no
 

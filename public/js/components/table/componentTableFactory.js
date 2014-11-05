@@ -170,7 +170,7 @@
             buttonA.innerHTML = 'Add New Task';
             buttonA.addEventListener('click', function(ev) {
               var popup;
-              popup = ComponentPopupFactory.getNewTaskPopup();
+              popup = ComponentPopupFactory.getNewTaskPopup(params[0]);
               return popup.open();
             }, false);
             buttonE = document.createElement('button');

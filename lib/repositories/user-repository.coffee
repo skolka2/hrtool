@@ -190,8 +190,13 @@ module.exports = (dbClient) ->
 					u.id_user_role,
 					u2.id_user AS id_buddy,
 					u2.last_name AS buddy_last_name,
-					u2.first_name AS buddy_first_name
+					u2.first_name AS buddy_first_name,
+					t.id_team,
+					t.id_department
 				FROM users u
 				LEFT JOIN users u2 ON u.id_buddy = u2.id_user
-				WHERE u.id_user=$1""", [idUser], next
+				LEFT JOIN users_teams ut ON ut.id_user = u.id_user
+				LEFT JOIN teams t ON ut.id_team = t.id_team
+				WHERE u.id_user=$1
+				LIMIT 1""", [idUser], next
 	}

@@ -26,7 +26,7 @@
     __extends(ComponentEditUser, _super);
 
     function ComponentEditUser(idUser, editable) {
-      var infoModel, model, usersModel;
+      var infoModel, model;
       this.idUser = idUser;
       this.editable = editable != null ? editable : false;
       this.addItem = __bind(this.addItem, this);
@@ -41,13 +41,12 @@
         id_user: idUser
       });
       infoModel = new Model(ComponentEditUser.EventType.GET_INFO);
+      this.listen(ComponentEditUser.EventType.GET_INFO, infoModel, this.onInfoLoad);
       hrtool.actions.getBasicUserInfo(infoModel, {
         id_user: idUser
       });
-      this.listen(ComponentEditUser.EventType.GET_INFO, infoModel, this.onInfoLoad);
-      usersModel = new Model(ComponentEditUser.EventType.GET_USERS);
-      hrtool.actions.getUsers(usersModel);
-      this.listen(ComponentEditUser.EventType.GET_USERS, usersModel, this.onUsersLoad);
+      this.usersModel = new Model(ComponentEditUser.EventType.GET_USERS);
+      this.listen(ComponentEditUser.EventType.GET_USERS, this.usersModel, this.onUsersLoad);
     }
 
     ComponentEditUser.prototype.onLoad = function(data) {
@@ -56,7 +55,7 @@
     };
 
     ComponentEditUser.prototype.onInfoLoad = function(data) {
-      var dropData;
+      var dropData, _ref;
       if (this.editable === true) {
         this.userInfoWrapper.style.display = 'block';
       }
@@ -67,12 +66,15 @@
       this.surnameInput.value = data.last_name;
       this.emailInput.value = data.email;
       this.userRoleWrapper = this.element.getElementsByClassName(ComponentEditUser.USER_ROLE_WRAPPER_CLASS)[0];
-      dropData = ComponentFilterFormatter.transform(app.bulk.userRoles, 'id_user_role', 'title');
+      dropData = ComponentFilterFormatter.transform(app != null ? (_ref = app.bulk) != null ? _ref.userRoles : void 0 : void 0, 'id_user_role', 'title');
       this.userRoleDropdown = new ComponentDropdown(dropData['']);
+      this.userRoleDropdown.setSelectionById(data.id_user_role);
       this.addChild('userRoleDropDown', this.userRoleDropdown, {
         el: this.userRoleWrapper
       });
       this.userRoleDropdown.render(this.userRoleWrapper);
+      this.idBuddy = data.id_buddy;
+      hrtool.actions.getUsers(this.usersModel);
     };
 
     ComponentEditUser.prototype.onUsersLoad = function(data) {
@@ -80,15 +82,16 @@
       users = {};
       for (_i = 0, _len = data.length; _i < _len; _i++) {
         item = data[_i];
-        users[item.unique_id] = item;
+        users[item.id_user] = item;
       }
       this.buddySelectWrapper = this.element.getElementsByClassName(ComponentEditUser.BUDDY_SELECT_WRAPPER_CLASS)[0];
-      usersData = ComponentFilterFormatter.factory.createUsersDropdownsData(app.bulk.departments, app.bulk.teams, users);
-      this.buddyFilter = new ComponentFilter(usersData, ['department', 'team', 'user']);
-      this.addChild('buddyFilter', this.buddyFilter, {
+      usersData = ComponentFilterFormatter.transform(users, 'id_user', 'full_name');
+      this.buddyDropdown = new ComponentDropdown(usersData[''], true);
+      this.buddyDropdown.setSelectionById(this.idBuddy);
+      this.addChild('buddyDropdown', this.buddyDropdown, {
         el: this.buddySelectWrapper
       });
-      this.buddyFilter.render(this.buddySelectWrapper);
+      this.buddyDropdown.render(this.buddySelectWrapper);
     };
 
     ComponentEditUser.prototype.createDom = function() {

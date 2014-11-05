@@ -12,7 +12,7 @@ NotificationCenter = require '../../../componentNotificationCenter'
 
 
 class ComponentAddTask extends ComponentBase
-	constructor: () ->
+	constructor: (@_preselectedUserId) ->
 		super()
 		@_leftComponent = new ComponentLeft();
 		@_rightComponent = new ComponentRight();
@@ -43,12 +43,24 @@ class ComponentAddTask extends ComponentBase
 		@_componentFilter.render @_personWrapper
 		@listen ComponentDropdown.EventType.CHANGE, @_componentFilter, @handleDropdownChange
 	
-		buddies = ComponentFilterFormatter.transform buddies, 'id_user', 'full_name'
-		@_buddyDropdown = new ComponentDropdown buddies[''], true
+		buddies2 = ComponentFilterFormatter.transform buddies, 'id_user', 'full_name'
+		@_buddyDropdown = new ComponentDropdown buddies2[''], true
 		@addChild 'buddyDropdown', @_buddyDropdown, {el: @_personWrapper}
 		@_buddyDropdown.render @_personWrapper
+
+		if @_preselectedUserId?
+			teamsModel = new Model ComponentAddTask.EventType.GET_USER_TEAMS
+			@listen ComponentAddTask.EventType.GET_USER_TEAMS, teamsModel, @onTeamsLoad
+			hrtool.actions.getBasicUserInfo(teamsModel, {
+				id_user: @_preselectedUserId
+			});
+
 		return
 
+
+	onTeamsLoad: (data) =>
+		@_componentFilter.selectItems([data.id_department, data.id_team, @_preselectedUserId])
+		return
 
 	onSave: (data) ->
 		if data.name? is 'error'
@@ -244,7 +256,7 @@ class ComponentAddTask extends ComponentBase
 			when @_componentFilter._dropdowns[1].selected.value
 				dropdown = @_leftComponent._filter._dropdowns[1]
 			else return
-		
+
 		for item in dropdown._map
 			if item.value.value is selection.value
 				dropdown.setSelection item.value
@@ -257,6 +269,7 @@ ComponentAddTask.BOTTOM_WRAPPER_CLASS = 'new-task-date-wrapper'
 ComponentAddTask.NOTIFICATION_DURATION = 4000
 ComponentAddTask.EventType =
 	GET_USERS : 'user/get-all'
+	GET_USER_TEAMS: 'user/get-basic-info'
 	INSERT_NEW_TEMPLATE: 'template/insert'
 	INSERT_NEW_TASK: 'tasks/insert'
 	SAVE_SUCCESS: 'save-success'

@@ -3,14 +3,14 @@ helper = require '../../helpers/helpers'
 Const = require '../../helpers/constants'
 
 class ComponentDropdown extends ComponentBase
-	constructor: (data, useSearch) ->
+	constructor: (@_data, useSearch) ->
 		super()
 		@selected = ''
 		@_enabled = yes
 		@searchEl = null
 		@useSearch = no
 		@_map = []
-		if useSearch is null or data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT then @useSearch = useSearch
+		if useSearch is null or @_data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT then @useSearch = useSearch
 
 		@_selectedTextElement = document.createElement 'div'
 		@_selectedTextElement.id = 'component-' + @componentId + 'dropdown-button'
@@ -21,7 +21,7 @@ class ComponentDropdown extends ComponentBase
 		@_listEl.style.visibility = 'hidden'
 
 		@_selectedTextElement.addEventListener ComponentBase.EventType.CLICK, @_handleListOpen, no
-		@changeData data
+		@changeData @_data
 
 	_handleListOpen: () =>
 		if @_enabled is yes
@@ -79,7 +79,7 @@ class ComponentDropdown extends ComponentBase
 		div = document.createElement 'div'
 		div.className = 'dropdown-item-wrapper'
 
-		for item, i in data
+		for item in data
 			li = document.createElement 'li'
 			li.className = 'dropDownItem'
 			@_map.push
@@ -103,6 +103,21 @@ class ComponentDropdown extends ComponentBase
 		else
 			@_selectedTextElement.innerHTML = selectedItem.value
 		@fire ComponentDropdown.EventType.CHANGE, @selected
+		return
+
+
+	setSelectionById: (id) ->
+		for item in @_data
+			if item.id is id
+				@setSelection item
+				break
+		return
+
+	setSelectionByValue: (value) ->
+		for item in @_data
+			if item.value is value
+				@setSelection item
+				break
 		return
 
 
@@ -151,14 +166,15 @@ class ComponentDropdown extends ComponentBase
 
 
 	handleSearch: () =>
-		for item in @_map
-			stringFromMap = item.searchValue
-			stringFromInput = helper.format.getUniversalString(@searchEl.value).toLowerCase().replace(/\s/g, "")
-		
-			if stringFromMap.indexOf stringFromInput is -1
-				item.el.style.display = "none"
-			else
-				item.el.style.display = "list-item"
+		if @searchEl.value.length > 0
+			for item in @_map
+				stringFromMap = item.searchValue
+				stringFromInput = helper.format.getUniversalString(@searchEl.value).toLowerCase().replace(/\s/g, "")
+
+				if stringFromMap.indexOf stringFromInput is -1
+					item.el.style.display = "none"
+				else
+					item.el.style.display = "list-item"
 		return
 
 ComponentDropdown.EventType =

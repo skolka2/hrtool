@@ -15,8 +15,9 @@ module.exports = ComponentPopupFactory =
 
 		if filter?
 			popup.listen ComponentFilter.EventType.UPDATED, filter, popup.open
-
 		return popup
+
+		
 	getSelectDepTeamPopup: (popupTrigger)->
 		select = new ComponentSelectFactory.createDepartmentTeam()
 		popup = new ComponentPopup popupTrigger, select
@@ -30,8 +31,8 @@ module.exports = ComponentPopupFactory =
 		popup.listen ComponentEditUser.EventType.CANCEL, componentEditUser, popup.close
 		return popup
 
-	getNewTaskPopup:  ->
-		componentAddTask = new ComponentAddTask()
+	getNewTaskPopup:  (preselectedUserData, preselectedBuddy)->
+		componentAddTask = new ComponentAddTask preselectedUserData, preselectedBuddy
 		popup = new ComponentPopup(componentAddTask)
 		popup.listen ComponentAddTask.EventType.SAVE_SUCCESS, componentAddTask, popup.close
 		return popup

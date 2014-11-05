@@ -13,7 +13,8 @@
   ComponentDropdown = (function(_super) {
     __extends(ComponentDropdown, _super);
 
-    function ComponentDropdown(data, useSearch) {
+    function ComponentDropdown(_data, useSearch) {
+      this._data = _data;
       this.handleSearch = __bind(this.handleSearch, this);
       this._handleListOpen = __bind(this._handleListOpen, this);
       ComponentDropdown.__super__.constructor.call(this);
@@ -22,7 +23,7 @@
       this.searchEl = null;
       this.useSearch = false;
       this._map = [];
-      if (useSearch === null || data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT) {
+      if (useSearch === null || this._data.length >= ComponentDropdown.SEARCH_FROM_ITEMS_COUNT) {
         this.useSearch = useSearch;
       }
       this._selectedTextElement = document.createElement('div');
@@ -32,7 +33,7 @@
       this._listEl.className = 'dropDownButton';
       this._listEl.style.visibility = 'hidden';
       this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._handleListOpen, false);
-      this.changeData(data);
+      this.changeData(this._data);
     }
 
     ComponentDropdown.prototype._handleListOpen = function() {
@@ -69,7 +70,7 @@
     };
 
     ComponentDropdown.prototype._fillWithData = function(data) {
-      var div, empty, i, item, li, text, userInput, _i, _len;
+      var div, empty, item, li, text, userInput, _i, _len;
       this._map = [];
       if (this.useSearch === true) {
         userInput = document.createElement('input');
@@ -98,8 +99,8 @@
       this.setSelection(empty);
       div = document.createElement('div');
       div.className = 'dropdown-item-wrapper';
-      for (i = _i = 0, _len = data.length; _i < _len; i = ++_i) {
-        item = data[i];
+      for (_i = 0, _len = data.length; _i < _len; _i++) {
+        item = data[_i];
         li = document.createElement('li');
         li.className = 'dropDownItem';
         this._map.push({
@@ -125,6 +126,30 @@
         this._selectedTextElement.innerHTML = selectedItem.value;
       }
       this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+    };
+
+    ComponentDropdown.prototype.setSelectionById = function(id) {
+      var item, _i, _len, _ref;
+      _ref = this._data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        if (item.id === id) {
+          this.setSelection(item);
+          break;
+        }
+      }
+    };
+
+    ComponentDropdown.prototype.setSelectionByValue = function(value) {
+      var item, _i, _len, _ref;
+      _ref = this._data;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        if (item.value === value) {
+          this.setSelection(item);
+          break;
+        }
+      }
     };
 
     ComponentDropdown.prototype.changeData = function(data) {
@@ -170,15 +195,17 @@
 
     ComponentDropdown.prototype.handleSearch = function() {
       var item, stringFromInput, stringFromMap, _i, _len, _ref;
-      _ref = this._map;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
-        stringFromMap = item.searchValue;
-        stringFromInput = helper.format.getUniversalString(this.searchEl.value).toLowerCase().replace(/\s/g, "");
-        if (stringFromMap.indexOf(stringFromInput === -1)) {
-          item.el.style.display = "none";
-        } else {
-          item.el.style.display = "list-item";
+      if (this.searchEl.value.length > 0) {
+        _ref = this._map;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          stringFromMap = item.searchValue;
+          stringFromInput = helper.format.getUniversalString(this.searchEl.value).toLowerCase().replace(/\s/g, "");
+          if (stringFromMap.indexOf(stringFromInput === -1)) {
+            item.el.style.display = "none";
+          } else {
+            item.el.style.display = "list-item";
+          }
         }
       }
     };

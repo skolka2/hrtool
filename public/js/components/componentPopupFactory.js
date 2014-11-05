@@ -42,9 +42,9 @@
       popup.listen(ComponentEditUser.EventType.CANCEL, componentEditUser, popup.close);
       return popup;
     },
-    getNewTaskPopup: function() {
+    getNewTaskPopup: function(preselectedUserData, preselectedBuddy) {
       var componentAddTask, popup;
-      componentAddTask = new ComponentAddTask();
+      componentAddTask = new ComponentAddTask(preselectedUserData, preselectedBuddy);
       popup = new ComponentPopup(componentAddTask);
       popup.listen(ComponentAddTask.EventType.SAVE_SUCCESS, componentAddTask, popup.close);
       return popup;

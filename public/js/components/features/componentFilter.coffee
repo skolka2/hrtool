@@ -4,13 +4,14 @@ helper = require '../../helpers/helpers'
 
 
 class ComponentFilter extends ComponentBase
-	constructor: (@_data, @_keys, searchable) ->
+	constructor: (@_data, @_keys, searchable, preselectedIds) ->
 		super()
 		@_status = []
 		@_dropdowns = []
 		searchable = if searchable then searchable else searchable = Array.apply(null, new Array(@_data.length)).map(Boolean.prototype.valueOf, false)
 		for i in [0...@_data.length] by 1
 			newDropdown = new ComponentDropdown @_initData(i), searchable[i]
+			if preselectedIds? then newDropdown.setSelectionById preselectedIds[i]
 			@_dropdowns.push newDropdown
 			@_status.push newDropdown.selected
 			@listen ComponentDropdown.EventType.CHANGE, newDropdown, @_filterData
@@ -108,6 +109,18 @@ class ComponentFilter extends ComponentBase
 	setActive: (active) ->
 		dropdown.setEnabled active for dropdown in @_dropdowns
 		return
+
+	getDropdowns: () ->
+		return @_dropdowns
+
+
+	selectItems: (ids) ->
+		for dropdown, i in @_dropdowns
+			for item in dropdown._map
+				if item.value.id is ids[i]
+					dropdown.setSelection item.value
+		return
+
 
 
 ComponentFilter.EventType =

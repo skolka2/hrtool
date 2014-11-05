@@ -12,7 +12,7 @@
   ComponentFilter = (function(_super) {
     __extends(ComponentFilter, _super);
 
-    function ComponentFilter(_data, _keys, searchable) {
+    function ComponentFilter(_data, _keys, searchable, preselectedIds) {
       var i, newDropdown, _i, _ref;
       this._data = _data;
       this._keys = _keys;
@@ -22,6 +22,9 @@
       searchable = searchable ? searchable : searchable = Array.apply(null, new Array(this._data.length)).map(Boolean.prototype.valueOf, false);
       for (i = _i = 0, _ref = this._data.length; _i < _ref; i = _i += 1) {
         newDropdown = new ComponentDropdown(this._initData(i), searchable[i]);
+        if (preselectedIds != null) {
+          newDropdown.setSelectionById(preselectedIds[i]);
+        }
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
         this.listen(ComponentDropdown.EventType.CHANGE, newDropdown, this._filterData);
@@ -137,6 +140,25 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         dropdown = _ref[_i];
         dropdown.setEnabled(active);
+      }
+    };
+
+    ComponentFilter.prototype.getDropdowns = function() {
+      return this._dropdowns;
+    };
+
+    ComponentFilter.prototype.selectItems = function(ids) {
+      var dropdown, i, item, _i, _j, _len, _len1, _ref, _ref1;
+      _ref = this._dropdowns;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        dropdown = _ref[i];
+        _ref1 = dropdown._map;
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          item = _ref1[_j];
+          if (item.value.id === ids[i]) {
+            dropdown.setSelection(item.value);
+          }
+        }
       }
     };
 
