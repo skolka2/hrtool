@@ -4,6 +4,7 @@ epg = require 'easy-pg'
 dbClient = epg config.conString
 express = require 'express.io'
 passport = require 'passport'
+mailer = require './lib/mailer'
 {Strategy} = require 'passport-google'
 
 bulk = require('./lib/bulk') dbClient
@@ -69,6 +70,7 @@ app.get '/logout', (req, res) ->
 	req.logout()
 	res.redirect '/'
 
+mailer.scheduleMailReport tasksRepository, userRepository
 
 app.use (error, req, res, next) ->
 	return res.json {error} if error

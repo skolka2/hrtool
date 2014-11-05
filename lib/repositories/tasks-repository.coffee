@@ -146,8 +146,8 @@ module.exports = (dbClient) ->
 
 
 
-	isAdminOrManager : (data, next) ->
-		async.waterfall([
+		isAdminOrManager : (data, next) ->
+			async.waterfall [
 				(callback) ->
 					ADMINISTRATOR = 3
 					TEAMMANAGER = 2
@@ -155,7 +155,7 @@ module.exports = (dbClient) ->
 						callback null, count: 1
 					else
 						callback null, count: 0
-			,
+				,
 				(res, callback) ->
 					debug res
 					if res.count is 1
@@ -166,27 +166,54 @@ module.exports = (dbClient) ->
 						(SELECT ut.id_team FROM  users_teams AS ut
 							WHERE  ut.id_user =$1 AND  ut.id_team= ANY (
 									SELECT utAdmin.id_team FROM users_teams as utAdmin
-					     		WHERE utAdmin.id_user=$2 AND utAdmin.is_admin)
+					            WHERE utAdmin.id_user=$2 AND utAdmin.is_admin)
 						)::int as count """, [data.userId, data.myUserId],callback
-			,
+				,
 				( res, callback) ->
 					if res.count is 1
 						debug data.userId
 						dbClient.queryOne """SELECT EXISTS
 							(SELECT u.id_user FROM users u WHERE u.id_user=$1)::int as count""", [data.userId],callback
 					else next( error: "You are not a admin or manager")
-			],
-		(err, res) ->
-			debug res
-			if res? and res.count? and res.count is 1
-				next null, true
-			else
-				next( error: "User doesnt exists")
+				],
+				(err, res) ->
+					debug res
+					if res? and res.count? and res.count is 1
+						next null, true
+					else
+						next( error: "User doesnt exists")
 
 
-		)
 
-
+		getTasksForCSVExport: (params, next) ->
+			dbClient.queryAll "SELECT
+					u.id_user,
+					u.email,
+					u.first_name,
+					u.last_name,
+					to_char(u.started_at, 'dd.MM.yyyy') AS started_at,
+					concat(hrbuddy.last_name, ' ', hrbuddy.first_name) AS hr_buddy,
+					concat(buddy.last_name, ' ', buddy.first_name) AS buddy,
+					concat(manager.last_name, ' ', manager.first_name) AS manager,
+					d.title,
+					te.title,
+					ta.id_task,
+					to_char(ta.date_from, 'dd.MM.yyyy') AS from,
+					to_char(ta.date_to, 'dd.MM.yyyy') AS to,
+					ta.title,
+					CASE
+						WHEN ta.date_finished IS NULL AND current_date < ta.date_to THEN 'unfinished'
+						WHEN ta.date_finished > current_date - integer '7' THEN 'finished last week'
+						WHEN ta.date_finished IS NULL AND current_date > ta.date_to THEN 'after deadline'
+					END
+				FROM tasks 		ta
+				JOIN users 		u 		ON ta.id_user = u.id_user
+				JOIN users 		hrbuddy 	ON u.id_buddy = hrbuddy.id_user
+				JOIN users 		buddy 		ON buddy.id_user = ta.id_buddy
+				LEFT JOIN users_teams 	ut 		ON ta.id_team = ut.id_team AND ut.is_admin
+				LEFT JOIN users 	manager 	ON ut.id_user = manager.id_user
+				JOIN departments 	d 		ON ta.id_department = d.id_department
+				JOIN teams 		te 		ON ta.id_team = te.id_team
+				WHERE ta.date_finished > current_date - integer '7' OR ta.date_finished IS NULL", params, next
 
 	}
-

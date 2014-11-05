@@ -59,8 +59,8 @@ module.exports = (dbClient) ->
 				else
 					return next 'Not authorized to do that'
 
-		getHR : (email, next)->
-			dbClient.queryAll 'SELECT id_user, first_name,last_name FROM users WHERE is_hr ORDER BY last_name', next
+		getHR : (next)->
+			dbClient.queryAll 'SELECT id_user, first_name,last_name, email FROM users WHERE is_hr ORDER BY last_name', next
 
 		getAllUserTeams: (idUser, next) ->
 			dbClient.queryAll "
