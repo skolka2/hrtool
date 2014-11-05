@@ -24,7 +24,7 @@
       viewWrapper.appendChild(document.createElement('br'));
       tableDiv = document.createElement('div');
       tableDiv.innerHTML = "Table of template tasks";
-      componentTemplateList = new ComponentTemplateListFactory.createAll();
+      componentTemplateList = ComponentTemplateListFactory.createAll();
       componentTemplateList.render(tableDiv);
       viewWrapper.appendChild(tableDiv);
       viewWrapper.appendChild(document.createElement('br'));

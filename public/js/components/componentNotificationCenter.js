@@ -15,7 +15,7 @@
         element = wrapper;
       }
       newDiv = document.createElement('div');
-      newDiv.className = type != null ? type : ComponentNotificationCenter.EventType.neutral;
+      newDiv.className = type != null ? type : ComponentNotificationCenter.eventType.neutral;
       newDiv.appendChild(element);
       this._countOfNotifications++;
       if (this._countOfNotifications === 1) {
@@ -63,7 +63,7 @@
 
   })();
 
-  ComponentNotificationCenter.EventType = {
+  ComponentNotificationCenter.eventType = {
     success: 'notification-success',
     neutral: 'notification-neutral',
     error: 'notification-error'

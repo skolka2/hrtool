@@ -44,8 +44,8 @@ class Router
 			@view.render()
 
 		else
-			document.addEventListener ComponentBase.EventType.DOMContentLoaded, =>
-				document.removeEventListener ComponentBase.EventType.DOMContentLoaded, arguments.callee, false
+			document.addEventListener ComponentBase.eventType.DOMContentLoaded, =>
+				document.removeEventListener ComponentBase.eventType.DOMContentLoaded, arguments.callee, false
 				if mainWrapper
 					mainWrapper.innerHTML = ''
 					@view.render()

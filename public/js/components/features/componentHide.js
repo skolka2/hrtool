@@ -31,7 +31,7 @@
       this.setHeader(this.headlineEl);
       this.arrow = document.createElement("div");
       this.arrow.className = "hide-arrow";
-      this.arrow.addEventListener(ComponentBase.EventType.CLICK, this.handleHide, false);
+      this.arrow.addEventListener(ComponentBase.eventType.CLICK, this.handleHide, false);
       head.appendChild(this.headTittle);
       head.appendChild(this.arrow);
       this.setContent(this.contentEl);
@@ -45,9 +45,9 @@
       this.closed = !this.closed;
       this.setVisibility(this.closed);
       if (this.closed === true) {
-        this.fire(ComponentHide.EventType.REMOVE, this.componentId);
+        this.fire(ComponentHide.eventType.REMOVE, this.componentId);
       } else {
-        this.fire(ComponentHide.EventType.RENDER, this.componentId);
+        this.fire(ComponentHide.eventType.RENDER, this.componentId);
       }
     };
 
@@ -96,7 +96,7 @@
 
   })(ComponentBase);
 
-  ComponentHide.EventType = {
+  ComponentHide.eventType = {
     REMOVE: "childsRemoved",
     RENDER: "childsRendered"
   };

@@ -40,7 +40,7 @@ class ComponentStatusBar extends ComponentBase
 
 	getDeadlinePartWidth: -> percent = ((100 * (@data.deadlineTasks / @data.allTasks)) + '%')
 
-ComponentStatusBar.EventType.DATA_LOAD = 'tasks/count'
+ComponentStatusBar.eventType.DATA_LOAD = 'tasks/count'
 
 ComponentStatusBar.classes =
 	INFO_SPAN_CLASS: "status-bar-info-text"

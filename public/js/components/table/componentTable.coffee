@@ -42,7 +42,7 @@ class ComponentTable extends ComponentBase
 		wrapper = document.createElement("div")
 		wrapper.className = 'table-wrapper'
 		header = helper.tpl.create "components/table/componentTable", {array: @headerTitles}
-		header.addEventListener ComponentBase.EventType.CLICK, @handleOnClick
+		header.addEventListener ComponentBase.eventType.CLICK, @handleOnClick
 		wrapper.appendChild header
 		@element = wrapper
 
@@ -80,7 +80,7 @@ class ComponentTable extends ComponentBase
 			@divLoadMore = document.createElement('div')
 			@divLoadMore.className = 'load-more'
 			@divLoadMore.innerHTML = "load more.."
-			@divLoadMore.addEventListener ComponentBase.EventType.CLICK, @handleLoadMore
+			@divLoadMore.addEventListener ComponentBase.eventType.CLICK, @handleLoadMore
 			@getElement().appendChild @divLoadMore
 
 

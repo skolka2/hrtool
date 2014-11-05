@@ -13,8 +13,8 @@ class ComponentFormAddUser extends ComponentBase
 	constructor: () ->
 		super()
 		@isSelectedHRBuddy = no
-		model = new Model ComponentFormAddUser.EventType.DATA_LOAD
-		@setModel model, ComponentFormAddUser.EventType.DATA_LOAD
+		model = new Model ComponentFormAddUser.eventType.DATA_LOAD
+		@setModel model, ComponentFormAddUser.eventType.DATA_LOAD
 		hrtool.actions.getHR(@model)
 
 
@@ -26,7 +26,7 @@ class ComponentFormAddUser extends ComponentBase
 		@email = @element.getElementsByClassName("input3")[0]
 	
 		buttonSave = @element.getElementsByClassName("form-add-user-saveButton")[0]
-		buttonSave.addEventListener ComponentBase.EventType.CLICK, @handleSaveForm, no
+		buttonSave.addEventListener ComponentBase.eventType.CLICK, @handleSaveForm, no
 	
 		@placeHolderFilter = @element.getElementsByClassName("form-add-user-filter")[0]
 		@placeHolderDrop = @element.getElementsByClassName("form-add-user-drop")[0]
@@ -72,7 +72,7 @@ class ComponentFormAddUser extends ComponentBase
 			unless @HRbuddys
 				@HRbuddys = new ComponentDropdown dropData
 				@addChild @HRbuddys.componentId, @HRbuddys, {el :@placeHolderDrop}
-				@listen ComponentDropdown.EventType.CHANGE, @HRbuddys, @setSelectedHR
+				@listen ComponentDropdown.eventType.CHANGE, @HRbuddys, @setSelectedHR
 				if @rendered?
 					@HRbuddys.render @placeHolderDrop
 			else
@@ -115,8 +115,8 @@ class ComponentFormAddUser extends ComponentBase
 				id_department_role: @filterDepRoleTeam._status[1].id
 				id_team: @filterDepRoleTeam._status[2].id
 	
-			model = new Model ComponentFormAddUser.EventType.SAVE
-			@listen ComponentFormAddUser.EventType.SAVE, model, @handleFormSent
+			model = new Model ComponentFormAddUser.eventType.SAVE
+			@listen ComponentFormAddUser.eventType.SAVE, model, @handleFormSent
 			hrtool.actions.saveFormAddUser model, data
 		return
 
@@ -130,7 +130,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @name
 			div = document.createElement "div"
 			div.innerText = "Name is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 			baseTime += 1000
 			err = no
 
@@ -138,7 +138,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @surname
 			div = document.createElement "div"
 			div.innerText = "Surname is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 			baseTime += 1000
 			err = no
 	
@@ -147,7 +147,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @email
 			div = document.createElement "div"
 			div.innerText = "Email is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 			baseTime += 1000
 			err = no
 			emptyEmail = yes
@@ -157,7 +157,7 @@ class ComponentFormAddUser extends ComponentBase
 				@setInvalidInputClass @email
 				div = document.createElement "div"
 				div.innerText = "Bad format of email adress."
-				@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+				@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 				baseTime += 1000
 				err = no
 	
@@ -169,28 +169,28 @@ class ComponentFormAddUser extends ComponentBase
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Department is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 						baseTime += 1000
 						err = no
 					when 1
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Role is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 						baseTime += 1000
 						err = no
 					when 2
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Team is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 						baseTime += 1000
 						err = no
 		unless @isSelectedHRBuddy
 			@HRbuddys.setInvalidInputClass()
 			div = document.createElement "div"
 			div.innerText = "HR buddy is not selected."
-			@addNotification div, baseTime, ComponentNotificationCenter.EventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
 			baseTime += 1000
 			err = no
 		return err
@@ -204,17 +204,18 @@ class ComponentFormAddUser extends ComponentBase
 			@helper.debugger "FormStatus: Form sent"
 			div = document.createElement "div"
 			div.innerText = "User Added"
-			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.EventType.success
+			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
 			if @checkBoxIsHR.checked is yes
-				model = new Model ComponentFormAddUser.EventType.DATA_LOAD
-				@setModel model, ComponentFormAddUser.EventType.DATA_LOAD
+				model = new Model ComponentFormAddUser.eventType.DATA_LOAD
+				@setModel model, ComponentFormAddUser.eventType.DATA_LOAD
 				hrtool.actions.getHR @model
 			@reset()
+			@fire ComponentFormAddUser.eventType.SAVE, null
 		else
 			@helper.debugger "FormStatus: Err", data.error
 			div = document.createElement "div"
 			div.innerText = "User Not Added Error:" + data.error
-			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.EventType.error
+			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.error
 		return
 
 
@@ -236,7 +237,7 @@ class ComponentFormAddUser extends ComponentBase
 
 
 
-ComponentFormAddUser.EventType =
+ComponentFormAddUser.eventType =
 	SAVE:'formSave'
 	DATA_LOAD: 'data-load'
 

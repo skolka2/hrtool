@@ -35,7 +35,7 @@ class ComponentTemplateList extends ComponentBase
 
 		jadeHeader = helper.tpl.create "components/templateList/componentTemplateList", jadeHeaderData
 		@getElement().appendChild jadeHeader
-		@getElement().addEventListener ComponentBase.EventType.CLICK, @handleOnClick
+		@getElement().addEventListener ComponentBase.eventType.CLICK, @handleOnClick
 
 		for item in data
 			dataMap = @_getSelectedItem item, dropDownData
@@ -153,7 +153,7 @@ class ComponentTemplateList extends ComponentBase
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Title must not be empty!"
 			@setInvalidInputClass titleEl
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
 		unless error
 			data.object.innerHTML = "Saving"
 			dep = dropStatus["department"].id
@@ -168,8 +168,8 @@ class ComponentTemplateList extends ComponentBase
 				saveData['id_department'] = dep
 			if team isnt "-1"
 				saveData['id_team'] = team
-			saveModel = new Model ComponentTemplateList.EventType.DATA_SAVE
-			@listen ComponentTemplateList.EventType.DATA_SAVE, saveModel, (backendData) =>
+			saveModel = new Model ComponentTemplateList.eventType.DATA_SAVE
+			@listen ComponentTemplateList.eventType.DATA_SAVE, saveModel, (backendData) =>
 				@onSave data.object, backendData
 			hrtool.actions.saveDefaultTaskData saveModel, saveData
 		return
@@ -179,10 +179,10 @@ class ComponentTemplateList extends ComponentBase
 		if data.object.getAttribute("implicit") is "true"
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Implicit task cannot be deleted"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
 		else
-			deleteModel = new Model ComponentTemplateList.EventType.DATA_DELETE
-			@listen ComponentTemplateList.EventType.DATA_DELETE, deleteModel, (backendData) =>
+			deleteModel = new Model ComponentTemplateList.eventType.DATA_DELETE
+			@listen ComponentTemplateList.eventType.DATA_DELETE, deleteModel, (backendData) =>
 				@onDelete data.object, backendData
 			hrtool.actions.deleteDefaultTaskData deleteModel, {id_task_template: parseInt(data.id)}
 
@@ -194,12 +194,12 @@ class ComponentTemplateList extends ComponentBase
 			objEl.disabled = no
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Critical error! Please contact your administrator!"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
 		else
 			objEl.innerHTML = "Save"
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Task has been successfuly saved."
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.success
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.success
 		return
 
 
@@ -209,15 +209,15 @@ class ComponentTemplateList extends ComponentBase
 			objEl.disabled = no
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Critical error! Please contact your administrator!"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
 		else
-			document.body.removeEventListener ComponentBase.EventType.CLICK, @onDelete, no
+			document.body.removeEventListener ComponentBase.eventType.CLICK, @onDelete, no
 			@dropdowns[data[0].id_task_template].destroy()
 			rowEl = helper.dom.getParentByClass objEl, "row"
 			rowEl.innerHTML = ""
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Task has been successfuly deleted."
-			@addNotification newDiv, 3000, ComponentNotificationCenter.EventType.success
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.success
 		return
 
 
@@ -228,7 +228,7 @@ ComponentTemplateList.TemplateListDivs =
 	id_department: "department-and-team"
 	route: "route"
 
-ComponentTemplateList.EventType =
+ComponentTemplateList.eventType =
 	DATA_LOAD: 'template/get-all'
 	DATA_SAVE: 'template/update'
 	DATA_DELETE: 'template/delete'

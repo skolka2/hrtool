@@ -16,14 +16,14 @@ module.exports = class ComponentSelect extends ComponentBase
 		cancelButton = @element.getElementsByClassName("select-button-cancel")[0]
 		saveButton = @element.getElementsByClassName("select-button-save")[0]
 
-		cancelButton.addEventListener ComponentBase.EventType.CLICK, @cancel, false
-		saveButton.addEventListener ComponentBase.EventType.CLICK, @handleSave, false
+		cancelButton.addEventListener ComponentBase.eventType.CLICK, @cancel, false
+		saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSave, false
 		@filter = new ComponentFilter @data
 		@addChild @filter.componentId, @filter, "el": selectorEl
 
 	handleSave: =>
 		if @isValid()
-			@fire ComponentSelect.EventType.SAVE, @filter.getStatus()
+			@fire ComponentSelect.eventType.SAVE, @filter.getStatus()
 			@reset()
 			@cancel()
 
@@ -37,15 +37,15 @@ module.exports = class ComponentSelect extends ComponentBase
 			if item.id is -1
 				@filter._dropdowns[i].setInvalidInputClass()
 				if @errorsInfo[i]?
-					@addNotification @errorsInfo[i], baseTime, ComponentNotificationCenter.EventType.error
+					@addNotification @errorsInfo[i], baseTime, ComponentNotificationCenter.eventType.error
 					baseTime += 1000
 				isValid = no
 		return isValid
 
 	cancel: =>
-		@fire ComponentSelect.EventType.CANCEL, null
+		@fire ComponentSelect.eventType.CANCEL, null
 
-	ComponentSelect.EventType = {
+	ComponentSelect.eventType = {
 	SAVE: 'selectSave',
 	CANCEL: 'selectCancel'
 	}

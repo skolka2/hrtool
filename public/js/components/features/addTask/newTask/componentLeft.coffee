@@ -18,7 +18,7 @@ class ComponentLeft extends ComponentBase
 		@_title = null
 		@_text = null
 		@_saveAsNew = new ComponentCheckBox 'Save as template', false
-		@listen ComponentBase.EventType.CHANGE, @_saveAsNew, @handleSetAsImplicitChanged
+		@listen ComponentBase.eventType.CHANGE, @_saveAsNew, @handleSetAsImplicitChanged
 
 	createDom: () ->
 		@element = document.createElement 'div'
@@ -69,7 +69,7 @@ class ComponentLeft extends ComponentBase
 		@element.appendChild @_selectorDiv
 		@addChild "filter_" + @_filter.componentId, @_filter, {el: @_selectorDiv}
 
-		@listen ComponentDropdown.EventType.CHANGE, @_filter, @handleSetAsImplicitChanged
+		@listen ComponentDropdown.eventType.CHANGE, @_filter, @handleSetAsImplicitChanged
 
 
 	getStatus: () ->
@@ -85,7 +85,7 @@ class ComponentLeft extends ComponentBase
 
 	handleSetAsImplicitChanged: (data) =>
 		@_filter.setActive data
-		@fire ComponentBase.EventType.CHANGE, @getStatus()
+		@fire ComponentBase.eventType.CHANGE, @getStatus()
 
 
 		

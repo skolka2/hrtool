@@ -20,7 +20,7 @@ class ComponentDropdown extends ComponentBase
 		@_listEl.className = 'dropDownButton'
 		@_listEl.style.visibility = 'hidden'
 
-		@_selectedTextElement.addEventListener ComponentBase.EventType.CLICK, @_handleListOpen, no
+		@_selectedTextElement.addEventListener ComponentBase.eventType.CLICK, @_handleListOpen, no
 		@changeData @_data
 
 	_handleListOpen: () =>
@@ -44,8 +44,8 @@ class ComponentDropdown extends ComponentBase
 					if @useSearch is yes
 						@searchEl.value = ""
 						@handleSearch()
-					document.body.removeEventListener ComponentBase.EventType.CLICK, onClick, no
-			document.body.addEventListener ComponentBase.EventType.CLICK, onClick, no
+					document.body.removeEventListener ComponentBase.eventType.CLICK, onClick, no
+			document.body.addEventListener ComponentBase.eventType.CLICK, onClick, no
 		return
 
 	_fillWithData: (data) ->
@@ -102,7 +102,7 @@ class ComponentDropdown extends ComponentBase
 			@_selectedTextElement.innerHTML = "Select..."
 		else
 			@_selectedTextElement.innerHTML = selectedItem.value
-		@fire ComponentDropdown.EventType.CHANGE, @selected
+		@fire ComponentDropdown.eventType.CHANGE, @selected
 		return
 
 
@@ -134,8 +134,8 @@ class ComponentDropdown extends ComponentBase
 		if selection.length > 0 
 			@setSelection selection[0].value
 			@_listEl.style.visibility = 'hidden'
-			document.body.removeEventListener ComponentBase.EventType.CLICK, onClick, no
-			@fire ComponentDropdown.EventType.CHANGE, @selected
+			document.body.removeEventListener ComponentBase.eventType.CLICK, onClick, no
+			@fire ComponentDropdown.eventType.CHANGE, @selected
 		return
 
 		
@@ -177,7 +177,7 @@ class ComponentDropdown extends ComponentBase
 					item.el.style.display = "list-item"
 		return
 
-ComponentDropdown.EventType =
+ComponentDropdown.eventType =
 	CHANGE: 'dropdown-change'
 
 ComponentDropdown.State =

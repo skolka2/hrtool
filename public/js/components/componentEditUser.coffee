@@ -14,16 +14,16 @@ class ComponentEditUser extends ComponentBase
 		@teams = []
 		@checkboxes = []
 
-		model = new Model ComponentEditUser.EventType.GET_USERS
-		@setModel model, ComponentEditUser.EventType.GET_USERS
+		model = new Model ComponentEditUser.eventType.GET_USERS
+		@setModel model, ComponentEditUser.eventType.GET_USERS
 		hrtool.actions.getUserTeams @model, {id_user: idUser}
 
-		infoModel = new Model ComponentEditUser.EventType.GET_INFO
-		@listen ComponentEditUser.EventType.GET_INFO, infoModel, @onInfoLoad
+		infoModel = new Model ComponentEditUser.eventType.GET_INFO
+		@listen ComponentEditUser.eventType.GET_INFO, infoModel, @onInfoLoad
 		hrtool.actions.getBasicUserInfo infoModel, {id_user: idUser}
 
-		@usersModel = new Model ComponentEditUser.EventType.GET_USERS
-		@listen ComponentEditUser.EventType.GET_USERS, @usersModel, @onUsersLoad
+		@usersModel = new Model ComponentEditUser.eventType.GET_USERS
+		@listen ComponentEditUser.eventType.GET_USERS, @usersModel, @onUsersLoad
 
 
 
@@ -98,11 +98,11 @@ class ComponentEditUser extends ComponentBase
 		saveButton = @element.getElementsByClassName(ComponentEditUser.BUTTON_SAVE_CLASS)[0]
 		cancelButton = @element.getElementsByClassName(ComponentEditUser.BUTTON_CANCEL_CLASS)[0]
 
-		saveButton.addEventListener ComponentBase.EventType.CLICK, () =>
+		saveButton.addEventListener ComponentBase.eventType.CLICK, () =>
 			@handleSaveClick()
-			@fire ComponentEditUser.EventType.SAVE, null
-		cancelButton.addEventListener ComponentBase.EventType.CLICK, () =>
-			@fire ComponentEditUser.EventType.SAVE, null
+			@fire ComponentEditUser.eventType.SAVE, null
+		cancelButton.addEventListener ComponentBase.eventType.CLICK, () =>
+			@fire ComponentEditUser.eventType.SAVE, null
 		return
 
 
@@ -138,7 +138,7 @@ class ComponentEditUser extends ComponentBase
 		if @editable is yes
 			button = document.createElement 'button'
 			button.innerHTML = 'x'
-			button.addEventListener ComponentBase.EventType.CLICK, do (index) =>
+			button.addEventListener ComponentBase.eventType.CLICK, do (index) =>
 					(event) =>
 						@teams[index] = null
 						event.target.parentElement?.parentElement?.style.display = 'none'
@@ -168,7 +168,7 @@ class ComponentEditUser extends ComponentBase
 		button = document.createElement 'button'
 		button.innerHTML = '+'
 		button.className = 'down-left-corner'
-		button.addEventListener ComponentBase.EventType.CLICK, @addItem, no
+		button.addEventListener ComponentBase.eventType.CLICK, @addItem, no
 		@newTeamWrapper.appendChild document.createElement 'br'
 		@newTeamWrapper.appendChild button
 		@newTeamWrapper.appendChild document.createElement 'br'
@@ -192,9 +192,9 @@ class ComponentEditUser extends ComponentBase
 				index = @teams.length - 1;
 				@teamWrapper.appendChild @getTeamItemDom @teams[index], index
 			else
-				@addNotification 'User is allready in this team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error
+				@addNotification 'User is allready in this team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.error
 		else
-			@addNotification 'You have to choose a team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.EventType.error
+			@addNotification 'You have to choose a team!', NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.error
 		return
 
 
@@ -216,7 +216,7 @@ ComponentEditUser.BUTTON_DIV_WRAPPER_CLASS = 'buttons-wrapper'
 ComponentEditUser.BUTTON_CANCEL_CLASS = 'button-cancel'
 ComponentEditUser.BUTTON_SAVE_CLASS = 'button-save'
 
-ComponentEditUser.EventType =
+ComponentEditUser.eventType =
 	GET_DATA: 'user/get-teams'
 	GET_INFO: 'user/get-basic-info'
 	GET_USERS: 'user/get-all'

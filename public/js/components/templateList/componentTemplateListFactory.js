@@ -1,11 +1,22 @@
-var ComponentTemplateList = require('./componentTemplateList');
-var Model = require('../../models/model');
-var hrtool = require('../../models/actions');
-var ComponentTemplateListFactory = module.exports = {
+(function() {
+  var ComponentTemplateList, ComponentTemplateListFactory, Model, hrtool;
+
+  ComponentTemplateList = require('./componentTemplateList');
+
+  Model = require('../../models/model');
+
+  hrtool = require('../../models/actions');
+
+  ComponentTemplateListFactory = {
     createAll: function() {
-        var componentTemplateList = new ComponentTemplateList();
-        componentTemplateList.setModel(new Model(ComponentTemplateList.EventType.DATA_LOAD),ComponentTemplateList.EventType.DATA_LOAD);
-        hrtool.actions.getTemplatesData(componentTemplateList.model);
-        return componentTemplateList;
+      var componentTemplateList;
+      componentTemplateList = new ComponentTemplateList();
+      componentTemplateList.setModel(new Model(ComponentTemplateList.eventType.DATA_LOAD), ComponentTemplateList.eventType.DATA_LOAD);
+      hrtool.actions.getTemplatesData(componentTemplateList.model);
+      return componentTemplateList;
     }
-};
+  };
+
+  module.exports = ComponentTemplateListFactory;
+
+}).call(this);

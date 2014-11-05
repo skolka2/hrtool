@@ -14,31 +14,31 @@ module.exports = ComponentPopupFactory =
 		popup = new ComponentPopup(popupTrigger, popupCheckbox)
 
 		if filter?
-			popup.listen ComponentFilter.EventType.UPDATED, filter, popup.open
+			popup.listen ComponentFilter.eventType.UPDATED, filter, popup.open
 		return popup
 
 		
 	getSelectDepTeamPopup: (popupTrigger)->
 		select = new ComponentSelectFactory.createDepartmentTeam()
 		popup = new ComponentPopup popupTrigger, select
-		popup.listen ComponentSelect.EventType.CANCEL, select, popup.close
+		popup.listen ComponentSelect.eventType.CANCEL, select, popup.close
 		return popup
 
 	getUserEditPopup: (idUser) ->
 		componentEditUser = new ComponentEditUser idUser, yes
 		popup = new ComponentPopup(componentEditUser)
-		popup.listen ComponentEditUser.EventType.SAVE, componentEditUser, popup.close
-		popup.listen ComponentEditUser.EventType.CANCEL, componentEditUser, popup.close
+		popup.listen ComponentEditUser.eventType.SAVE, componentEditUser, popup.close
+		popup.listen ComponentEditUser.eventType.CANCEL, componentEditUser, popup.close
 		return popup
 
 	getNewTaskPopup:  (preselectedUserData, preselectedBuddy)->
 		componentAddTask = new ComponentAddTask preselectedUserData, preselectedBuddy
 		popup = new ComponentPopup(componentAddTask)
-		popup.listen ComponentAddTask.EventType.SAVE_SUCCESS, componentAddTask, popup.close
+		popup.listen ComponentAddTask.eventType.SAVE_SUCCESS, componentAddTask, popup.close
 		return popup
 
 	getNewUserPopup: ->
 		componentAddUser = new ComponentFormAddUser()
 		popup = new ComponentPopup(componentAddUser)
-		popup.listen ComponentFormAddUser.EventType.SAVE, componentAddUser, popup.close
+		popup.listen ComponentFormAddUser.eventType.SAVE, componentAddUser, popup.close
 		popup

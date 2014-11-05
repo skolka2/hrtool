@@ -21,7 +21,7 @@ class ComponentHide extends ComponentBase
 	
 		@arrow = document.createElement "div"
 		@arrow.className = "hide-arrow"
-		@arrow.addEventListener ComponentBase.EventType.CLICK, @handleHide, no
+		@arrow.addEventListener ComponentBase.eventType.CLICK, @handleHide, no
 	
 		head.appendChild @headTittle
 		head.appendChild @arrow
@@ -39,9 +39,9 @@ class ComponentHide extends ComponentBase
 	
 		@setVisibility @closed
 		if @closed is yes
-			@fire ComponentHide.EventType.REMOVE, @componentId
+			@fire ComponentHide.eventType.REMOVE, @componentId
 		else
-			@fire ComponentHide.EventType.RENDER, @componentId
+			@fire ComponentHide.eventType.RENDER, @componentId
 		return
 
 
@@ -90,7 +90,7 @@ class ComponentHide extends ComponentBase
 
 
 
-ComponentHide.EventType =
+ComponentHide.eventType =
 	REMOVE:"childsRemoved"
 	RENDER:"childsRendered"
 

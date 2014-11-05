@@ -40,7 +40,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		@notesElement = document.createElement 'textarea'
 		@notesElement.className = "notes-text-area"
 		@notesElement.innerHTML = @taskNotes
-		@notesElement.addEventListener ComponentBase.EventType.CLICK, this.handleTextAreaEnable
+		@notesElement.addEventListener ComponentBase.eventType.CLICK, this.handleTextAreaEnable
 		@notesElement.readonly = yes
 		return
 
@@ -48,7 +48,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		buttonElement = document.createElement 'button'
 		buttonElement.className = buttonClass
 		buttonElement.innerHTML = buttonText
-		buttonElement.addEventListener ComponentBase.EventType.CLICK, handleFunction
+		buttonElement.addEventListener ComponentBase.eventType.CLICK, handleFunction
 		buttonElement.style.display = styleDisplay if styleDisplay
 		buttonElement
 
@@ -56,7 +56,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		if @notesElement.value is @taskNotes
 			notification = document.createElement 'div'
 			notification.innerHTML = "Nothing has been changed."
-			@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.EventType.neutral
+			@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.neutral
 		else
 			@saveNotesBttn.disabled = yes
 			@notesElement.readonly = yes
@@ -66,8 +66,8 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 				id_task: @taskId
 				notes: @taskNotes
 
-			model = new Model ComponentUserTaskDetail.EventType.DATA_UPDATE
-			@listen ComponentUserTaskDetail.EventType.DATA_UPDATE, model, @saveNotesConfirmed
+			model = new Model ComponentUserTaskDetail.eventType.DATA_UPDATE
+			@listen ComponentUserTaskDetail.eventType.DATA_UPDATE, model, @saveNotesConfirmed
 			hrtool.actions.updateUserTaskData model, dataToSend
 
 		return
@@ -76,7 +76,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		@saveNotesBttn.disabled = no
 		notification = document.createElement 'div'
 		notification.innerHTML = 'Save succesfull.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.EventType.success
+		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
 		return
 
 	handleFinishTask: (ev) =>
@@ -89,8 +89,8 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 
 		dataToSend = id_task: @taskId
 
-		model = new Model ComponentUserTaskDetail.EventType.TASK_FINISH
-		@listen ComponentUserTaskDetail.EventType.TASK_FINISH, model, @finishTaskOk
+		model = new Model ComponentUserTaskDetail.eventType.TASK_FINISH
+		@listen ComponentUserTaskDetail.eventType.TASK_FINISH, model, @finishTaskOk
 		hrtool.actions.finishUserTask model, dataToSend
 
 		return
@@ -102,7 +102,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 
 		notification = document.createElement 'div'
 		notification.innerHTML = 'Task has been completed.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.EventType.success
+		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
 
 		@isFinished = yes
 
@@ -117,7 +117,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 			 isFinished: @isFinished
 		
 		@element.className = @getTaskWrapperClass()
-		@fire ComponentBase.EventType.CHANGE, taskParamsToSend
+		@fire ComponentBase.eventType.CHANGE, taskParamsToSend
 
 		return
 
@@ -145,7 +145,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		@notesElement.readonly = no
 		return
 
-ComponentUserTaskDetail.EventType = 
+ComponentUserTaskDetail.eventType =
 	DATA_UPDATE: 'tasks/update'
 	TASK_FINISH: 'tasks/finish'
 

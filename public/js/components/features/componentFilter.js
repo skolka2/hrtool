@@ -27,7 +27,7 @@
         }
         this._dropdowns.push(newDropdown);
         this._status.push(newDropdown.selected);
-        this.listen(ComponentDropdown.EventType.CHANGE, newDropdown, this._filterData);
+        this.listen(ComponentDropdown.eventType.CHANGE, newDropdown, this._filterData);
       }
     }
 
@@ -92,7 +92,7 @@
           this._status[i] = selected;
         }
       }
-      this.fire(ComponentFilter.EventType.UPDATED, this.getStatus());
+      this.fire(ComponentFilter.eventType.UPDATED, this.getStatus());
     };
 
     ComponentFilter.prototype._getSelection = function(depth) {
@@ -166,7 +166,7 @@
 
   })(ComponentBase);
 
-  ComponentFilter.EventType = {
+  ComponentFilter.eventType = {
     UPDATED: 'new_selection'
   };
 

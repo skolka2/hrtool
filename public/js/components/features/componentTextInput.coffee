@@ -11,12 +11,12 @@ class ComponentTextInput extends ComponentBase
 
 		@_input = document.createElement 'input'
 		@_input.placeholder = @placeholder
-		@_input.addEventListener ComponentBase.EventType.KEYUP, @handleKeyupEvent, false
+		@_input.addEventListener ComponentBase.eventType.KEYUP, @handleKeyupEvent, false
 
 		@_deleteDiv = document.createElement 'div'
 		@_deleteDiv.className = ComponentTextInput.DELETE_DIV_CLASS
 		@_deleteDiv.appendChild document.createTextNode 'X'
-		@_deleteDiv.addEventListener ComponentBase.EventType.CLICK, @handleDeleteClick, false
+		@_deleteDiv.addEventListener ComponentBase.eventType.CLICK, @handleDeleteClick, false
 
 		@element.appendChild @_input
 		@element.appendChild @_deleteDiv
@@ -24,7 +24,7 @@ class ComponentTextInput extends ComponentBase
 
 	handleDeleteClick: (ev) =>
 		@_input.value = ''
-		@fire ComponentTextInput.EventType.INPUT_CHANGE, @_input.value
+		@fire ComponentTextInput.eventType.INPUT_CHANGE, @_input.value
 		return
 
 
@@ -36,7 +36,7 @@ class ComponentTextInput extends ComponentBase
 
 	checkTyping: () =>
 		if @fired is false and @_oldValue is @_input.value
-			@fire ComponentTextInput.EventType.INPUT_CHANGE, @_oldValue
+			@fire ComponentTextInput.eventType.INPUT_CHANGE, @_oldValue
 			@fired = true
 		return
 
@@ -48,7 +48,7 @@ class ComponentTextInput extends ComponentBase
 ComponentTextInput.WRAPPER_CLASS = 'text-input'
 ComponentTextInput.DELETE_DIV_CLASS = 'text-input-delete'
 ComponentTextInput.DELAY = 500
-ComponentTextInput.EventType =
+ComponentTextInput.eventType =
 	INPUT_CHANGE: 'input-change'
 
 module.exports = ComponentTextInput

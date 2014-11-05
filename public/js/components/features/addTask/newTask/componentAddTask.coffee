@@ -18,13 +18,13 @@ class ComponentAddTask extends ComponentBase
 		@_rightComponent = new ComponentRight();
 		@_tabbedAreaComponent = new ComponentTabbedArea ['New task', 'Choose template'],[[@_leftComponent], [@_rightComponent]]
 
-		@setModel new Model(ComponentAddTask.EventType.GET_USERS), ComponentAddTask.EventType.GET_USERS
+		@setModel new Model(ComponentAddTask.eventType.GET_USERS), ComponentAddTask.eventType.GET_USERS
 		hrtool.actions.getUsers @model
 
-		@taskModel = new Model ComponentAddTask.EventType.INSERT_NEW_TASK
-		@listen ComponentAddTask.EventType.INSERT_NEW_TASK, @taskModel, @onSave
+		@taskModel = new Model ComponentAddTask.eventType.INSERT_NEW_TASK
+		@listen ComponentAddTask.eventType.INSERT_NEW_TASK, @taskModel, @onSave
 
-		@templateModel = new Model ComponentAddTask.EventType.INSERT_NEW_TEMPLATE
+		@templateModel = new Model ComponentAddTask.eventType.INSERT_NEW_TEMPLATE
 
 
 	onLoad: (data) ->
@@ -41,7 +41,7 @@ class ComponentAddTask extends ComponentBase
 		@_componentFilter = new ComponentFilter data2, ['department', 'team', 'user'], [false, false, true]
 		@addChild 'componentFilter', @_componentFilter, {el: @_personWrapper}
 		@_componentFilter.render @_personWrapper
-		@listen ComponentDropdown.EventType.CHANGE, @_componentFilter, @handleDropdownChange
+		@listen ComponentDropdown.eventType.CHANGE, @_componentFilter, @handleDropdownChange
 	
 		buddies2 = ComponentFilterFormatter.transform buddies, 'id_user', 'full_name'
 		@_buddyDropdown = new ComponentDropdown buddies2[''], true
@@ -49,8 +49,8 @@ class ComponentAddTask extends ComponentBase
 		@_buddyDropdown.render @_personWrapper
 
 		if @_preselectedUserId?
-			teamsModel = new Model ComponentAddTask.EventType.GET_USER_TEAMS
-			@listen ComponentAddTask.EventType.GET_USER_TEAMS, teamsModel, @onTeamsLoad
+			teamsModel = new Model ComponentAddTask.eventType.GET_USER_TEAMS
+			@listen ComponentAddTask.eventType.GET_USER_TEAMS, teamsModel, @onTeamsLoad
 			hrtool.actions.getBasicUserInfo(teamsModel, {
 				id_user: @_preselectedUserId
 			});
@@ -65,12 +65,12 @@ class ComponentAddTask extends ComponentBase
 	onSave: (data) ->
 		if data.name? is 'error'
 			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
-				ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
-			@fire ComponentAddTask.EventType.SAVE_FAIL, null
+				ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
+			@fire ComponentAddTask.eventType.SAVE_FAIL, null
 		else
 			@addNotification 'Saving was successful!', ComponentAddTask.NOTIFICATION_DURATION,
-				NotificationCenter.EventType.success
-			@fire ComponentAddTask.EventType.SAVE_SUCCESS, null
+				NotificationCenter.eventType.success
+			@fire ComponentAddTask.eventType.SAVE_SUCCESS, null
 		return
 
 
@@ -102,9 +102,9 @@ class ComponentAddTask extends ComponentBase
 		@addChild 'tabbedArea', @_tabbedAreaComponent, {el: tabbedAreaDiv}
 	
 		@saveButton = @element.getElementsByClassName(jadeData.saveButtonClass)[0]
-		@saveButton.addEventListener ComponentBase.EventType.CLICK, @handleSaveClickEvent, false
+		@saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSaveClickEvent, false
 	
-		@element.addEventListener ComponentBase.EventType.CLICK, @handleClickEvent, false
+		@element.addEventListener ComponentBase.eventType.CLICK, @handleClickEvent, false
 		return
 
 
@@ -177,65 +177,65 @@ class ComponentAddTask extends ComponentBase
 		today = new Date date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0
 	
 		if userStatus.department.id is -1
-			@addNotification 'User department wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'User department wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@_componentFilter._dropdowns[0].setInvalidInputClass()
 			ret = false
 	
 		if userStatus.team.id is -1
-			@addNotification 'User team wasn\'t picked!',ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'User team wasn\'t picked!',ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@_componentFilter._dropdowns[1].setInvalidInputClass() if @_componentFilter._dropdowns[1].getIsEnabled()
 			ret = false
 	
 		if userStatus.user.id is -1
-			@addNotification 'User wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'User wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@_componentFilter._dropdowns[2].setInvalidInputClass() if @_componentFilter._dropdowns[2].getIsEnabled()
 			ret = false
 	
 		if @_buddyDropdown.selected.id is -1
-			@addNotification 'Task buddy wasn\' picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'Task buddy wasn\' picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@_buddyDropdown.setInvalidInputClass()
 			ret = false
 	
 		if userStatus.user.id isnt -1 and (userStatus.user.id is @_buddyDropdown.selected.id)
-			@addNotification 'User and task buddy cannot be the same person!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'User and task buddy cannot be the same person!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@_componentFilter._dropdowns[2].setInvalidInputClass()
 			@_buddyDropdown.setInvalidInputClass()
 			ret = false
 
 		if dateFrom.toString() is 'Invalid Date' or dateFrom.getTime() < today.getTime()
-			@addNotification 'Date wasn\'t fill correctly!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'Date wasn\'t fill correctly!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@setInvalidInputClass @_dateInput
 			ret = false
 	
 		if not Number(length)
-			@addNotification 'Length of new task has to be number!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+			@addNotification 'Length of new task has to be number!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 			@setInvalidInputClass @_lengthInput
 			ret = false
 	
 		if selectedTab is 0
 			if taskStatus.title is ''
-				@addNotification 'Title of new task has to be filled in!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'Title of new task has to be filled in!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 				@setInvalidInputClass @_leftComponent._title
 				ret = false
 
 			if taskStatus.description is ''
-				@addNotification 'Description of new task has to be filled in!',ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'Description of new task has to be filled in!',ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 				@setInvalidInputClass @_leftComponent._text
 				ret = false
 
 			if taskStatus.save_as_template and taskStatus.department_id is -1
-				@addNotification 'Task department wasn\'t picked!',	ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'Task department wasn\'t picked!',	ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 				@_leftComponent._filter._dropdowns[0].setInvalidInputClass()
 				ret = false
 
 			if taskStatus.save_as_template and taskStatus.department_id is -1
-				@addNotification 'Task team wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'Task team wasn\'t picked!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 				@_leftComponent._filter._dropdowns[1].setInvalidInputClass()
 				ret = false
 	
 		if selectedTab is 1
 			if taskStatus.task_template.id is -1
-				@addNotification 'Template wasn\'t picked correctly!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.EventType.error
+				@addNotification 'Template wasn\'t picked correctly!', ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.error
 				@_rightComponent._componentFilter._dropdowns[2].setInvalidInputClass()
 				ret = false
 
@@ -267,7 +267,7 @@ ComponentAddTask.WRAPPER_CLASS = 'new-task-wrapper'
 ComponentAddTask.PERSON_WRAPPER_CLASS = 'new-task-person-wrapper'
 ComponentAddTask.BOTTOM_WRAPPER_CLASS = 'new-task-date-wrapper'
 ComponentAddTask.NOTIFICATION_DURATION = 4000
-ComponentAddTask.EventType =
+ComponentAddTask.eventType =
 	GET_USERS : 'user/get-all'
 	GET_USER_TEAMS: 'user/get-basic-info'
 	INSERT_NEW_TEMPLATE: 'template/insert'

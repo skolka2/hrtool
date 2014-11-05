@@ -49,9 +49,9 @@
         mainWrapper.innerHTML = '';
         this.view.render();
       } else {
-        document.addEventListener(ComponentBase.EventType.DOMContentLoaded, (function(_this) {
+        document.addEventListener(ComponentBase.eventType.DOMContentLoaded, (function(_this) {
           return function() {
-            document.removeEventListener(ComponentBase.EventType.DOMContentLoaded, arguments.callee, false);
+            document.removeEventListener(ComponentBase.eventType.DOMContentLoaded, arguments.callee, false);
             if (mainWrapper) {
               mainWrapper.innerHTML = '';
               return _this.view.render();

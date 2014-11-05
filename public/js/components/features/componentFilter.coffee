@@ -14,7 +14,7 @@ class ComponentFilter extends ComponentBase
 			if preselectedIds? then newDropdown.setSelectionById preselectedIds[i]
 			@_dropdowns.push newDropdown
 			@_status.push newDropdown.selected
-			@listen ComponentDropdown.EventType.CHANGE, newDropdown, @_filterData
+			@listen ComponentDropdown.eventType.CHANGE, newDropdown, @_filterData
 
 
 
@@ -69,7 +69,7 @@ class ComponentFilter extends ComponentBase
 					return
 				@_status[i] = selected
 
-		@fire ComponentFilter.EventType.UPDATED, @getStatus()
+		@fire ComponentFilter.eventType.UPDATED, @getStatus()
 		return
 
 
@@ -123,7 +123,7 @@ class ComponentFilter extends ComponentBase
 
 
 
-ComponentFilter.EventType =
+ComponentFilter.eventType =
 	UPDATED: 'new_selection'
 
 module.exports = ComponentFilter

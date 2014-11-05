@@ -1,23 +1,32 @@
-var EventEmitter =require('../observer/ObservableComponent');
-var Model =   module.exports = function(eventType) {
-    EventEmitter.call(this);
-    this.super = EventEmitter;
-    this.eventType = eventType;
-    this.data = null;
-}
+(function() {
+  var EventEmitter, Model,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Model.prototype = new EventEmitter();
-Model.prototype.constructor = Model;
+  EventEmitter = require('../observer/ObservableComponent');
 
-Model.prototype.update = function(data){
-    this.data = data;
-    this.onUpdate();
-}
+  Model = (function(_super) {
+    __extends(Model, _super);
 
-Model.prototype.onUpdate = function(){
-    this.fire(this.eventType, this.data);
-}
+    function Model(eventType) {
+      this.eventType = eventType;
+      Model.__super__.constructor.call(this);
+      this.data = null;
+    }
 
+    Model.prototype.update = function(data) {
+      this.data = data;
+      this.onUpdate();
+    };
 
+    Model.prototype.onUpdate = function() {
+      this.fire(this.eventType, this.data);
+    };
 
+    return Model;
 
+  })(EventEmitter);
+
+  module.exports = Model;
+
+}).call(this);

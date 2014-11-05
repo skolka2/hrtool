@@ -17,7 +17,7 @@ class ViewTemplates extends ViewBase
 		tableDiv = document.createElement 'div'
 		tableDiv.innerHTML = "Table of template tasks"
 
-		componentTemplateList = new ComponentTemplateListFactory.createAll()
+		componentTemplateList = ComponentTemplateListFactory.createAll()
 		componentTemplateList.render tableDiv
 
 		viewWrapper.appendChild tableDiv

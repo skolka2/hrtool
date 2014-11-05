@@ -69,7 +69,7 @@ module.exports = class ComponentBase extends EventEmitter
 		element = element || @element
 		@_invalidInputs.push element
 		element.classList.add Const.INVALID_INPUT_CLASS
-		element.addEventListener ComponentBase.EventType.CLICK, @handleFocusEvent.bind @
+		element.addEventListener ComponentBase.eventType.CLICK, @handleFocusEvent.bind @
 	handleFocusEvent: (e) ->
 		element = null
 		for item,i in @_invalidInputs
@@ -78,11 +78,11 @@ module.exports = class ComponentBase extends EventEmitter
 				@_invalidInputs.splice i , 0
 				break
 		element.classList.remove Const.INVALID_INPUT_CLASS
-		element.removeEventListener ComponentBase.EventType.CLICK, @handleFocusEvent
+		element.removeEventListener ComponentBase.eventType.CLICK, @handleFocusEvent
 
 	ComponentBase.mainWrapper = "main-wrapper"
 	ComponentBase.INVALID_INPUT_CLASS = 'invalid-input'
-	ComponentBase.EventType =
+	ComponentBase.eventType =
 		CLICK: "click"
 		CHANGE: "change"
 		ONKEYPRESS: "keypress"

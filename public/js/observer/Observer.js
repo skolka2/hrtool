@@ -1,99 +1,65 @@
-/**
- * Constructor of class Observer: creates new map of components
- * (an object /associative array/, where the key is the component's ID
- * and the value is its parent's ID.
- * 
- * It also creates a map of publishers with this structure:
- * map {object}
- * |
- * |-------type of event {object}
- * |         |----publisher's ID {object}
- * |         |            |----function to call {function}
- * |         |----publisher's ID {object}
- * |                      |----function to call {function}
- * |
- * |-------type of event {object}
- *           |----publisher's ID {object}
- *           |            |----function to call {function}
- *           |----publisher's ID {object}
- *                        |----function to call {function}
- * @returns {Observer}
- */
-var Observer = module.exports = function () {
-    this._subscribers = {};
-    this.mapOfComponents = {};
-};
+(function() {
+  var Observer,
+    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-/**
- * Fires an event and notifies all parents listening to the event type.
- * @param {string} type type of event being fired
- * @param {type} data data to pass on the listeners
- * @param {number} src source of event
- * @returns {undefined}
- */
-Observer.prototype.fire = function (type, data, src) {
-    var parents = this._getParents(src);
-    
-    while(parents.length > 0) {
-        var id = parents.pop();
-        if(this._subscribers[type] && this._subscribers[type][id]) {
-            this._subscribers[type][id](data, src);
-        }
+  Observer = (function() {
+    function Observer() {
+      this.subscribers = {};
+      this.mapOfComponents = {};
     }
-};
 
-/**
- * Finds all components that contains (directly or not) given component.
- * @param {number} childId Id of component that we want to find parents of.
- * @returns {Observer.prototype._getParents.parents|Array}
- */
-Observer.prototype._getParents = function(childId) {
-    var parents = [];
-    var iter = childId;
-    
-    while(iter) {
+    Observer.prototype.fire = function(type, data, src) {
+      var id, parents;
+      parents = this.getParents(src);
+      while (parents.length > 0) {
+        id = parents.pop();
+        if (this.subscribers[type] && this.subscribers[type][id]) {
+          this.subscribers[type][id](data, src);
+        }
+      }
+    };
+
+    Observer.prototype.getParents = function(childId) {
+      var iter, parents;
+      parents = [];
+      iter = childId;
+      while (iter) {
         parents.push(iter);
         iter = this.mapOfComponents[iter];
-    }
-    
-    return parents;
-};
+      }
+      return parents;
+    };
 
-/**
- * Subscribes caller to given type of event.
- * @param {ObservableComponent} calee caller of the function
- * @param {string} type type of event
- * @param {function} fn function to call when event triggered
- * @param {object} owner ObservableComponent that fired an event
- * @returns {undefined}
- */
-Observer.prototype.on = function (type, fn, owner) {
-    if(typeof (fn) !== "function") {
+    Observer.prototype.on = function(type, fn, owner) {
+      var typeItem;
+      if (typeof fn !== "function") {
         return;
-    }
-
-    if(this._subscribers[type] === undefined) {
-        this._subscribers[type] = {};
-    }
-
-    var typeItem = this._subscribers[type];
-
-    if(typeItem[owner.componentId] === undefined) {
+      }
+      if (this.subscribers[type] === void 0) {
+        this.subscribers[type] = {};
+      }
+      typeItem = this.subscribers[type];
+      if (typeItem[owner.componentId] === void 0) {
         typeItem[owner.componentId] = {};
-    }
+      }
+      typeItem[owner.componentId] = fn;
+    };
 
-    typeItem[owner.componentId] = fn;
-};
-
-/**
- * Removes all listeners of given component's id
- * @param {number} listenerId
- * @returns {undefined}
- */
-Observer.prototype.removeListener = function (listenerId) {
-    for(var itemEvent in this._subscribers) {
-        if(listenerId in this._subscribers[itemEvent]) {
-            delete this._subscribers[itemEvent][listenerId];
+    Observer.prototype.removeListener = function(listenerId) {
+      var itemEvent, _i, _len, _ref;
+      _ref = this.subscribers;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        itemEvent = _ref[_i];
+        if (__indexOf.call(this.subscribers[itemEvent], listenerId) >= 0) {
+          delete this.subscribers[itemEvent][listenerId];
         }
-    }
-};
+      }
+    };
+
+    return Observer;
+
+  })();
+
+  module.exports = Observer;
+
+}).call(this);

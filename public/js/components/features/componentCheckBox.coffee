@@ -24,7 +24,7 @@ class ComponentCheckBox extends ComponentBase
 	
 		@element = buddyCheckbox
 	
-		@element.addEventListener ComponentBase.EventType.CLICK ,@handleOnClick, no
+		@element.addEventListener ComponentBase.eventType.CLICK ,@handleOnClick, no
 		return
 
 
@@ -47,7 +47,7 @@ class ComponentCheckBox extends ComponentBase
 		@getElement()
 		@checked = checked
 		@_setCheckClass()
-		@fire ComponentBase.EventType.CHANGE, @checked
+		@fire ComponentBase.eventType.CHANGE, @checked
 		return
 
 

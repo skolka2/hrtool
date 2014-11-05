@@ -20,8 +20,8 @@ class ComponentTableWrapper extends ComponentBase
 		@addChild 'textInput', @_textInput, {el: topDiv}
 		@addChild 'table', @_table, {el: @element}
 
-		@listen ComponentFilter.EventType.UPDATED, @_filterComponent, @handleFilterTable
-		@listen ComponentTextInput.EventType.INPUT_CHANGE, @_textInput, @handleFilterTable
+		@listen ComponentFilter.eventType.UPDATED, @_filterComponent, @handleFilterTable
+		@listen ComponentTextInput.eventType.INPUT_CHANGE, @_textInput, @handleFilterTable
 		return
 
 	handleFilterTable: () =>

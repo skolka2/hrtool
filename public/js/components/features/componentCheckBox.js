@@ -29,7 +29,7 @@
       buddyCheckbox.appendChild(this.checkChecked);
       buddyCheckbox.appendChild(this.label);
       this.element = buddyCheckbox;
-      this.element.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick, false);
+      this.element.addEventListener(ComponentBase.eventType.CLICK, this.handleOnClick, false);
     };
 
     ComponentCheckBox.prototype._setCheckClass = function() {
@@ -49,7 +49,7 @@
       this.getElement();
       this.checked = checked;
       this._setCheckClass();
-      this.fire(ComponentBase.EventType.CHANGE, this.checked);
+      this.fire(ComponentBase.eventType.CHANGE, this.checked);
     };
 
     return ComponentCheckBox;

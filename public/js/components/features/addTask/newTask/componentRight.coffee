@@ -8,7 +8,7 @@ Model = require '../../../../models/model'
 class ComponentRight extends ComponentBase
 	constructor: () ->
 		super();
-		@setModel new Model(ComponentRight.EventType.GET_USERS), ComponentRight.EventType.GET_USERS
+		@setModel new Model(ComponentRight.eventType.GET_USERS), ComponentRight.eventType.GET_USERS
 		hrtool.actions.getTemplatesData @model
 
 	onLoad: (templates) ->
@@ -41,7 +41,7 @@ class ComponentRight extends ComponentBase
 
 ComponentRight.WRAPPER_CLASS = 'task-template-div'
 ComponentRight.HEADLINE_CLASS = 'task-template-headline'
-ComponentRight.EventType =
+ComponentRight.eventType =
 	GET_DATA: 'template/get-all'
 
 module.exports = ComponentRight

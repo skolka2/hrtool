@@ -51,7 +51,7 @@
       };
       jadeHeader = helper.tpl.create("components/templateList/componentTemplateList", jadeHeaderData);
       this.getElement().appendChild(jadeHeader);
-      this.getElement().addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick);
+      this.getElement().addEventListener(ComponentBase.eventType.CLICK, this.handleOnClick);
       for (_i = 0, _len = data.length; _i < _len; _i++) {
         item = data[_i];
         dataMap = this._getSelectedItem(item, dropDownData);
@@ -188,7 +188,7 @@
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Title must not be empty!";
         this.setInvalidInputClass(titleEl);
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
       }
       if (!error) {
         data.object.innerHTML = "Saving";
@@ -207,8 +207,8 @@
         if (team !== "-1") {
           saveData['id_team'] = team;
         }
-        saveModel = new Model(ComponentTemplateList.EventType.DATA_SAVE);
-        this.listen(ComponentTemplateList.EventType.DATA_SAVE, saveModel, (function(_this) {
+        saveModel = new Model(ComponentTemplateList.eventType.DATA_SAVE);
+        this.listen(ComponentTemplateList.eventType.DATA_SAVE, saveModel, (function(_this) {
           return function(backendData) {
             return _this.onSave(data.object, backendData);
           };
@@ -222,10 +222,10 @@
       if (data.object.getAttribute("implicit") === "true") {
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Implicit task cannot be deleted";
-        return this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        return this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
       } else {
-        deleteModel = new Model(ComponentTemplateList.EventType.DATA_DELETE);
-        this.listen(ComponentTemplateList.EventType.DATA_DELETE, deleteModel, (function(_this) {
+        deleteModel = new Model(ComponentTemplateList.eventType.DATA_DELETE);
+        this.listen(ComponentTemplateList.eventType.DATA_DELETE, deleteModel, (function(_this) {
           return function(backendData) {
             return _this.onDelete(data.object, backendData);
           };
@@ -242,12 +242,12 @@
         objEl.disabled = false;
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Critical error! Please contact your administrator!";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
       } else {
         objEl.innerHTML = "Save";
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Task has been successfuly saved.";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.success);
       }
     };
 
@@ -257,15 +257,15 @@
         objEl.disabled = false;
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Critical error! Please contact your administrator!";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
       } else {
-        document.body.removeEventListener(ComponentBase.EventType.CLICK, this.onDelete, false);
+        document.body.removeEventListener(ComponentBase.eventType.CLICK, this.onDelete, false);
         this.dropdowns[data[0].id_task_template].destroy();
         rowEl = helper.dom.getParentByClass(objEl, "row");
         rowEl.innerHTML = "";
         newDiv = document.createElement('div');
         newDiv.innerHTML = "Task has been successfuly deleted.";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.success);
       }
     };
 
@@ -280,7 +280,7 @@
     route: "route"
   };
 
-  ComponentTemplateList.EventType = {
+  ComponentTemplateList.eventType = {
     DATA_LOAD: 'template/get-all',
     DATA_SAVE: 'template/update',
     DATA_DELETE: 'template/delete'

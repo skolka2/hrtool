@@ -58,7 +58,7 @@ class ComponentTaskList extends ComponentBase
 		@content.appendChild (infoText)
 		return
 
-ComponentTaskList.EventType = 
+ComponentTaskList.eventType =
 	buddy:
 		DATA_LOAD_COMPLETED: 'tasks/buddy/list/completed'
 		DATA_LOAD_NOT_COMPLETED: 'tasks/buddy/list/not-completed'

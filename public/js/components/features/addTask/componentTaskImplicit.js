@@ -87,13 +87,13 @@ ComponentTaskImplicit.prototype.createDom = function () {
 
     //create task start at
     div = wrapper.getElementsByClassName(divsName.task_start)[0];
-    div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
+    div.addEventListener(ComponentBase.eventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
     //create task length
     div = wrapper.getElementsByClassName(divsName.task_length)[0];
-    div.addEventListener(ComponentBase.EventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
+    div.addEventListener(ComponentBase.eventType.ONKEYPRESS, function(event){event.returnValue = helper.number.isNumber(String.fromCharCode(event.keyCode),1,"")});
 
-    wrapper.addEventListener(ComponentBase.EventType.CLICK, this.handleOnClick.bind(this));
+    wrapper.addEventListener(ComponentBase.eventType.CLICK, this.handleOnClick.bind(this));
 };
 
 ComponentTaskImplicit.prototype._getSelectedItem = function (data, dropDownData) {
@@ -158,14 +158,14 @@ ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
     if (lengthEl.value == "") {
         var newDiv = document.createElement('div');
         newDiv.innerHTML = "Length of implicit task must me a number";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
         this.setInvalidInputClass(lengthEl);
         error = true;
     }
     if (start.value == "") {
         var newDiv = document.createElement('div');
         newDiv.innerHTML = "start day of implicit task must me a number";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
         this.setInvalidInputClass(start);
         error = true;
     }
@@ -201,8 +201,8 @@ ComponentTaskImplicit.prototype.handleButtonSave = function (data) {
         }
         start.value = "";
         lengthEl.value = "";
-        var saveModel = new Model(ComponentTaskImplicit.EventType.DATA_ADD);
-        this.listen(ComponentTaskImplicit.EventType.DATA_ADD, saveModel, this.onSave.bind(this, data.object));
+        var saveModel = new Model(ComponentTaskImplicit.eventType.DATA_ADD);
+        this.listen(ComponentTaskImplicit.eventType.DATA_ADD, saveModel, this.onSave.bind(this, data.object));
         hrtool.actions.saveImplicitTaskData(saveModel, saveData);
     }
 };
@@ -211,14 +211,14 @@ ComponentTaskImplicit.prototype.onSave = function (objEl, data) {
     if (data.error) {
         var newDiv = document.createElement('div');
         newDiv.innerHTML = "Critical error! Please contact administrator!";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.error);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.error);
 
     }
     else {
         objEl.innerHTML = "Add";
         var newDiv = document.createElement('div');
         newDiv.innerHTML = "Implicit task has been successfully added.";
-        this.addNotification(newDiv, 3000, ComponentNotificationCenter.EventType.success);
+        this.addNotification(newDiv, 3000, ComponentNotificationCenter.eventType.success);
     }
 };
 
@@ -231,6 +231,6 @@ ComponentTaskImplicit.ListDivs = {
     route: "route"
 };
 
-ComponentTaskImplicit.EventType = {
+ComponentTaskImplicit.eventType = {
     DATA_ADD: 'implicit/add'
 };

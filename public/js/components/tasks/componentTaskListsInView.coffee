@@ -43,7 +43,7 @@ class ComponentTaskListsInView extends ComponentBase
 			@taskFilterData = ComponentFilterFormatter.factory.createTeamDropdownsData @departments, @teams
 			@taskFilter = new ComponentFilter @taskFilterData, ['department', 'team']
 			@taskFilter.render listsWrapper
-			@listen ComponentFilter.EventType.UPDATED, @taskFilter, @handleFilterUpdate
+			@listen ComponentFilter.eventType.UPDATED, @taskFilter, @handleFilterUpdate
 
 		notCompletedHeader = document.createElement 'h2'
 		notCompletedHeader.className = "task-list-header"
@@ -67,7 +67,7 @@ class ComponentTaskListsInView extends ComponentBase
 
 		@listNotCompleted.render listNotCompletedWrapper
 		@listCompleted.render listCompletedWrapper
-		@listen ComponentBase.EventType.CHANGE, this.listNotCompleted, this.handleFinishTask
+		@listen ComponentBase.eventType.CHANGE, this.listNotCompleted, this.handleFinishTask
 		@element = outerHideWrapper;
 
 		return
@@ -96,11 +96,11 @@ class ComponentTaskListsInView extends ComponentBase
 			id_team: selectedTeam
 			is_hr: this.isHr
 
-		newModelNotCompleted = new Model ComponentTaskList.EventType.manager.DATA_LOAD_NOT_COMPLETED
-		newModelCompleted = new Model ComponentTaskList.EventType.manager.DATA_LOAD_COMPLETED
+		newModelNotCompleted = new Model ComponentTaskList.eventType.manager.DATA_LOAD_NOT_COMPLETED
+		newModelCompleted = new Model ComponentTaskList.eventType.manager.DATA_LOAD_COMPLETED
 
-		@listNotCompleted.setModel newModelNotCompleted, ComponentTaskList.EventType.manager.DATA_LOAD_NOT_COMPLETED
-		@listCompleted.setModel newModelCompleted, ComponentTaskList.EventType.manager.DATA_LOAD_COMPLETED
+		@listNotCompleted.setModel newModelNotCompleted, ComponentTaskList.eventType.manager.DATA_LOAD_NOT_COMPLETED
+		@listCompleted.setModel newModelCompleted, ComponentTaskList.eventType.manager.DATA_LOAD_COMPLETED
 
 		hrtool.actions.getManagerTaskDataNotCompleted @listNotCompleted.model, dataToSend
 		hrtool.actions.getManagerTaskDataCompleted @listCompleted.model, dataToSend

@@ -32,7 +32,7 @@
       this._listEl = document.createElement('ul');
       this._listEl.className = 'dropDownButton';
       this._listEl.style.visibility = 'hidden';
-      this._selectedTextElement.addEventListener(ComponentBase.EventType.CLICK, this._handleListOpen, false);
+      this._selectedTextElement.addEventListener(ComponentBase.eventType.CLICK, this._handleListOpen, false);
       this.changeData(this._data);
     }
 
@@ -61,11 +61,11 @@
                 _this.searchEl.value = "";
                 _this.handleSearch();
               }
-              return document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
+              return document.body.removeEventListener(ComponentBase.eventType.CLICK, onClick, false);
             }
           };
         })(this);
-        document.body.addEventListener(ComponentBase.EventType.CLICK, onClick, false);
+        document.body.addEventListener(ComponentBase.eventType.CLICK, onClick, false);
       }
     };
 
@@ -125,7 +125,7 @@
       } else {
         this._selectedTextElement.innerHTML = selectedItem.value;
       }
-      this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+      this.fire(ComponentDropdown.eventType.CHANGE, this.selected);
     };
 
     ComponentDropdown.prototype.setSelectionById = function(id) {
@@ -165,8 +165,8 @@
       if (selection.length > 0) {
         this.setSelection(selection[0].value);
         this._listEl.style.visibility = 'hidden';
-        document.body.removeEventListener(ComponentBase.EventType.CLICK, onClick, false);
-        this.fire(ComponentDropdown.EventType.CHANGE, this.selected);
+        document.body.removeEventListener(ComponentBase.eventType.CLICK, onClick, false);
+        this.fire(ComponentDropdown.eventType.CHANGE, this.selected);
       }
     };
 
@@ -214,7 +214,7 @@
 
   })(ComponentBase);
 
-  ComponentDropdown.EventType = {
+  ComponentDropdown.eventType = {
     CHANGE: 'dropdown-change'
   };
 
