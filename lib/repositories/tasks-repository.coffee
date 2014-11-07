@@ -1,5 +1,6 @@
 debug = require('debug') 'hrtool:tasks-repository'
 _ = require 'lodash-node'
+async = require	'async'
 
 
 module.exports = (dbClient) ->
@@ -24,13 +25,6 @@ module.exports = (dbClient) ->
 				WHERE t.id_user=$1'
 
 			params = [userId]
-
-			sql = 'SELECT t.*, u.email AS buddy_email, u.last_name AS buddy_last_name, u.first_name AS buddy_first_name
-						  FROM tasks t
-						  LEFT JOIN users u ON u.id_user= t.id_buddy
-						  WHERE t.id_user=$1'
-			params = [userId];
-
 			if next is null
 				next = completed
 				completed = null
@@ -102,14 +96,18 @@ module.exports = (dbClient) ->
 			dbClient.insertOne 'tasks', taskData, next
 
 		getCountOfTasks: (userId, next) ->
-			sql = 'SELECT
-				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1) AS all_tasks,
-				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1 AND t.completed) AS finished_tasks,
-				  (SELECT COUNT(t.id_task) FROM tasks t WHERE t.id_user = $1 AND NOT t.completed AND current_date > t.date_to) AS deadline_tasks'
-
+			sql = "SELECT
+							CONCAT(u.last_name,', ',u.first_name) AS full_name,
+							COUNT(CASE WHEN t.completed=true THEN 1 END) AS finished_tasks,
+							COUNT(CASE WHEN t.completed=false AND current_date > t.date_to THEN 1 END) AS deadline_tasks,
+							COUNT (t.completed) AS all_tasks
+							FROM tasks t
+							RIGHT JOIN users u ON u.id_user=t.id_user
+							WHERE u.id_user = $1
+							GROUP BY u.id_user"
 			params = [userId]
-
 			dbClient.queryAll sql, params, next
+
 		getImplicitTasks: (queryData, next) ->
 			unless queryData.sortBy in ['id_task_implicit','title', 'description', 'start_day', 'duration']
 				return next 'wrong name column'
@@ -129,11 +127,42 @@ module.exports = (dbClient) ->
 				 #{filterQuery}
 				ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $1 LIMIT $2""", [queryData.offset, queryData.limit], next
 
-
 		getValidInt:(n) ->
 			if n % 1 is 0
 				return n
 			else
 				return 0
+
+		isAdminOrManager : (data, next) ->
+			isAdmin = false;
+			async.waterfall([
+				(callback) ->
+					dbClient.queryOne """SELECT count(u) FROM user_roles u
+							WHERE u.id_user_role = $1 AND u.title = 'Administrator'""", [data.myRole], callback
+				,
+				(res, callback) ->
+
+					if(res.count? and res.count is '1')
+						callback(true)
+					else
+						# TODO: dodelat zjisteni jestli je manazer tymu daneho uzivatele
+						dbClient.queryOne """SELECT count(u) FROM users u
+							JOIN users_teams ut ON ut.id_user = u.id_user and ut.id_team = $2 and ut.is_admin
+							WHERE u.id_user =$1 """, [data.myUserId, data.idTeam],callback
+
+				],
+				(res) =>
+					debug res
+					if res or (res? and res.count? and res.count is '1')
+							next null, true
+							#@getCountOfTasks(data.userId, next)
+					else next( error: "You are not admin")
+
+			)
+
+
+
+
+
 	}
 

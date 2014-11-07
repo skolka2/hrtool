@@ -6,10 +6,12 @@ module.exports = (router, tasksRepository) ->
 		tasksRepository.getUserTasks req.session.passport.user.id_user, next
 
 	router.register 'tasks/user/list/completed', (req, next) ->
-		tasksRepository.getUserTasks req.session.passport.user.id_user, true, next
+		userId =  req.data || req.session.passport.user.id_user
+		tasksRepository.getUserTasks userId, true, next
 
 	router.register 'tasks/user/list/not-completed', (req, next) ->
-		tasksRepository.getUserTasks req.session.passport.user.id_user, false, next
+		userId =  req.data || req.session.passport.user.id_user
+		tasksRepository.getUserTasks userId, false, next
 
 	router.register 'tasks/get-all', (req, next) ->
 		userRepository.insertUsersFromCSV req.data.id_user, false, next
@@ -18,10 +20,12 @@ module.exports = (router, tasksRepository) ->
 		tasksRepository.getBuddyTasks req.session.passport.user.id_user, next
 
 	router.register 'tasks/buddy/list/completed', (req,next) ->
-		tasksRepository.getBuddyTasks req.session.passport.user.id_user, true, next
+		userId =  req.data || req.session.passport.user.id_user
+		tasksRepository.getBuddyTasks userId, true, next
 
 	router.register 'tasks/buddy/list/not-completed', (req,next) ->
-		tasksRepository.getBuddyTasks req.session.passport.user.id_user, false, next
+		userId =  req.data || req.session.passport.user.id_user
+		tasksRepository.getBuddyTasks userId, false, next
 
 	router.register 'tasks/get-defaults', (req, next) ->
 		tasksRepository.getDefaultTasks next
@@ -52,7 +56,19 @@ module.exports = (router, tasksRepository) ->
 		tasksRepository.insertNewTask req.data, next
 
 	router.register 'tasks/count', (req, next) ->
-		tasksRepository.getCountOfTasks req.session.passport.user.id_user, next
+		if(req.data?)
+			tasksRepository.getCountOfTasks req.data, next
+		else
+			tasksRepository.getCountOfTasks req.session.passport.user.id_user, next
 
 	router.register 'tasks/implicit/list', (req, next) ->
 		tasksRepository.getImplicitTasks req.data, next
+
+	router.register 'tasks/view/isadmin', (req, next) ->
+		tasksRepository.isAdminOrManager
+			myUserId : req.session.passport.user.id_user
+			userId: req.data,
+			myRole: req.session.passport.user.id_user_role
+			next
+
+

@@ -1,4 +1,4 @@
-(function() {
+﻿(function() {
   var RouterConfig, ViewDefault, ViewDepartments, ViewExport, ViewHome, ViewImplicitTasks, ViewPeople, ViewTasks, ViewTemplates, ViewTest;
 
   ViewHome = require('../views/viewHome');

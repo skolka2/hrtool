@@ -12,8 +12,8 @@ helper = require '../../helpers/helpers'
 class ComponentTaskListsInView extends ComponentBase
 	constructor: (@title, listCompleted, listNotCompleted, @useFilter) ->
 		super()
-		@listCompleted = listCompleted()
-		@listNotCompleted = listNotCompleted()
+		@listCompleted = listCompleted
+		@listNotCompleted = listNotCompleted
 		@taskFilter = null
 		@taskFilterData = null
 		@isHr = helper.bulk.getData ["user","is_hr"]
