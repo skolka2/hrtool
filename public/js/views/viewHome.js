@@ -3,6 +3,7 @@ var Const = require('../helpers/constants');
 var helper = require('../helpers/helpers');
 var ComponentTaskListsInView = require('../components/tasks/componentTaskListsInView');
 var ComponentTaskListFactory = require('../components/tasks/componentTaskListFactory');
+var ComponentStatusBarFactory = require('../components/features/componentStatusBarFactory');
 
 
 var ViewHome = module.exports =  function() {
@@ -21,6 +22,13 @@ ViewHome.prototype.render = function() {
     var userRole = helper.bulk.getData(["user", "id_user_role"]);
 	viewWrapper.className = "view-wraper";
 	viewWrapper.innerHTML = "Home View";
+
+	viewWrapper.appendChild(document.createElement('br'));
+
+	var statusBar = ComponentStatusBarFactory.createStatusBar();
+	statusBar.render(viewWrapper);
+
+	viewWrapper.appendChild(document.createElement('br'));
 
 	var userTaskLists = new ComponentTaskListsInView("Your tasks:", ComponentTaskListFactory.UserTaskList.createCompleted, ComponentTaskListFactory.UserTaskList.createNotCompleted);
 	userTaskLists.render(viewWrapper);
