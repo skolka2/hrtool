@@ -134,28 +134,28 @@ class ComponentTaskImplicit extends ComponentBase
 		unless @setFromTemplate
 			taskStatus = @addTask.getStatus()
 			if taskStatus.description is ''
-				@addNotification 'Description of new task has to be filled in!',ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+				@addNotification 'Description of new task has to be filled in!',ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 				@setInvalidInputClass @addTask._text
 				error = yes
 		if dep is -1
-			@addNotification 'Department must be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification 'Department must be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 			@dropdown.setInvalidInputClass()
 			error = yes
 		if buddyDep is -1
-			@addNotification 'Buddy department must be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification 'Buddy department must be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 			@buddy_dropdown.setInvalidInputClass()
 			error = yes
 		if @data.title is ''
-			@addNotification 'Title of new task has to be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification 'Title of new task has to be filled in!', ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 			@setInvalidInputClass @addTask._title unless @setFromTemplate
 			error = yes
 
 		if lengthEl.value == ""
-			@addNotification "Length of implicit task must me a number", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification "Length of implicit task must me a number", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 			@setInvalidInputClass lengthEl
 			error = yes
 		if start.value == ""
-			@addNotification "start day of implicit task must me a number", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification "start day of implicit task must me a number", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 			@setInvalidInputClass start
 			error = yes
 		if not error
@@ -186,10 +186,10 @@ class ComponentTaskImplicit extends ComponentBase
 
 	onSave: (objEl, data) ->
 		if data.error
-			@addNotification "Critical error! Please contact administrator!", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.error
+			@addNotification "Critical error! Please contact administrator!", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.ERROR
 		else
 			objEl.element.getElementsByClassName("save")[0].innerHTML = "Add"
-			@addNotification "Implicit task has been successfully added.", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.success
+			@addNotification "Implicit task has been successfully added.", ComponentTaskImplicit.NOTIFICATION_DURATION, ComponentNotificationCenter.eventType.SUCCESS
 
 	handleChangedTemplateDataForImplicit: (data) ->
 		@data.id_task_template = data.task_template.id

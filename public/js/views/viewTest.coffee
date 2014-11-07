@@ -1,4 +1,5 @@
 ViewBase =  require './viewBase'
+ComponentSelectFactory = require "../components/features/componentSelectFactory"
 
 class ViewTest extends ViewBase
 	constructor: () ->
@@ -6,12 +7,15 @@ class ViewTest extends ViewBase
 
 
 	render: () ->
-		super arguments
+		super()
 		mainWrapper = document.getElementById ViewBase.mainWrapper
-		div = document.createElement "div"
-		div.id = "ViewDefault"
-		div.innerText = "This is view for testing."
-		mainWrapper.appendChild div
+		zibbyDiv = document.createElement "div"
+		zibbyDiv.id = "zibby"
+
+		component = ComponentSelectFactory.createDepartmentTeam()
+		component.render zibbyDiv
+
+		mainWrapper.appendChild zibbyDiv
 		return
 
 

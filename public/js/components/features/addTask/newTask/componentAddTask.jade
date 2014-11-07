@@ -1,9 +1,9 @@
 div(class=wrapperClass)
     div(class=personWrapperClass)
-        span=personTitle
+        span="Person: "
     div(class=bottomWrapperClass)
-        label(class=dateLabelClass)=dateTitle
+        label.date-label="Task starts at: "
             input(class=dateInputClass, type="date", min=today, value=today)
-        label(class=taskLengthLabelClass)=taskLengthTitle
+        label.task-length-label="Task length (days): "
             input(class=taskLengthInputClass, type="number", min=1)
-    button(class=saveButtonClass)=saveButtonTitle
+    button(class=saveButtonClass)="Save"

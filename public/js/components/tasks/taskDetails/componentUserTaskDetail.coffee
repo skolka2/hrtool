@@ -56,7 +56,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		if @notesElement.value is @taskNotes
 			notification = document.createElement 'div'
 			notification.innerHTML = "Nothing has been changed."
-			@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.neutral
+			@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.NEUTRAL
 		else
 			@saveNotesBttn.disabled = yes
 			@notesElement.readonly = yes
@@ -76,7 +76,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 		@saveNotesBttn.disabled = no
 		notification = document.createElement 'div'
 		notification.innerHTML = 'Save succesfull.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
+		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.SUCCESS
 		return
 
 	handleFinishTask: (ev) =>
@@ -102,7 +102,7 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 
 		notification = document.createElement 'div'
 		notification.innerHTML = 'Task has been completed.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
+		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.SUCCESS
 
 		@isFinished = yes
 

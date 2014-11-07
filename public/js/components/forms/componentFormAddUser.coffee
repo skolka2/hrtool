@@ -130,7 +130,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @name
 			div = document.createElement "div"
 			div.innerText = "Name is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 			baseTime += 1000
 			err = no
 
@@ -138,7 +138,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @surname
 			div = document.createElement "div"
 			div.innerText = "Surname is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 			baseTime += 1000
 			err = no
 	
@@ -147,7 +147,7 @@ class ComponentFormAddUser extends ComponentBase
 			@setInvalidInputClass @email
 			div = document.createElement "div"
 			div.innerText = "Email is not filled."
-			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 			baseTime += 1000
 			err = no
 			emptyEmail = yes
@@ -157,7 +157,7 @@ class ComponentFormAddUser extends ComponentBase
 				@setInvalidInputClass @email
 				div = document.createElement "div"
 				div.innerText = "Bad format of email adress."
-				@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+				@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 				baseTime += 1000
 				err = no
 	
@@ -169,28 +169,28 @@ class ComponentFormAddUser extends ComponentBase
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Department is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 						baseTime += 1000
 						err = no
 					when 1
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Role is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 						baseTime += 1000
 						err = no
 					when 2
 						@setInvalidInputClass dropDownButton
 						div = document.createElement "div"
 						div.innerText = "Team is not selected."
-						@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+						@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 						baseTime += 1000
 						err = no
 		unless @isSelectedHRBuddy
 			@HRbuddys.setInvalidInputClass()
 			div = document.createElement "div"
 			div.innerText = "HR buddy is not selected."
-			@addNotification div, baseTime, ComponentNotificationCenter.eventType.error
+			@addNotification div, baseTime, ComponentNotificationCenter.eventType.ERROR
 			baseTime += 1000
 			err = no
 		return err
@@ -204,7 +204,7 @@ class ComponentFormAddUser extends ComponentBase
 			@helper.debugger "FormStatus: Form sent"
 			div = document.createElement "div"
 			div.innerText = "User Added"
-			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.success
+			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.SUCCESS
 			if @checkBoxIsHR.checked is yes
 				model = new Model ComponentFormAddUser.eventType.DATA_LOAD
 				@setModel model, ComponentFormAddUser.eventType.DATA_LOAD
@@ -215,7 +215,7 @@ class ComponentFormAddUser extends ComponentBase
 			@helper.debugger "FormStatus: Err", data.error
 			div = document.createElement "div"
 			div.innerText = "User Not Added Error:" + data.error
-			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.error
+			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.ERROR
 		return
 
 

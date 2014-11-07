@@ -23,7 +23,7 @@ class ComponentPrivileges extends ComponentBase
 	isNotAdminNotification:->
 		newDiv = document.createElement 'div'
 		newDiv.innerHTML = "You don´t have permission to see user´s view. "
-		@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
+		@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
 		#setTimeout (->window.location = "../#"),5000
 
 ComponentPrivileges.eventType.IS_ADMIN_OR_MANAGER = 'tasks/view/isadmin'

@@ -153,7 +153,7 @@ class ComponentTemplateList extends ComponentBase
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Title must not be empty!"
 			@setInvalidInputClass titleEl
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
 		unless error
 			data.object.innerHTML = "Saving"
 			dep = dropStatus["department"].id
@@ -179,7 +179,7 @@ class ComponentTemplateList extends ComponentBase
 		if data.object.getAttribute("implicit") is "true"
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Implicit task cannot be deleted"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
 		else
 			deleteModel = new Model ComponentTemplateList.eventType.DATA_DELETE
 			@listen ComponentTemplateList.eventType.DATA_DELETE, deleteModel, (backendData) =>
@@ -194,12 +194,12 @@ class ComponentTemplateList extends ComponentBase
 			objEl.disabled = no
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Critical error! Please contact your administrator!"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
 		else
 			objEl.innerHTML = "Save"
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Task has been successfuly saved."
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.success
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.SUCCESS
 		return
 
 
@@ -209,7 +209,7 @@ class ComponentTemplateList extends ComponentBase
 			objEl.disabled = no
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Critical error! Please contact your administrator!"
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.error
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
 		else
 			document.body.removeEventListener ComponentBase.eventType.CLICK, @onDelete, no
 			@dropdowns[data[0].id_task_template].destroy()
@@ -217,7 +217,7 @@ class ComponentTemplateList extends ComponentBase
 			rowEl.innerHTML = ""
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Task has been successfuly deleted."
-			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.success
+			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.SUCCESS
 		return
 
 

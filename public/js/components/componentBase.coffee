@@ -80,15 +80,14 @@ module.exports = class ComponentBase extends EventEmitter
 		element.classList.remove Const.INVALID_INPUT_CLASS
 		element.removeEventListener ComponentBase.eventType.CLICK, @handleFocusEvent
 
-	ComponentBase.mainWrapper = "main-wrapper"
-	ComponentBase.INVALID_INPUT_CLASS = 'invalid-input'
-	ComponentBase.eventType =
-		CLICK: "click"
-		CHANGE: "change"
-		ONKEYPRESS: "keypress"
-		KEYUP: 'keyup'
-		BLUR: "blur"
-		DOMContentLoaded: "DOMContentLoaded"
-	ComponentBase.CLICK_EVENT = 'click'
-	ComponentBase.NotificationCenter = null
-	ComponentBase.DEFAULT_NOTIFICATION_DURATION = 3000
+ComponentBase.mainWrapper = "main-wrapper"
+ComponentBase.INVALID_INPUT_CLASS = 'invalid-input'
+ComponentBase.eventType =
+	CLICK: "click"
+	CHANGE: "change"
+	ONKEYPRESS: "keypress"
+	KEYUP: 'keyup'
+	BLUR: "blur"
+	DOMContentLoaded: "DOMContentLoaded"
+ComponentBase.CLICK_EVENT = 'click'
+ComponentBase.NotificationCenter = null

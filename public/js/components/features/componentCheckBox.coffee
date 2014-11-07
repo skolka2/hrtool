@@ -50,6 +50,9 @@ class ComponentCheckBox extends ComponentBase
 		@fire ComponentBase.eventType.CHANGE, @checked
 		return
 
+	isChecked: () ->
+		return @checked
+
 
 
 

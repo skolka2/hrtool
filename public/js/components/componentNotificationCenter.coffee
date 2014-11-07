@@ -11,7 +11,7 @@ class ComponentNotificationCenter
 			element = wrapper
 	
 		newDiv = document.createElement 'div'
-		newDiv.className = if type? then type else ComponentNotificationCenter.eventType.neutral
+		newDiv.className = if type? then type else ComponentNotificationCenter.eventType.NEUTRAL
 		newDiv.appendChild element
 		@_countOfNotifications++
 
@@ -53,9 +53,9 @@ class ComponentNotificationCenter
 
 
 ComponentNotificationCenter.eventType =
-	success: 'notification-success'
-	neutral: 'notification-neutral'
-	error: 'notification-error'
+	SUCCESS: 'notification-success'
+	NEUTRAL: 'notification-neutral'
+	ERROR: 'notification-error'
 
 ComponentNotificationCenter.DEFAULT_TIME = 3000
 

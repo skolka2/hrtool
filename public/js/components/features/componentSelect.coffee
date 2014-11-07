@@ -37,7 +37,7 @@ module.exports = class ComponentSelect extends ComponentBase
 			if item.id is -1
 				@filter._dropdowns[i].setInvalidInputClass()
 				if @errorsInfo[i]?
-					@addNotification @errorsInfo[i], baseTime, ComponentNotificationCenter.eventType.error
+					@addNotification @errorsInfo[i], baseTime, ComponentNotificationCenter.eventType.ERROR
 					baseTime += 1000
 				isValid = no
 		return isValid
@@ -45,7 +45,6 @@ module.exports = class ComponentSelect extends ComponentBase
 	cancel: =>
 		@fire ComponentSelect.eventType.CANCEL, null
 
-	ComponentSelect.eventType = {
-	SAVE: 'selectSave',
+ComponentSelect.eventType =
+	SAVE: 'selectSave'
 	CANCEL: 'selectCancel'
-	}
