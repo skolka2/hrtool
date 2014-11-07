@@ -26,20 +26,20 @@ class ComponentTableWrapper extends ComponentBase
 
 	handleFilterTable: () =>
 		status1 = @_filterComponent.getStatus()
-		filterData = {}
+		filterData =
+			filter : []
 
 		for item, i in status1
 			if item.id isnt -1
-				filterData['filter' + (i + 1)] = item.id
+				filterData.filter.push item.id
 			else
-				delete filterData['filter' + (i + 1)]
+				filterData.filter.splice(i+1,i+1)
 
 		name = @_textInput.getStatus()
 		filterData.input = '%' + name + '%' if name
 
-		filterData = null if Object.keys(filterData).length <= 0
-		@_table.setFilterData filterData
-		@_table.handleOnFilter()
+		filterData = null if Object.keys(filterData).length <= 1 and filterData.filter.length <=0
+		@_table.handleOnFilter(filterData)
 		return
 
 

@@ -62,46 +62,6 @@ module.exports = (dbClient) ->
 		getHR : (email, next)->
 			dbClient.queryAll 'SELECT id_user, first_name,last_name FROM users WHERE is_hr ORDER BY last_name', next
 
-		getAllUsersForTable : (queryData, userIdRole, next) ->
-			i = 1;
-			query = "SELECT DISTINCT sel.*
-					FROM (
-						SELECT
-							u.id_user,
-							CONCAT(u.last_name,', ',u.first_name) AS full_name,
-							COUNT(CASE WHEN t.completed=true THEN 1 END) AS done,
-							COUNT(CASE WHEN t.completed=false THEN 1 END) AS undone
-						FROM tasks t
-						RIGHT JOIN users u ON u.id_user=t.id_user
-						GROUP BY u.id_user
-					) AS sel";
-			if queryData?
-				params = [];
-				if queryData.filterData?
-					if queryData.filterData.input?
-						query += " WHERE LOWER(sel.full_name) LIKE LOWER($#{i++})"
-						params.push queryData.filterData.input
-					else
-						if queryData.filterData.filter1? and not queryData.filterData.filter2?
-							query += " JOIN users_teams ut ON ut.id_user=sel.id_user
-									   JOIN teams te ON ut.id_team=te.id_team
-									   JOIN departments d ON te.id_department=$#{i++}"
-							params.push queryData.filterData.filter1
-
-						if queryData.filterData.filter2?
-							query += " JOIN users_teams ut ON ut.id_user=sel.id_user
-									   JOIN teams te ON ut.id_team=$#{i++}"
-							params.push queryData.filterData.filter2
-
-				params.push queryData.offset
-				params.push queryData.limit
-				query += " ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $#{i++} LIMIT $#{i++}";
-				dbClient.queryAll query, params, next
-			else
-				query += " ORDER BY full_name"
-				dbClient.queryAll query, next
-
-
 		getAllUserTeams: (idUser, next) ->
 			dbClient.queryAll "
 				SELECT
@@ -141,6 +101,7 @@ module.exports = (dbClient) ->
 						RIGHT JOIN users u ON u.id_user=t.id_user
 						GROUP BY u.id_user
 					) AS sel";
+
 			if queryData?
 				params = [];
 				if queryData.filterData?
@@ -148,17 +109,18 @@ module.exports = (dbClient) ->
 						query += " WHERE LOWER(sel.full_name) LIKE LOWER($#{i++})"
 						params.push queryData.filterData.input
 					else
-						if queryData.filterData.filter1? and not queryData.filterData.filter2?
+						development = 0
+						team = 1
+						if queryData.filterData.filter[development]? and not queryData.filterData.filter[team]?
 							query += " JOIN users_teams ut ON ut.id_user=sel.id_user
 									   JOIN teams te ON ut.id_team=te.id_team
 									   JOIN departments d ON te.id_department=$#{i++}"
-							params.push queryData.filterData.filter1
+							params.push queryData.filterData.filter[development]
 
-						if queryData.filterData.filter2?
+						if queryData.filterData.filter[team]?
 							query += " JOIN users_teams ut ON ut.id_user=sel.id_user
 									   JOIN teams te ON ut.id_team=$#{i++}"
-							params.push queryData.filterData.filter2
-
+							params.push queryData.filterData.filter[team]
 				params.push queryData.offset
 				params.push queryData.limit
 				query += " ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $#{i++} LIMIT $#{i++}";

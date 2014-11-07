@@ -20,22 +20,17 @@ class ComponentTable extends ComponentBase
 		@getElement()
 		@divLoadMore = null
 
-
-	setFilterData : (filterParams) ->
-		@reqData.filterData = filterParams
-		return
-
 	getFilterData :()->
 		return @reqData.filterData
 
 	deleteFilterData :()->
 		@reqData.filterData = null
 
-	handleOnFilter : (ev) =>
+	handleOnFilter : (filterParams) =>
+		@reqData.filterData = filterParams
 		@divTable.innerHTML = ''
 		@reqData.offset = 0
 		@reloadData()
-
 
 
 	createDom : () ->
@@ -50,19 +45,18 @@ class ComponentTable extends ComponentBase
 
 	onLoad : (data) ->
 		divTable = @getDivTable()
-		@getDivLoadMore()
+		divLoadMore = @getDivLoadMore()
 		# decide if there is another data to loadMore
 		if @reqData.limit is data.length
-			dataLimit = data.length - 1
-			@divLoadMore.style.display = 'block'
+			data.pop()
+			divLoadMore.style.display = 'block'
 		else
-			dataLimit = data.length
-			@divLoadMore.style.display = 'none'
+			divLoadMore.style.display = 'none'
 
-		for i in [0...dataLimit] by +1
-			@addRow(data[i], divTable)
+		for item in data
+			@addRow(item, divTable)
 
-		@reqData.offset += dataLimit
+		@reqData.offset += data.length
 		return
 
 #	div with data
@@ -82,10 +76,7 @@ class ComponentTable extends ComponentBase
 			@divLoadMore.innerHTML = "load more.."
 			@divLoadMore.addEventListener ComponentBase.eventType.CLICK, @handleLoadMore
 			@getElement().appendChild @divLoadMore
-
-
 		return @divLoadMore
-
 
 
 	addRow :(data, divTable) ->

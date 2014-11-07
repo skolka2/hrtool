@@ -115,17 +115,27 @@ module.exports = (dbClient) ->
 			if 'ASC' isnt queryData.sort_way and 'DESC' isnt queryData.sort_way
 				return next 'wrong order way (it suppose to be ASC or DESC)'
 			filterQuery = ' ';
+			params = []
+			params.push queryData.offset
+			params.push queryData.limit
+			development=0
+			team = 1
 			if queryData?
 				if queryData.filterData?
-					if queryData.filterData.filter1?
-						filterQuery += "WHERE ti.id_department = #{@getValidInt(queryData.filterData.filter1)}"
-						if queryData.filterData.filter2?
-							filterQuery += " AND ti.id_team = #{@getValidInt(queryData.filterData.filter2)}"
+					if queryData.filterData.input?
+						params.push queryData.filterData.input
+						filterQuery += "AND LOWER(tt.title) LIKE LOWER ($3)"
+						development = 0
+						team = 1
+					if queryData.filterData.filter[development]?
+						filterQuery += " WHERE ti.id_department = #{@getValidInt(queryData.filterData.filter[development])}"
+						if queryData.filterData.filter[team]?
+							filterQuery += " AND ti.id_team = #{@getValidInt(queryData.filterData.filter[team])}"
 
 			dbClient.queryAll """SELECT ti.*, tt.title, tt.description FROM tasks_implicit  ti
 				JOIN task_templates tt ON tt.id_task_template = ti.id_task_template
 				 #{filterQuery}
-				ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $1 LIMIT $2""", [queryData.offset, queryData.limit], next
+				ORDER BY #{queryData.sortBy} #{queryData.sort_way} OFFSET $1 LIMIT $2""", params, next
 
 		getValidInt:(n) ->
 			if n % 1 is 0
