@@ -5,8 +5,8 @@ ComponentStatusBar = require './componentStatusBar'
 ComponentStatusBarFactory = 
 	createStatusBar: (userId) ->
 		statusBar = new ComponentStatusBar
-		statusBarModel = new Model ComponentStatusBar.EventType.DATA_LOAD
-		statusBar.setModel statusBarModel, ComponentStatusBar.EventType.DATA_LOAD
+		statusBarModel = new Model ComponentStatusBar.eventType.DATA_LOAD
+		statusBar.setModel statusBarModel, ComponentStatusBar.eventType.DATA_LOAD
 		hrtool.actions.getTasksCount statusBar.model, userId
 		statusBar
 

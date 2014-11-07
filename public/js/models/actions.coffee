@@ -23,19 +23,19 @@ hrtool.actions =
 		mediator.loadData 'template/delete', data, model
 		return
 
-	getBuddyTaskData: (model) ->
+	getBuddyTaskData: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/buddy/list', {}, model
+		mediator.loadData 'tasks/buddy/list', data, model
 		return
 
-	getBuddyTaskDataCompleted: (model) ->
+	getBuddyTaskDataCompleted: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/buddy/list/completed', {}, model
+		mediator.loadData 'tasks/buddy/list/completed', data, model
 		return
 
-	getBuddyTaskDataNotCompleted: (model) ->
+	getBuddyTaskDataNotCompleted: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/buddy/list/not-completed', {}, model
+		mediator.loadData 'tasks/buddy/list/not-completed', data, model
 		return
 
 	saveImplicitTaskData: (model,data) ->
@@ -43,19 +43,19 @@ hrtool.actions =
 		mediator.loadData 'tasks/implicit/insert', data, model
 		return
 
-	getUserTaskData: (model) ->
+	getUserTaskData: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/user/list', {}, model
+		mediator.loadData 'tasks/user/list', data, model
 		return
 
-	getUserTaskDataCompleted: (model) ->
+	getUserTaskDataCompleted: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/user/list/completed', {}, model
+		mediator.loadData 'tasks/user/list/completed', data, model
 		return
 
-	getUserTaskDataNotCompleted: (model) ->
+	getUserTaskDataNotCompleted: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/user/list/not-completed', {}, model
+		mediator.loadData 'tasks/user/list/not-completed', data, model
 		return
 
 	updateUserTaskData: (model, data) ->
@@ -124,9 +124,14 @@ hrtool.actions =
 		mediator.loadData 'tasks/teams/list/not-completed', data, model
 		return
 
-	getTasksCount: (model) ->
+	getTasksCount: (model, data) ->
 		mediator = new Mediator()
-		mediator.loadData 'tasks/count', {}, model
+		mediator.loadData 'tasks/count', data, model
 		return
+
+	isAdminOrManager: (model, data) ->
+		mediator = new Mediator()
+		mediator.loadData 'tasks/view/isadmin', data, model
+
 
 module.exports = hrtool

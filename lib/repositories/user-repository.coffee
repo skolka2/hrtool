@@ -169,7 +169,7 @@ module.exports = (dbClient) ->
 
 
 		getAllUserTeams: (idUser, next) ->
-			dbClient.queryAll "
+			dbClient.queryAll """
 				SELECT
 					ut.is_admin,
 					t.title AS team,
@@ -179,7 +179,7 @@ module.exports = (dbClient) ->
 				FROM users_teams ut
 				JOIN teams t ON t.id_team=ut.id_team
 				JOIN departments d ON t.id_department=d.id_department
-				WHERE ut.id_user=$1", [idUser], next
+				WHERE ut.id_user=$1""", [idUser], next
 
 		getBasicUserInfo: (idUser, next) ->
 			dbClient.queryOne """

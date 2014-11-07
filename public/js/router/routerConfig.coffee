@@ -12,7 +12,7 @@ class RouterConfig
 
 	setView: (data) ->
 		switch data.view
-			when 'home' then new ViewHome()
+			when 'home' then new ViewHome(data.parameters)
 			when 'departments' then new ViewDepartments()
 			when 'people' then new ViewPeople()
 			when 'tasks' then new ViewTasks()

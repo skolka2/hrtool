@@ -10,31 +10,31 @@ ComponentTaskListFactory =
 	baseTaskDetailSelection:  (data) -> new ComponentBaseTaskDetail(data)
 
 	UserTaskList:
-		createCompleted: ->
+		createCompleted: (userIdToWatch) ->
 			userTaskList = new ComponentTaskList ComponentTaskListFactory.userTaskDetailSelection
 			userTaskListModel = new Model ComponentTaskList.eventType.user.DATA_LOAD_COMPLETED
 			userTaskList.setModel userTaskListModel, ComponentTaskList.eventType.user.DATA_LOAD_COMPLETED
-			hrtool.actions.getUserTaskDataCompleted userTaskList.model
+			hrtool.actions.getUserTaskDataCompleted userTaskList.model, userIdToWatch
 			userTaskList
-		createNotCompleted: ->
+		createNotCompleted: (userIdToWatch) ->
 			userTaskList = new ComponentTaskList ComponentTaskListFactory.userTaskDetailSelection
 			userTaskListModel = new Model ComponentTaskList.eventType.user.DATA_LOAD_NOT_COMPLETED
 			userTaskList.setModel userTaskListModel, ComponentTaskList.eventType.user.DATA_LOAD_NOT_COMPLETED
-			hrtool.actions.getUserTaskDataNotCompleted userTaskList.model
+			hrtool.actions.getUserTaskDataNotCompleted userTaskList.model, userIdToWatch
 			userTaskList
 
 	BuddyTaskList: 
-		createCompleted: ->
+		createCompleted: (userIdToWatch) ->
 			buddyTaskList = new ComponentTaskList ComponentTaskListFactory.baseTaskDetailSelection
 			buddyTaskListModel = new Model ComponentTaskList.eventType.buddy.DATA_LOAD_COMPLETED
 			buddyTaskList.setModel buddyTaskListModel, ComponentTaskList.eventType.buddy.DATA_LOAD_COMPLETED
-			hrtool.actions.getBuddyTaskDataCompleted buddyTaskList.model
+			hrtool.actions.getBuddyTaskDataCompleted buddyTaskList.model, userIdToWatch
 			buddyTaskList
-		createNotCompleted: ->
+		createNotCompleted: (userIdToWatch) ->
 			buddyTaskList = new ComponentTaskList ComponentTaskListFactory.baseTaskDetailSelection
 			buddyTaskListModel = new Model ComponentTaskList.eventType.buddy.DATA_LOAD_NOT_COMPLETED
 			buddyTaskList.setModel buddyTaskListModel, ComponentTaskList.eventType.buddy.DATA_LOAD_NOT_COMPLETED
-			hrtool.actions.getBuddyTaskDataNotCompleted buddyTaskList.model
+			hrtool.actions.getBuddyTaskDataNotCompleted buddyTaskList.model, userIdToWatch
 			buddyTaskList
 
 	ManagerTaskList:
