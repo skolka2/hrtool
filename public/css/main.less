@@ -1,5 +1,23 @@
+//font
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,600,400);
+// Color variables
+@body-background : #141d22; //bg of the whole app
+//@body-background : #ffffff;
+
+@button-home-add-task: #149ee1; //quite blue
+@button-home-hover : #2e3a41; // grey
+@button-home-border : #253036;
+@button-bg  : #141d22;
+@button-text-color : #ffffff;
+
+
+
 body {
   margin: 50px;
+  color : #fff;
+  background-color: @body-background;
+
+
 }
 
 .view-wrapper {
@@ -103,3 +121,25 @@ body {
     list-style: none;
   }
 }
+
+
+button{
+  background-color: @button-bg ;
+  color: @button-text-color;
+}
+.bt-button{
+  border: 1px solid @button-home-border;
+  border-radius: 25px;
+  padding: 5px 10px 5px 10px;
+  margin-left: 10px;
+  font: 600 14px 'Open Sans';
+}
+.bt-button:hover{
+  background-color:  @button-home-hover;
+}
+
+.bt-home-add-task{
+  float:right;
+  background-color:  @button-home-add-task;
+}
+

@@ -80,6 +80,9 @@ module.exports = class ComponentBase extends EventEmitter
 		element.classList.remove Const.INVALID_INPUT_CLASS
 		element.removeEventListener ComponentBase.eventType.CLICK, @handleFocusEvent
 
+	getElementByClass: (className) ->
+		return (@element.getElementsByClassName className)[0]
+
 ComponentBase.mainWrapper = "main-wrapper"
 ComponentBase.INVALID_INPUT_CLASS = 'invalid-input'
 ComponentBase.eventType =

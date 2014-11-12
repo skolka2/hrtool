@@ -1,4 +1,4 @@
-ViewHome = require '../views/viewHome'
+ViewHomeBase = require '../views/viewHomeBase'
 ViewDepartments = require '../views/viewDepartments'
 ViewPeople = require '../views/viewPeople'
 ViewTasks = require '../views/viewTasks'
@@ -7,12 +7,18 @@ ViewDefault = require '../views/viewDefault'
 ViewExport = require '../views/viewExport'
 ViewImplicitTasks = require '../views/viewImplicitTasks'
 ViewTemplates = require '../views/viewTemplates'
+ViewBuddyTasks = require '../views/viewBuddyTasks'
+ViewTeamTasks = require '../views/viewTeamTasks'
+ViewHome = require '../views/viewHome'
+
 
 class RouterConfig
 
 	setView: (data) ->
 		switch data.view
 			when 'home' then new ViewHome(data.parameters)
+			when 'buddy_tasks' then new ViewBuddyTasks(data.parameters)
+			when 'team_tasks' then new ViewTeamTasks()
 			when 'departments' then new ViewDepartments()
 			when 'people' then new ViewPeople()
 			when 'tasks' then new ViewTasks()

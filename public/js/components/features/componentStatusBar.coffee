@@ -7,20 +7,20 @@ class ComponentStatusBar extends ComponentBase
 		return
 
 	onLoad: (data) ->
-		if(data.length >0)
+		if(data.length)
 			@data =
-				userName: data[0].full_name
+				userName: data[0].first_name + ' '+ data[0].last_name
 				allTasks: data[0].all_tasks
 				finishedTasks: data[0].finished_tasks
 				deadlineTasks: data[0].deadline_tasks
 
-			infoSpan = (@element.getElementsByClassName ComponentStatusBar.classes.INFO_SPAN_CLASS)[0]
+			infoSpan = @getElementByClass ComponentStatusBar.classes.INFO_SPAN_CLASS
 			infoSpan.innerText = "#{ @data.userName}  |  #{ @data.finishedTasks }/#{ @data.allTasks } finished, #{ @data.deadlineTasks } after deadline..."
 
-			finishedDiv = (@element.getElementsByClassName ComponentStatusBar.classes.PROGRESS_DIV_FINISHED)[0]
+			finishedDiv = @getElementByClass ComponentStatusBar.classes.PROGRESS_DIV_FINISHED
 			finishedDiv.style.width = @getFinishedPartWidth()
 
-			deadlineDiv = (@element.getElementsByClassName ComponentStatusBar.classes.PROGRESS_DIV_DEADLINE)[0]
+			deadlineDiv = @getElementByClass ComponentStatusBar.classes.PROGRESS_DIV_DEADLINE
 			deadlineDiv.style.width = @getDeadlinePartWidth()
 		return
 

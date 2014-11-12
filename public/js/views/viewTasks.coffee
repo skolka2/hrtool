@@ -8,7 +8,6 @@ class ViewTasks extends ViewBase
 
 	render: ->
 		super()
-
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = "view-wraper"

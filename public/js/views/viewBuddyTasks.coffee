@@ -2,43 +2,40 @@
 ViewHomeBase =  require './viewHomeBase'
 ComponentTaskListsInView = require '../components/tasks/componentTaskListsInView'
 ComponentTaskListFactory = require '../components/tasks/componentTaskListFactory'
-ComponentStatusBarFactory = require '../components/features/componentStatusBarFactory'
 ComponentNotificationCenter = require '../components/componentNotificationCenter'
 ComponentPrivileges = require '../components/features/componentPrivileges'
 
 
-class ViewHome extends ViewHomeBase
+class ViewBuddyTasks extends ViewHomeBase
 	constructor: (parameters)->
 		super(parameters)
 
 	render : ->
 		super()
-		mainWrapper = document.getElementById(ViewHomeBase.mainWrapper)
+		mainWrapper = document.getElementById ViewHomeBase.mainWrapper
 		viewWrapper = document.createElement 'div'
 		viewWrapper.className = 'view-wraper'
 		if @routerParams?.user?
 			privileges = new ComponentPrivileges()
 			privileges.isAdminOrManager @routerParams.user, (isAdmin, errMessage)=>
 				if isAdmin
-					statusBar = ComponentStatusBarFactory.createStatusBar @routerParams.user
-					statusBar.render viewWrapper
-					@userTaskView viewWrapper, @routerParams.user
+					@buddyTaskView viewWrapper, @routerParams.user
 				else
 					privileges.isNotAdminNotification errMessage
-					@userTaskView viewWrapper
+					@buddyTaskView viewWrapper
 		else
-			@userTaskView viewWrapper
+			@buddyTaskView viewWrapper
 
 		mainWrapper.appendChild viewWrapper
 		return
 
-	userTaskView :(viewWrapper, userId) ->
-		userTaskLists = new ComponentTaskListsInView ViewHome.messages.USER_TASK_TITLE,
-			ComponentTaskListFactory.UserTaskList.createCompleted(userId), ComponentTaskListFactory.UserTaskList.createNotCompleted(userId)
-		userTaskLists.render viewWrapper
 
+	buddyTaskView :(viewWrapper, userId) ->
+		buddyTaskLists = new ComponentTaskListsInView ViewBuddyTasks.messages.BUDDY_TASKS_TITLE,
+			ComponentTaskListFactory.BuddyTaskList.createCompleted(userId), ComponentTaskListFactory.BuddyTaskList.createNotCompleted(userId)
+		buddyTaskLists.render viewWrapper
 
-ViewHome.messages =
-	USER_TASK_TITLE : 'My tasks'
+ViewBuddyTasks.messages =
+	BUDDY_TASKS_TITLE: 'Tasks, for which you are buddy:'
 
-module.exports = ViewHome
+module.exports = ViewBuddyTasks
