@@ -17,14 +17,14 @@ class ComponentPrivileges extends ComponentBase
 
 	onLoad: (isAdmin) =>
 		if(isAdmin.error)
+			errMsg = isAdmin.error;
 			isAdmin= false;
-		@callback(isAdmin)
+		@callback(isAdmin, errMsg)
 
-	isNotAdminNotification:->
+	isNotAdminNotification: (message)->
 		newDiv = document.createElement 'div'
-		newDiv.innerHTML = "You don´t have permission to see user´s view. "
+		newDiv.innerHTML = message
 		@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR
-		#setTimeout (->window.location = "../#"),5000
 
 ComponentPrivileges.eventType.IS_ADMIN_OR_MANAGER = 'tasks/view/isadmin'
 module.exports = ComponentPrivileges

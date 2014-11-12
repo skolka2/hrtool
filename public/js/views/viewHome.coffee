@@ -26,14 +26,14 @@ class ViewHome extends ViewBase
 				if @routerParams.user?
 					privileges = new ComponentPrivileges()
 
-					privileges.isAdminOrManager @routerParams.user, (isAdmin)=>
+					privileges.isAdminOrManager @routerParams.user, (isAdmin, errMessage)=>
 						if isAdmin
 							statusBar = ComponentStatusBarFactory.createStatusBar @routerParams.user
 							statusBar.render viewWrapper
 							@userTaskView viewWrapper, @routerParams.user
 						else
 							#privileges.render viewWrapper
-							privileges.isNotAdminNotification()
+							privileges.isNotAdminNotification(errMessage)
 							@userTaskView viewWrapper
 							@managerTaskView userRole, viewWrapper
 

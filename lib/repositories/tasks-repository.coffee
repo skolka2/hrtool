@@ -143,34 +143,43 @@ module.exports = (dbClient) ->
 			else
 				return 0
 
-		isAdminOrManager : (data, next) ->
-			isAdmin = false;
-			async.waterfall([
+
+
+	isAdminOrManager : (data, next) ->
+		async.waterfall([
 				(callback) ->
-					dbClient.queryOne """SELECT count(u) FROM user_roles u
-							WHERE u.id_user_role = $1 AND u.title = 'Administrator'""", [data.myRole], callback
-				,
+					dbClient.queryOne """SELECT EXISTS (SELECT u.id_user_role FROM user_roles u
+							WHERE u.id_user_role = $1 AND u.title = 'Administrator')::int as count""", [data.myRole], callback
+			,
 				(res, callback) ->
-
-					if(res.count? and res.count is '1')
-						callback(true)
-					else
-						# TODO: dodelat zjisteni jestli je manazer tymu daneho uzivatele
-						dbClient.queryOne """SELECT count(u) FROM users u
-							JOIN users_teams ut ON ut.id_user = u.id_user and ut.id_team = $2 and ut.is_admin
-							WHERE u.id_user =$1 """, [data.myUserId, data.idTeam],callback
-
-				],
-				(res) =>
 					debug res
-					if res or (res? and res.count? and res.count is '1')
-							next null, true
-							#@getCountOfTasks(data.userId, next)
-					else next( error: "You are not admin")
+					if res.count is 1
+						callback null, count: 1
+					else
+						#returns 1 if myUserId is admin of a team in which is userId otherwise returns 0
+						dbClient.queryOne """SELECT EXISTS
+						(SELECT ut.id_team FROM  users_teams AS ut
+							WHERE  ut.id_user =$1 AND  ut.id_team= ANY (
+									SELECT utAdmin.id_team FROM users_teams as utAdmin
+					     		WHERE utAdmin.id_user=$2 AND utAdmin.is_admin)
+						)::int as count """, [data.userId, data.myUserId],callback
+			,
+				( res, callback) ->
+					if res.count is 1
+						debug data.userId
+						dbClient.queryOne """SELECT EXISTS
+							(SELECT u.id_user FROM users u WHERE u.id_user=$1)::int as count""", [data.userId],callback
+					else next( error: "You are not a admin or manager")
+			],
+		(err, res) ->
+			debug res
+			if res? and res.count? and res.count is 1
+				next null, true
+			else
+				next( error: "User doesnt exists")
 
-			)
 
-
+		)
 
 
 
