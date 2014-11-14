@@ -40,7 +40,7 @@ class ComponentContentSwitcher extends ComponentBase
 
 		@element.appendChild ul
 		@element.appendChild divWrapper
-		@element.addEventListener ComponentBase.CLICK_EVENT, @handleClickEvent, no
+		@element.addEventListener ComponentBase.eventType.CLICK, @handleClickEvent, no
 		return
 
 

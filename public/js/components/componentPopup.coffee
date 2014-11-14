@@ -22,13 +22,13 @@ class ComponentPopup extends ComponentBase
 			if @innerDiv? and not @innerDiv.contains ev.target
 				@close()
 			return
-		@mainDiv.addEventListener ComponentBase.CLICK_EVENT, @handleOuterClickFn, no
+		@mainDiv.addEventListener ComponentBase.eventType.CLICK, @handleOuterClickFn, no
 		return
 
 	close: ->
 		@container.style.display = 'none'
 		@insideComponent.destroy()
-		@mainDiv.removeEventListener ComponentBase.CLICK_EVENT, @handleOuterClickFn, no
+		@mainDiv.removeEventListener ComponentBase.eventType.CLICK, @handleOuterClickFn, no
 		@mainDiv.classList.remove 'popup-opened'
 		while @mainDiv.firstChild
 			@mainDiv.removeChild @mainDiv.firstChild

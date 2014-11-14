@@ -21,7 +21,7 @@ class ViewPeople extends ViewBase
 
 		addUserButton = document.createElement 'button'
 		addUserButton.innerHTML = "Add new user"
-		addUserButton.addEventListener ComponentBase.CLICK_EVENT, @handleAddUserPopup
+		addUserButton.addEventListener ComponentBase.eventType.CLICK, @handleAddUserPopup
 		viewWrapper.appendChild addUserButton
 		viewWrapper.appendChild document.createElement 'br'
 

@@ -89,5 +89,4 @@ ComponentBase.eventType =
 	KEYUP: 'keyup'
 	BLUR: "blur"
 	DOMContentLoaded: "DOMContentLoaded"
-ComponentBase.CLICK_EVENT = 'click'
 ComponentBase.NotificationCenter = null
