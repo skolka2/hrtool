@@ -121,6 +121,11 @@ class ComponentDropdown extends ComponentBase
 		return
 
 
+
+	getSelection: () ->
+		return @selected
+
+
 	changeData: (data) ->
 		@_listEl.innerHTML = ""
 		@_fillWithData data

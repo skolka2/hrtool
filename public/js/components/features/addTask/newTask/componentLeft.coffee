@@ -1,5 +1,5 @@
 ComponentBase = require '../../../componentBase'
-ComponentLeftBase = require './componentLeftBase'
+ComponentLeftBase = require '../componentLeftBase'
 ComponentCheckBox = require '../../componentCheckBox'
 ComponentFilterFormatter = require '../../componentFilterFormatter'
 ComponentFilter = require '../../componentFilter'
@@ -32,7 +32,7 @@ class ComponentLeft extends ComponentLeftBase
 		@element.appendChild @_selectorDiv
 		@addChild "filter_" + @_filter.componentId, @_filter, {el: @_selectorDiv}
 
-		@listen ComponentDropdown.eventType.CHANGE, @_filter, @handleSetAsImplicitChanged
+		@listen ComponentBase.eventType.CHANGE, @_filter, @handleSetAsImplicitChanged
 
 	getStatus: () ->
 		super()

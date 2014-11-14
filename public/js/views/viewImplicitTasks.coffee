@@ -4,7 +4,7 @@ ComponentFilter = require '../components/features/componentFilter'
 ComponentTableWrapper = require '../components/table/componentTableWrapper'
 ComponentTextInput = require '../components/features/componentTextInput'
 ComponentTableFactory = require '../components/table/componentTableFactory'
-ComponentTaskImplicit = require '../components/features/addTask/componentTaskImplicit'
+ComponentAddImplicitTask = require '../components/features/addTask/newImplicitTask/componentAddImplicitTask'
 
 class ViewImplicitTasks extends ViewBase
 	constructor: ->
@@ -32,14 +32,8 @@ class ViewImplicitTasks extends ViewBase
 		addTaskDiv = document.createElement 'div'
 		addTaskDiv.innerHTML = "Form for adding new implicit task"
 
-		dataForImplicit =
-			id_task_template: 5
-			id_department: 2
-			id_team: 3
-			title: "title example"
-
-		componentTaskImplicit = new ComponentTaskImplicit dataForImplicit
-		componentTaskImplicit.render addTaskDiv
+		componentAddImplicitTask = new ComponentAddImplicitTask
+		componentAddImplicitTask.render addTaskDiv
 
 		viewWrapper.appendChild addTaskDiv
 		viewWrapper.appendChild document.createElement 'br'

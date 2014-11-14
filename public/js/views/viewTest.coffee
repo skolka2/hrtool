@@ -1,5 +1,5 @@
 ViewBase =  require './viewBase'
-ComponentSelectFactory = require "../components/features/componentSelectFactory"
+ComponentAddImplicitTask = require "../components/features/addTask/newImplicitTask/componentAddImplicitTask"
 
 class ViewTest extends ViewBase
 	constructor: () ->
@@ -12,7 +12,7 @@ class ViewTest extends ViewBase
 		zibbyDiv = document.createElement "div"
 		zibbyDiv.id = "zibby"
 
-		component = ComponentSelectFactory.createDepartmentTeam()
+		component = new ComponentAddImplicitTask()
 		component.render zibbyDiv
 
 		mainWrapper.appendChild zibbyDiv

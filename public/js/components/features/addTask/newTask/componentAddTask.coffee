@@ -67,6 +67,7 @@ class ComponentAddTask extends ComponentBase
 			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
 				ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@fire ComponentAddTask.eventType.SAVE_FAIL, null
+			@clearInputs();
 		else
 			@addNotification 'Saving was successful!', ComponentAddTask.NOTIFICATION_DURATION,
 				NotificationCenter.eventType.SUCCESS
@@ -84,15 +85,14 @@ class ComponentAddTask extends ComponentBase
 			wrapperClass: ComponentAddTask.classes.WRAPPER_CLASS
 			personWrapperClass: ComponentAddTask.classes.PERSON_WRAPPER_CLASS
 			bottomWrapperClass: ComponentAddTask.classes.BOTTOM_WRAPPER_CLASS
+			contentSwitcherDiv: ComponentAddTask.classes.CONTENT_SWITCHER_DIV
 	
 		@element = @helper.tpl.create 'components/features/addTask/newTask/componentAddTask', jadeData
 		@_personWrapper = @element.getElementsByClassName(ComponentAddTask.classes.PERSON_WRAPPER_CLASS)[0]
 		@_lengthInput = @element.getElementsByClassName(jadeData.taskLengthInputClass)[0];
 		@_dateInput = @element.getElementsByClassName(jadeData.dateInputClass)[0];
-		bottomDiv = @element.getElementsByClassName(ComponentAddTask.classes.BOTTOM_WRAPPER_CLASS)[0];
 	
-		tabbedAreaDiv = document.createElement 'div'
-		@element.insertBefore tabbedAreaDiv, bottomDiv
+		tabbedAreaDiv = @element.getElementsByClassName(ComponentAddTask.classes.CONTENT_SWITCHER_DIV)[0]
 		@addChild 'tabbedArea', @_tabbedAreaComponent, {el: tabbedAreaDiv}
 	
 		@saveButton = @element.getElementsByClassName(jadeData.saveButtonClass)[0]
@@ -144,8 +144,6 @@ class ComponentAddTask extends ComponentBase
 				id_buddy: @_buddyDropdown.selected.id
 				date_from: @_dateInput.value
 				date_to: dateTo
-
-			@clearInputs();
 		return
 
 
@@ -254,6 +252,7 @@ class ComponentAddTask extends ComponentBase
 		for item in dropdown._map
 			if item.value.value is selection.value
 				dropdown.setSelection item.value
+				break;
 		@_leftComponent._filter.setActive @_leftComponent._saveAsNew.checked
 		return
 
@@ -275,6 +274,7 @@ ComponentAddTask.classes =
 	WRAPPER_CLASS: 'new-task-wrapper'
 	PERSON_WRAPPER_CLASS: 'new-task-person-wrapper'
 	BOTTOM_WRAPPER_CLASS: 'new-task-date-wrapper'
+	CONTENT_SWITCHER_DIV: 'content-switcher-div'
 
 ComponentAddTask.NOTIFICATION_DURATION = 4000
 
