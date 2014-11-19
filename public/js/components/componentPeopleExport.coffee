@@ -22,12 +22,12 @@ module.exports = class ComponentPeopleExport extends ComponentBase
 		@users[element.id_user] = element for element in users
 
 		allPeopleCheck = new ComponentCheckBox 'All people', false
-		@listen ComponentBase.EventType.CHANGE, allPeopleCheck, (data) =>
+		@listen ComponentBase.eventType.CHANGE, allPeopleCheck, (data) =>
 			@componentFilter.setActive(!data)
 			@componentFilter.unselectAll()
 		allPeopleCheck.render @getElement()
 
-		filterData = ComponentFilterFormatter.factory.createNewTaskDropdowns @departments, @teams, @users
+		filterData = ComponentFilterFormatter.factory.createUsersDropdownsData @departments, @teams, @users
 		@componentFilter = new ComponentFilter filterData, ['department', 'team', 'user']
 		@addChild 'depTeamUserFilter', @componentFilter, el: @getElement()
 		@componentFilter.render @getElement()
@@ -35,7 +35,7 @@ module.exports = class ComponentPeopleExport extends ComponentBase
 		submitButton = document.createElement 'button'
 		submitButton.className = 'people-export-submit'
 		submitButton.innerHTML = 'Export CSV'
-		submitButton.addEventListener ComponentBase.CLICK_EVENT, =>
+		submitButton.addEventListener ComponentBase.eventType.CLICK, =>
 			location = window.location.origin or window.location.protocol+"//"+window.location.host
 			selected = @componentFilter.getStatus()
 			params = ''
