@@ -2,13 +2,11 @@ nodemailer = require 'nodemailer'
 schedule = require 'node-schedule'
 debug = require('debug') 'hrtool:mailer'
 toCsv = require 'to-csv'
+config = require '../lib/config/configuration'
+moment = require 'moment'
 
-module.exports =
-	scheduleMailReport: (tasksRepository, userRepository) ->
-		rule =
-			dayOfWeek: 0
-			hour: 17
-			minute: 0
+module.exports = (tasksRepository, userRepository) ->
+		rule = config.mailSchedulerRule
 
 		schedule.scheduleJob rule, ->
 			tasksRepository.getTasksForCSVExport [], (err, result) =>
@@ -18,17 +16,13 @@ module.exports =
 					sendTo = emails.map (item) ->
 						return item.email
 					.join ', '
-					console.log sendTo
 					if result
 						transporter = nodemailer.createTransport
 							service: 'Gmail'
-							auth:
-								user: 'buddytoolmail@gmail.com'
-								pass: 'Bakers123'
+							auth: config.mailAuth
 
-						date = new Date()
 						attachments =
-							filename: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + '.csv'
+							filename: moment(new Date()).format('YYYY-MM-DD') + '.csv'
 							content: new Buffer toCsv(result), 'utf-8'
 
 						mailOptions =

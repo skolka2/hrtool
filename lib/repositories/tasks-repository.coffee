@@ -1,6 +1,5 @@
 debug = require('debug') 'hrtool:tasks-repository'
 _ = require 'lodash-node'
-async = require	'async'
 
 
 module.exports = (dbClient) ->
@@ -144,37 +143,47 @@ module.exports = (dbClient) ->
 			else
 				return 0
 
+		getImplicitTasks: (params, next) ->
+			unless params.sortBy in ['id_task_implicit','title', 'description', 'start_day', 'duration']
+				return next 'wrong name column'
+
+			if 'ASC' isnt params.sort_way and 'DESC' isnt params.sort_way
+				return next 'wrong order way (it suppose to be ASC or DESC)'
+
+			dbClient.queryAll """SELECT ti.*, tt.title, tt.description FROM tasks_implicit  ti
+				JOIN task_templates tt ON tt.id_task_template = ti.id_task_template
+				ORDER BY #{params.sortBy} #{params.sort_way} OFFSET $1 LIMIT $2""", [params.offset, params.limit], next
 
 
 		isAdminOrManager : (data, next) ->
 			async.waterfall [
-				(callback) ->
-					ADMINISTRATOR = 3
-					TEAMMANAGER = 2
-					if data.myRole is ADMINISTRATOR
-						callback null, count: 1
-					else
-						callback null, count: 0
+					(callback) ->
+						ADMINISTRATOR = 3
+						TEAMMANAGER = 2
+						if data.myRole is ADMINISTRATOR
+							callback null, count: 1
+						else
+							callback null, count: 0
 				,
-				(res, callback) ->
-					debug res
-					if res.count is 1
-						callback null, count: 1
-					else
-						#returns 1 if myUserId is admin of a team in which is userId otherwise returns 0
-						dbClient.queryOne """SELECT EXISTS
-						(SELECT ut.id_team FROM  users_teams AS ut
-							WHERE  ut.id_user =$1 AND  ut.id_team= ANY (
-									SELECT utAdmin.id_team FROM users_teams as utAdmin
-					            WHERE utAdmin.id_user=$2 AND utAdmin.is_admin)
-						)::int as count """, [data.userId, data.myUserId],callback
+					(res, callback) ->
+						debug res
+						if res.count is 1
+							callback null, count: 1
+						else
+							#returns 1 if myUserId is admin of a team in which is userId otherwise returns 0
+							dbClient.queryOne """SELECT EXISTS
+							(SELECT ut.id_team FROM  users_teams AS ut
+								WHERE  ut.id_user =$1 AND  ut.id_team= ANY (
+										SELECT utAdmin.id_team FROM users_teams as utAdmin
+						            WHERE utAdmin.id_user=$2 AND utAdmin.is_admin)
+							)::int as count """, [data.userId, data.myUserId],callback
 				,
-				( res, callback) ->
-					if res.count is 1
-						debug data.userId
-						dbClient.queryOne """SELECT EXISTS
-							(SELECT u.id_user FROM users u WHERE u.id_user=$1)::int as count""", [data.userId],callback
-					else next( error: "You are not a admin or manager")
+					( res, callback) ->
+						if res.count is 1
+							debug data.userId
+							dbClient.queryOne """SELECT EXISTS
+								(SELECT u.id_user FROM users u WHERE u.id_user=$1)::int as count""", [data.userId],callback
+						else next( error: "You are not a admin or manager")
 				],
 				(err, res) ->
 					debug res
@@ -185,9 +194,8 @@ module.exports = (dbClient) ->
 
 
 
-		getTasksForCSVExport: (params, next) ->
-			dbClient.queryAll "SELECT
-					u.id_user,
+		getTasksForCSVExport: (params, next)->
+				dbClient.queryAll "SELECT	u.id_user,
 					u.email,
 					u.first_name,
 					u.last_name,
@@ -203,7 +211,7 @@ module.exports = (dbClient) ->
 					ta.title,
 					CASE
 						WHEN ta.date_finished IS NULL AND current_date < ta.date_to THEN 'unfinished'
-						WHEN ta.date_finished > current_date - integer '7' THEN 'finished last week'
+						WHEN ta.date_finished > current_date - 7 THEN 'finished last week'
 						WHEN ta.date_finished IS NULL AND current_date > ta.date_to THEN 'after deadline'
 					END
 				FROM tasks 		ta
@@ -214,6 +222,7 @@ module.exports = (dbClient) ->
 				LEFT JOIN users 	manager 	ON ut.id_user = manager.id_user
 				JOIN departments 	d 		ON ta.id_department = d.id_department
 				JOIN teams 		te 		ON ta.id_team = te.id_team
-				WHERE ta.date_finished > current_date - integer '7' OR ta.date_finished IS NULL", params, next
+				WHERE ta.date_finished > current_date - 7 OR ta.date_finished IS NULL"
+				, params, next
 
 	}

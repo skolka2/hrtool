@@ -70,7 +70,7 @@ app.get '/logout', (req, res) ->
 	req.logout()
 	res.redirect '/'
 
-mailer.scheduleMailReport tasksRepository, userRepository
+mailer tasksRepository, userRepository
 
 app.use (error, req, res, next) ->
 	return res.json {error} if error
