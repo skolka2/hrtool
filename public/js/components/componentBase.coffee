@@ -91,5 +91,7 @@ ComponentBase.eventType =
 	ONKEYPRESS: "keypress"
 	KEYUP: 'keyup'
 	BLUR: "blur"
+	MOUSE_OVER: "mouseover"
+	MOUSE_OUT: "mouseout"
 	DOMContentLoaded: "DOMContentLoaded"
 ComponentBase.NotificationCenter = null

@@ -1,0 +1,117 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:700,600,400);
+@size: 50px;
+@radius: 25px;
+
+.hover-info{
+	font-family: 'Open Sans', sans-serif;
+	text-align: right;
+	height: @size;
+	width: 4 * @size;
+
+
+	> * > *{
+		height: @size;
+		line-height: @size;
+	}
+
+
+	.square{
+		border-top-left-radius: @radius;
+		border-bottom-left-radius: @radius;
+		height: @size;
+		width: 0;
+		float: right;
+		padding-right: 5px;
+		visibility: hidden;
+		border: 1px solid #c0ced4;
+		border-right: none;
+		background-color: #ebf5fa;
+		z-index: 100;
+		color: #7f8d95;
+
+		-webkit-transition-property: width;
+		-webkit-transition-duration: 1s;
+		-webkit-transition-delay: 0.1s;
+
+		-moz-transition-property: width;
+		-moz-transition-duration: 1s;
+		-moz-transition-delay: 0.1s;
+
+		-ms-transition-property: width;
+		-ms-transition-duration: 1s;
+		-ms-transition-delay: 0.1s;
+
+		-o-transition-property: width;
+		-o-transition-duration: 1s;
+		-o-transition-delay: 0.1s;
+
+		transition-property: width;
+		transition-duration: 1s;
+		transition-delay: 0.1s;
+
+		span{
+			margin-top: -@size/5;
+			display: block;
+			font-weight: bold;
+			margin-bottom: -@size/1.5;
+			font-size: 15px;
+			color: #000000;
+		}
+	}
+
+	.circle {
+		text-align: center;
+		border-radius: @radius;
+		border: 1px solid #c0ced4;
+		background-color: #ffffff;
+		width: @size;
+		height: @size;
+		float: right;
+		cursor: pointer;
+		z-index: 1000;
+		-webkit-transition: border-radius 0.1s ease-in;
+		-moz-transition: border-radius 0.1s ease-in;
+		-ms-transition: border-radius 0.1s ease-in;
+		-o-transition: border-radius 0.1s ease-in;
+		transition: border-radius 0.1s ease-in;
+
+		&:hover{
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		span{
+			margin-top: -@size/5;
+			display: block;
+			font-weight: bold;
+			margin-bottom: -@size/1.5;
+			font-size: 24px;
+		}
+	}
+
+
+	.red-square{
+		.square;
+		border: 1px solid #d01d38;
+		background-color: #d01d38;
+		color: #ffffff;
+
+		span{
+			color: #ffffff;
+		}
+	}
+
+
+	.red-circle {
+		.circle;
+		color: #ed1e3e;
+		border: 1px solid #ed1e3e;
+
+		&:hover{
+			color: #ffffff;
+			background-color: #ed1e3e;
+		}
+	}
+
+
+}
