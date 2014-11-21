@@ -16,6 +16,7 @@ body {
   margin: 50px;
   color : #fff;
   background-color: @body-background;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .view-wrapper {
@@ -120,28 +121,7 @@ body {
   }
 }
 
-
-button{
-  background-color: @button-bg ;
-  color: @button-text-color;
-}
-.button{
-  border: 1px solid @button-home-border;
-  border-radius: 25px;
-  padding: 5px 10px 5px 10px;
-  margin-left: 10px;
-  font: 600 14px 'Open Sans';
-}
-.bt-button:hover{
-  background-color:  @button-home-hover;
-}
-
-.bt-home-add-task{
-  float:right;
-  background-color:  @button-home-add-task;
-}
-
-.buttonFn(@background, @border) {
+.buttonConstructor(@background, @border) {
   border: 1px solid @border;
   border-radius: 15px;
   display: inline;
@@ -153,13 +133,13 @@ button{
 }
 
 .button {
-  .buttonFn(rgb(20, 29, 34), rgb(46, 58, 65));
+  .buttonConstructor(rgb(20, 29, 34), rgb(46, 58, 65));
 }
 
 .button.active {
   background-color: rgb(37, 48, 54);
 }
 
-.button-blue {
-  .buttonFn(rgb(19, 158, 225), rgb(34, 174, 242));
+.button-confirm {
+  .buttonConstructor(rgb(19, 158, 225), rgb(34, 174, 242));
 }

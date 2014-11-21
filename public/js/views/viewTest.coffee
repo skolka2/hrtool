@@ -34,7 +34,7 @@ class ViewTest extends ViewBase
 
 		button3 = document.createElement "p"
 		button3.innerHTML = "Button3"
-		button3.className = "button-blue"
+		button3.className = "button-confirm"
 		witzDiv.appendChild button3
 
 		mainWrapper.appendChild witzDiv
