@@ -84,6 +84,9 @@ module.exports = (dbClient) ->
 		finishTask : (id, next) ->
 			dbClient.update 'tasks', {completed: true}, 'id_task=$1', [id], next
 
+		unfinishTask : (id, next) ->
+			dbClient.update 'tasks', {completed: no}, 'id_task=$1', [id], next
+
 		updateTask : (taskData, next) ->
 			obj = _.pick taskData, ['title', 'description', 'notes']
 			dbClient.updateOne 'tasks', obj, 'id_task=$1', [taskData.id_task], next

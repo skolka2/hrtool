@@ -1,7 +1,8 @@
 ComponentBase = require '../componentBase'
+ComponentUserTaskDetail = require './taskDetails/componentUserTaskDetail'
 
 class ComponentTaskList extends ComponentBase
-	constructor: (@taskDetailSelection) ->
+	constructor: (@taskDetailSelection, @completed = no) ->
 		super()
 		@data = [];
 		return
@@ -31,6 +32,8 @@ class ComponentTaskList extends ComponentBase
 				isFinished: taskData.completed
 
 			task = @taskDetailSelection taskDataModified
+			if @completed is yes
+				task.getElement().classList.add ComponentUserTaskDetail.classes.FINISHED_TASK
 
 			task.render @content if @rendered
 

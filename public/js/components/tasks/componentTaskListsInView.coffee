@@ -19,11 +19,11 @@ class ComponentTaskListsInView extends ComponentBase
 		@isHr = helper.bulk.getData ["user","is_hr"]
 
 		if @isHr
-			@departments = this.helper.bulk.getData ['departments']
-			@teams = this.helper.bulk.getData ['teams']
+			@departments = @helper.bulk.getData ['departments']
+			@teams = @helper.bulk.getData ['teams']
 		else
-			@departments = this.helper.bulk.getData ['userDepartments']
-			@teams = this.helper.bulk.getData ['userTeams']
+			@departments = @helper.bulk.getData ['userDepartments']
+			@teams = @helper.bulk.getData ['userTeams']
 
 	createDom: ->
 		outerHideWrapper = document.createElement 'div'
@@ -62,12 +62,13 @@ class ComponentTaskListsInView extends ComponentBase
 		listCompletedWrapper = document.createElement 'div'
 		listCompletedWrapper.className = "task-list-wrapper"
 
-		hideCompleted = new ComponentHide completedHeader, listCompletedWrapper, yes
+		hideCompleted = new ComponentHide completedHeader, listCompletedWrapper, false
 		hideCompleted.render listsWrapper
 
 		@listNotCompleted.render listNotCompletedWrapper
 		@listCompleted.render listCompletedWrapper
-		@listen ComponentBase.eventType.CHANGE, this.listNotCompleted, this.handleFinishTask
+		@listen ComponentUserTaskDetail.eventType.TASK_FINISH, @listNotCompleted, @handleFinishTask
+		@listen ComponentUserTaskDetail.eventType.TASK_UNFINISH, @listCompleted, @handleUnfinishTask
 		@element = outerHideWrapper;
 
 		return
@@ -76,6 +77,7 @@ class ComponentTaskListsInView extends ComponentBase
 		@listCompleted.content.innerHTML = '' if Object.keys(@listCompleted.childs).length is 0
 
 		finishedTask = new ComponentUserTaskDetail src
+		finishedTask.getElement().classList.add ComponentUserTaskDetail.classes.FINISHED_TASK
 		@listCompleted.addChild 'task'+src.taskId, finishedTask, @listCompleted.content
 
 		finishedTask.render @listCompleted.content if @listCompleted.rendered
@@ -83,8 +85,23 @@ class ComponentTaskListsInView extends ComponentBase
 		@listNotCompleted.childs["task"+src.taskId].component.destroy()
 		@listNotCompleted.removeChild "task"+src.taskId
 
-		@listNotCompleted.setNoTasks() if Object.keys(this.listNotCompleted.childs).length is 0
+		@listNotCompleted.setNoTasks() if Object.keys(@listNotCompleted.childs).length is 0
+		return
 
+
+	handleUnfinishTask: (src) ->
+		@listNotCompleted.content.innerHTML = '' if Object.keys(@listNotCompleted.childs).length is 0
+
+		finishedTask = new ComponentUserTaskDetail src
+		finishedTask.getElement().classList.remove ComponentUserTaskDetail.classes.FINISHED_TASK
+		@listNotCompleted.addChild 'task'+src.taskId, finishedTask, @listNotCompleted.content
+
+		finishedTask.render @listNotCompleted.content if @listNotCompleted.rendered
+
+		@listCompleted.childs["task"+src.taskId].component.destroy()
+		@listCompleted.removeChild "task"+src.taskId
+
+		@listCompleted.setNoTasks() if Object.keys(@listCompleted.childs).length is 0
 		return
 
 	handleFilterUpdate: (dataFromFilter) ->
@@ -94,7 +111,7 @@ class ComponentTaskListsInView extends ComponentBase
 		dataToSend =
 			id_department: selectedDepartment
 			id_team: selectedTeam
-			is_hr: this.isHr
+			is_hr: @isHr
 
 		newModelNotCompleted = new Model ComponentTaskList.eventType.manager.DATA_LOAD_NOT_COMPLETED
 		newModelCompleted = new Model ComponentTaskList.eventType.manager.DATA_LOAD_COMPLETED

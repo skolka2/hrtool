@@ -1,0 +1,141 @@
+@import "../../../css/constants";
+
+.deadline-info{
+	font-family: 'Open Sans', sans-serif;
+	font-size: @task-text-size;
+	text-align: right;
+	height: @deadline-info-size + 5;
+	width: 5 * @deadline-info-size;
+	overflow: hidden;
+
+
+	> * > *{
+		height: @deadline-info-size;
+		line-height: @deadline-info-size;
+	}
+
+
+	.square{
+		border-top-left-radius: @big-radius;
+		border-bottom-left-radius: @big-radius;
+		height: @deadline-info-size;
+		width: 0;
+		float: right;
+		padding-right: 5px;
+		visibility: hidden;
+		border:1px solid;
+		border-color: @deadline-info-border-default none @deadline-info-border-default @deadline-info-border-default;
+		background-color: @deadline-info-bg-default;
+		z-index: 100;
+		color: @deadline-info-square-text;
+
+
+		-webkit-transition: width 1s ease-in-out;
+		-moz-transition: width 1s ease-in-out;
+		-ms-transition: width 1s ease-in-out;
+		-o-transition: width 1s ease-in-out;
+		transition: width 1s ease-in-out;
+
+		-webkit-transition-delay: 0.1s;
+		-moz-transition-delay: 0.1s;
+		-ms-transition-delay: 0.1s;
+		transition-delay: 0.1s;
+
+		span{
+			margin-top: -@deadline-info-size/5;
+			display: block;
+			font-weight: bold;
+			margin-bottom: -@deadline-info-size/1.5;
+			font-size: 15px;
+			color: #000000;
+		}
+	}
+
+	.circle {
+		text-align: center;
+		color: #000000;
+		border-radius: @big-radius;
+		border: 1px solid #c0ced4;
+		background-color: #ffffff;
+		width: @deadline-info-size;
+		height: @deadline-info-size;
+		float: right;
+		cursor: pointer;
+		z-index: 1000;
+		-webkit-transition: border-radius 0.1s ease-in-out;
+		-moz-transition: border-radius 0.1s ease-in-out;
+		-ms-transition: border-radius 0.1s ease-in-out;
+		-o-transition: border-radius 0.1s ease-in-out;
+		transition: border-radius 0.1s ease-in-out;
+
+		&:hover{
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+
+		span{
+			margin-top: -@deadline-info-size/5;
+			display: block;
+			font-weight: bold;
+			margin-bottom: -@deadline-info-size/1.5;
+			font-size: 15px;
+		}
+	}
+
+
+	.red-square{
+		.square;
+		border: 1px solid @deadline-info-red-square-border;
+		background-color: @deadline-info-red-square-bg;
+		color: @deadline-info-red-square-text;
+
+		span{
+			color: @deadline-info-red-square-text;
+		}
+	}
+
+
+	.red-circle {
+		.circle;
+		color: @deadline-info-circle-hover-text;
+		background-color: @deadline-info-circle-hover-bg;
+		border: 1px solid @deadline-info-circle-border;
+
+		&:hover{
+			color: @deadline-info-circle-hover-text;
+			background-color: @deadline-info-circle-hover-bg;
+		}
+	}
+
+	.white-bg{
+		.red-circle;
+		color: @deadline-info-circle-hover-bg;
+		background-color: #ffffff;
+		border: 1px solid @deadline-info-circle-border;
+
+		&:hover{
+			border: none;
+		}
+	}
+
+
+	.correct{
+		line-height: @deadline-info-size;
+		font-size: 30px;
+		color: @deadline-info-correct;
+		border-color: @deadline-info-correct;
+		background-color: @finish-task-bg;
+		content:  "\2713";
+	}
+
+	.incorrect{
+		line-height: @deadline-info-size;
+		font-size: 30px;
+		color: @deadline-info-incorrect;
+		border-color: @deadline-info-incorrect;
+		background-color: @finish-task-bg;
+		content:  "\2717";
+	}
+
+
+}

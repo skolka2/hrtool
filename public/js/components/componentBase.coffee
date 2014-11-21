@@ -86,6 +86,7 @@ module.exports = class ComponentBase extends EventEmitter
 ComponentBase.mainWrapper = "main-wrapper"
 ComponentBase.INVALID_INPUT_CLASS = 'invalid-input'
 ComponentBase.eventType =
+	FOCUS: 'focus'
 	CLICK: "click"
 	CHANGE: "change"
 	ONKEYPRESS: "keypress"

@@ -1,40 +1,237 @@
+@import "../../../../css/constants";
+
 .task-wrapper {
-	border: 2px solid;
-	width: 1000px;
+	width: @task-wrapper-width;
+	font-family: 'Open Sans', sans-serif;
+	font-size: @task-text-size;
+	margin-bottom: 20px;
+	border: none;
+	border-radius: 3px @big-radius 3px 3px;
+	background-color: @task-bg;
+	border: 1px solid @task-border;
 
-	.header-wrapper {
-		clear: none;
-		border-bottom: 2px solid;
-		height: 50px;
 
-		.buddy-label {
-			margin-right: 50px;
+	.top-div{
+		padding: 10px;
+
+		.header-wrapper {
+			position: relative;
+			margin-bottom: @task-text-size;
+			position: relative;
+			float: left;
+			clear: none;
+			height: @deadline-info-size;
+			width: @task-wrapper-width;
+			z-index: 10;
+
+			.title-div {
+				width: @task-wrapper-width - (@deadline-info-size + 25px);
+				.task-label {
+					font-size: @task-title-font-size;
+					font-weight: bold;
+					display: block;
+				}
+
+				.buddy{
+					color: @task-buddy-color;
+					display: block;
+				}
+			}
+
+			.task-deadline-info{
+				position: absolute;
+				right: 20px;
+				top: 0;
+				z-index: 11;
+			}
+
 		}
 
-		.time-label {
-			float: right;
+		.description-wrapper {
+			position: relative;
+			float: left;
+			height: auto;
+			width: @task-wrapper-width;
+			color: @task-description-text;
 		}
 	}
 
-	.description-wrapper {
-		height: 200px;
-		width: 300px;
-		float: left;
-	}
+	.bottom-div{
 
-	.notes-wrapper {
-		height: 200px;
-		border-left: 2px solid;
-		float: left;
-	}
+		.notes-wrapper {
+			position: relative;
+			float: left;
+			height: auto;
+			border-top: 1px solid @task-notes-border;
+			text-align: center;
+			width: @task-wrapper-width - 1;
 
-	.footer-wrapper {
-		clear: both;
-		height: 50px;
-		border-top: 2px solid;
+			textarea{
+				font-size: inherit;
+				margin: 10px;
+				padding: 5px;
+				border: 1px solid @task-notes-border;
+				border-radius: 15px 15px 15px 0;
+				background-color: @task-notes-bg;
+				width: @task-wrapper-width - 30px;
+				color: @task-notes-text;
+				resize: none;
+				height: auto;
+
+				&:focus {
+					resize: vertical;
+				}
+			}
+		}
+
+		.footer-wrapper {
+			display: block;
+			margin: 0;
+			clear: both;
+			height: @task-footer-height;
+			font-size: 14px;
+			font-weight: bold;
+			text-align: center;
+			line-height: @task-footer-height;
+
+			.add-note-div{
+				cursor: pointer;
+				position: absolute;
+				margin: 0;
+				width: 50%;
+				float: left;
+				color: @task-notes-text;
+				.add-note-button{
+					position: absolute;
+					width: @task-wrapper-width / 2;
+					height: @task-footer-height;
+					margin-top: 0;
+					background-color: @task-add-note-button;
+					z-index: 1;
+
+					&:hover{
+						background-color: @task-add-note-button-hover;
+					}
+				}
+
+				.cancel-button{
+					position: absolute;
+					float: left;
+					margin-top: 0;
+					width: @task-wrapper-width / 4;
+					z-index: 50;
+					background-color: @task-add-note-button;
+					overflow: hidden;
+
+					-webkit-transition: height 0.5s;
+					-moz-transition: height 0.5s;
+					-ms-transition: height 0.5s;
+					-o-transition: height 0.5s;
+					transition: height 0.5s;
+
+					&:hover{
+						background-color: @task-add-note-button-hover;
+					}
+				}
+
+				.save-notes-button{
+					.cancel-button;
+					border-left: 1px solid grey;
+					left: @task-wrapper-width / 4;
+					width: @task-wrapper-width / 4 - 1;
+					background-color: @task-add-note-button;
+
+				}
+
+				.hidden-buttons{
+					line-height: 0;
+					height: 0;
+				}
+
+				.visible-buttons{
+					line-height: @task-footer-height;
+					height: @task-footer-height;
+				}
+			}
+
+			.finish-task-button{
+				cursor: pointer;
+				margin: 0;
+				float: right;
+				color: #ffffff;
+				background-color: @task-finish-button;
+				width: 50%;
+				height: 100%;
+
+				&:hover{
+					background-color: @task-finish-button-hover;
+				}
+			}
+		}
+
+
+		.footer-wrapper-2{
+			.footer-wrapper;
+			display: none;
+			border-top: 1px solid @finish-task-footer-border;
+			.unfinish-task-button{
+				cursor: pointer;
+				margin: 0;
+				height: 100%;
+				width: 100%;
+				background-color: @finish-task-button-bg;
+				color: #ffffff;
+
+				&:hover{
+					color: @finish-task-footer-border;
+				}
+			}
+		}
 	}
 }
 
-.overflow {
-	border-color: red;
+
+.finished{
+	.task-wrapper;
+	background-color: @finish-task-bg;
+	color: @finish-task-text;
+
+	.top-div{
+		.header-wrapper{
+			.title-div{
+				color: @finish-task-title;
+			}
+		}
+	}
+
+	.bottom-div{
+
+		.notes-wrapper {
+			border-top: 1px solid @finish-task-notes-border;
+			width: @task-wrapper-width - 1;
+
+			textarea{
+				border: 1px solid @finish-task-notes-border;
+				background-color: @finish-task-notes-bg;
+				color: @finish-task-notes-text;
+				resize: none;
+				user-select: none;
+
+				&:focus {
+					outline: none;
+					resize: vertical;
+				}
+
+			}
+		}
+
+		.footer-wrapper{
+			display: none;
+		}
+
+		.footer-wrapper-2{
+			display: block !important;
+		}
+
+	}
 }

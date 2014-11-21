@@ -10,11 +10,13 @@ helper =
 		getDate: (date) ->
 			dateFormated = date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()
 
-		getDiffDate: (date1, date2) ->
-			oneDay = 24*60*60*1000
-			firstDate = new Date date1
-			secondDate = new Date date2
-			diffDays = Math.round Math.abs (firstDate.getTime() - secondDate.getTime())/oneDay
+		getDiffDate: (firtDate, secondDate) ->
+			msPerDay = 8.64e7
+			d1 = new Date(firtDate)
+			d2 = new Date(secondDate)
+			d1.setHours(0,0,0)
+			d2.setHours(0,0,0)
+			return Math.round( (d2 - d1) / msPerDay )
 
 		dateValidate: ->
 			helper.format.getDateNow()

@@ -1,9 +1,13 @@
 div(class=taskWrapperClass)
-	div(class=headerWrapperClass)
-		span(class=buddyLabelClass)=buddy 
-		span(class="task-label")=title
-		span(class="time-label")=taskDate
-	div(class="description-wrapper")
-		p(class="description-paragraph")=description
-	div(class=notesWrapperClass)
-	div(class=footerWrapperClass)
+	div.top-div
+		div(class=headerWrapperClass)
+			div.title-div
+				span.task-label=title
+				a.buddy(href="mailto:" + buddy)=buddy
+			div(class=deadlineInfoWrapper)
+		div.description-wrapper
+			p=description
+	div.bottom-div
+		div(class=notesWrapperClass)
+		div(class=footerWrapperClass)
+		div(class=footerWrapperClass2)

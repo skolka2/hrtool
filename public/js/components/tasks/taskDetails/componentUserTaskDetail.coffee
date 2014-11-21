@@ -1,6 +1,6 @@
 ComponentBase = require '../../componentBase'
 ComponentBaseTaskDetail = require './componentBaseTaskDetail'
-ComponentNotificationCenter = require '../../componentNotificationCenter'
+NotificationCenter = require '../../componentNotificationCenter'
 Model = require '../../../models/model'
 hrtool = require '../../../models/actions'
 
@@ -8,104 +8,138 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 	constructor: (taskParams) ->
 		super taskParams
 		@taskBuddy = taskParams.taskBuddy
+		@addNoteButtonVisible = no
 		return
 
 	createDom: ->
 		super
 
-		buddyLabel = (@element.getElementsByClassName ComponentBaseTaskDetail.taskClasses.BUDDY_LABEL_CLASS)[0]
-		headerWrapper = (@element.getElementsByClassName ComponentBaseTaskDetail.taskClasses.HEADER_WRAPPER_CLASS)[0]
-		footerWrapper = (@element.getElementsByClassName ComponentBaseTaskDetail.taskClasses.FOOTER_WRAPPER_CLASS)[0]
+		@footerWrapper.style.height = '50px'
+		@notesTextArea.disabled = no
 
-		headerWrapper.removeChild buddyLabel
-		footerWrapper.appendChild buddyLabel
+		@addNotesDiv = document.createElement "div"
+		@addNotesDiv.className = "add-note-div"
+		@addNoteButton = document.createElement "p"
+		@addNoteButton.className = "add-note-button"
+		@addNoteButton.innerHTML = if @taskNotes.length >= 0 then "Edit Note" else "Add Note"
+		@addNoteButton.addEventListener ComponentBase.eventType.CLICK, @handleAddNoteClick, no
 
-		@finishTaskBttnNo = @createButton "finish-task-bttn", "No", @handleFinishTaskCanceled, "none"
-		footerWrapper.appendChild @finishTaskBttnNo
+		@cancelButton = document.createElement "p"
+		@cancelButton.className = "cancel-button hidden-buttons"
+		@cancelButton.innerHTML = "Cancel"
+		@cancelButton.addEventListener ComponentBase.eventType.CLICK, @handleCancelClick, no
 
-		@finishTaskBttnYes = @createButton "finish-task-bttn", "Yes", @handleFinishTaskConfirmed, "none"
-		footerWrapper.appendChild @finishTaskBttnYes
+		@saveButton = document.createElement "p"
+		@saveButton.className = "save-notes-button hidden-buttons"
+		@saveButton.innerHTML = "Save"
+		@saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSaveNotesClick, no
 
-		@finishTaskBttn = @createButton "finish-task-bttn", "Finish task", @handleFinishTask
-		footerWrapper.appendChild @finishTaskBttn
+		@addNotesDiv.appendChild @addNoteButton
+		@addNotesDiv.appendChild @cancelButton
+		@addNotesDiv.appendChild @saveButton
 
-		@finishTaskBttn.disabled = yes if @isFinished
+		@footerWrapper.appendChild @addNotesDiv
 
-		@saveNotesBttn = @createButton "save-notes-bttn", "Save notes", @handleSaveNotes
-		footerWrapper.appendChild @saveNotesBttn
+		@finishTaskButton = document.createElement "p"
+		@finishTaskButton.className = "finish-task-button"
+		@finishTaskButton.innerHTML = "Finish Task"
+		@finishTaskButton.addEventListener ComponentBase.eventType.CLICK, @handleFinishTaskClick, no
+		@footerWrapper.appendChild @finishTaskButton
+
+
+		footerWrapper3 = @element.getElementsByClassName(ComponentBaseTaskDetail.classes.FOOTER_WRAPPER_CLASS_2)[0]
+
+		@unfinishTaskButton = document.createElement "p"
+		@unfinishTaskButton.className = "unfinish-task-button"
+		@unfinishTaskButton.innerHTML = "Unfinish Task"
+		@unfinishTaskButton.addEventListener ComponentBase.eventType.CLICK, @handleUnfinishClick, no
+		footerWrapper3.appendChild @unfinishTaskButton
 
 		return
 
-	setNotes: ->
-		@notesElement = document.createElement 'textarea'
-		@notesElement.className = "notes-text-area"
-		@notesElement.innerHTML = @taskNotes
-		@notesElement.addEventListener ComponentBase.eventType.CLICK, this.handleTextAreaEnable
-		@notesElement.readonly = yes
+
+
+	handleAddNoteClick: (ev) =>
+		@notesTextArea.style.display = "block"
+		@notesTextArea.focus()
+		@notesTextArea.readonly = no
+		@addNoteButtonVisible = no
+		@changeFooterDiv()
 		return
 
-	createButton: (buttonClass, buttonText, handleFunction, styleDisplay) ->
-		buttonElement = document.createElement 'button'
-		buttonElement.className = buttonClass
-		buttonElement.innerHTML = buttonText
-		buttonElement.addEventListener ComponentBase.eventType.CLICK, handleFunction
-		buttonElement.style.display = styleDisplay if styleDisplay
-		buttonElement
 
-	handleSaveNotes: (ev) =>
-		if @notesElement.value is @taskNotes
-			notification = document.createElement 'div'
-			notification.innerHTML = "Nothing has been changed."
-			@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.NEUTRAL
+
+	handleTextareaBlur: (ev) =>
+		@addNoteButtonVisible = yes
+		@changeFooterDiv()
+		return
+
+
+
+	handleSaveNotesClick: (ev) =>
+		if @notesTextArea.value is @taskNotes
+			@addNotification "Nothing has been changed.", NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.NEUTRAL
 		else
-			@saveNotesBttn.disabled = yes
-			@notesElement.readonly = yes
-			@taskNotes = @notesElement.value
-
+			@taskNotes = @notesTextArea.value
 			dataToSend =
 				id_task: @taskId
 				notes: @taskNotes
 
 			model = new Model ComponentUserTaskDetail.eventType.DATA_UPDATE
-			@listen ComponentUserTaskDetail.eventType.DATA_UPDATE, model, @saveNotesConfirmed
+			@listen ComponentUserTaskDetail.eventType.DATA_UPDATE, model, @onNotesSave
 			hrtool.actions.updateUserTaskData model, dataToSend
-
 		return
 
-	saveNotesConfirmed: ->
-		@saveNotesBttn.disabled = no
-		notification = document.createElement 'div'
-		notification.innerHTML = 'Save succesfull.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.SUCCESS
+
+
+	handleCancelClick: (src) =>
+		@notesTextArea.value = @taskNotes;
 		return
 
-	handleFinishTask: (ev) =>
-		@setButtonsDisplay yes unless @isFinished
+
+
+
+	onNotesSave: (data) =>
+		if data.name? is 'error'
+			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
+				NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.ERROR
+		else
+			@addNotification 'Saving was successful!', NotificationCenter.DEFAULT_TIME,
+				NotificationCenter.eventType.SUCCESS
 		return
 
-	handleFinishTaskConfirmed: (ev) =>
-		@finishTaskBttnYes.disabled = yes
-		@finishTaskBttnNo.disabled = yes
 
-		dataToSend = id_task: @taskId
+
+	handleFinishTaskClick: (ev) =>
+		dataToSend =
+			id_task: @taskId
 
 		model = new Model ComponentUserTaskDetail.eventType.TASK_FINISH
-		@listen ComponentUserTaskDetail.eventType.TASK_FINISH, model, @finishTaskOk
+		@listen ComponentUserTaskDetail.eventType.TASK_FINISH, model, @onFinishTask
 		hrtool.actions.finishUserTask model, dataToSend
-
 		return
 
-	finishTaskOk: ->
-		@finishTaskBttnYes.disabled = no
-		@finishTaskBttnNo.disabled = no
-		@setButtonsDisplay no
 
-		notification = document.createElement 'div'
-		notification.innerHTML = 'Task has been completed.'
-		@addNotification notification, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.SUCCESS
+	handleUnfinishClick: (ev) =>
+		dataToSend =
+			id_task: @taskId
+			completed: no
+		model = new Model ComponentUserTaskDetail.eventType.TASK_UNFINISH
+		@listen ComponentUserTaskDetail.eventType.TASK_UNFINISH, model, @onUnfinishTask
+		hrtool.actions.unfinishUserTask model, dataToSend
+		return
+
+
+
+	onFinishTask: (data) =>
+		if data.name? is 'error'
+			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
+				NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.ERROR
+		else
+			@addNotification 'Task has been finished.', NotificationCenter.DEFAULT_TIME,
+				NotificationCenter.eventType.SUCCESS
 
 		@isFinished = yes
-
 		taskParamsToSend =
 			 taskId: @taskId
 			 taskBuddy: @taskBuddy
@@ -115,38 +149,54 @@ class ComponentUserTaskDetail extends ComponentBaseTaskDetail
 			 taskDescription: @taskDescription
 			 taskNotes: @taskNotes
 			 isFinished: @isFinished
-		
-		@element.className = @getTaskWrapperClass()
-		@fire ComponentBase.eventType.CHANGE, taskParamsToSend
 
+		@fire ComponentUserTaskDetail.eventType.TASK_FINISH, taskParamsToSend
 		return
 
-	handleFinishTaskCanceled: (ev) =>
-		@setButtonsDisplay no
-		return
 
-	setButtonsDisplay: (display) ->
-		none = 'none'
-		initial = 'initial'
+	onUnfinishTask: (data) =>
+		if data.name? is 'error'
+			@addNotification "Something messed up during saving!\n error code: #{data.code?}",
+				NotificationCenter.DEFAULT_TIME, NotificationCenter.eventType.ERROR
+		else
+			@addNotification 'Task has been unfinished.', NotificationCenter.DEFAULT_TIME,
+				NotificationCenter.eventType.SUCCESS
 
-		if @finishTaskBttn? and @finishTaskBttnYes? and @finishTaskBttnNo?
-			if display
-				@finishTaskBttn.style.display = none
-				@finishTaskBttnYes.style.display = initial
-				@finishTaskBttnNo.style.display = initial
-			else
-				@finishTaskBttn.style.display = initial
-				@finishTaskBttnYes.style.display = none
-				@finishTaskBttnNo.style.display = none
+		@isFinished = no
+		taskParamsToSend =
+			taskId: @taskId
+			taskBuddy: @taskBuddy
+			taskTitle: @taskTitle
+			dateFrom: @dateFrom
+			dateTo: @dateTo
+			taskDescription: @taskDescription
+			taskNotes: @taskNotes
+			isFinished: @isFinished
 
-		return
+		@fire ComponentUserTaskDetail.eventType.TASK_UNFINISH, taskParamsToSend
+		return;
 
-	handleTextAreaEnable: (ev) =>
-		@notesElement.readonly = no
+
+
+	changeFooterDiv: () ->
+		if @addNoteButtonVisible is yes
+			@addNoteButtonVisible = no
+			@saveButton.classList.remove 'visible-buttons'
+			@cancelButton.classList.remove 'visible-buttons'
+			@saveButton.classList.add 'hidden-buttons'
+			@cancelButton.classList.add 'hidden-buttons'
+		else
+			@addNoteButtonVisible = yes
+			@saveButton.classList.remove 'hidden-buttons'
+			@cancelButton.classList.remove 'hidden-buttons'
+			@saveButton.classList.add 'visible-buttons'
+			@cancelButton.classList.add 'visible-buttons'
 		return
 
 ComponentUserTaskDetail.eventType =
 	DATA_UPDATE: 'tasks/update'
 	TASK_FINISH: 'tasks/finish'
+	TASK_UNFINISH: 'tasks/update'
+
 
 module.exports = ComponentUserTaskDetail

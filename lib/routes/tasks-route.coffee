@@ -45,6 +45,10 @@ module.exports = (router, tasksRepository) ->
 		return next 'missing key: id_task' unless req.data.id_task
 		tasksRepository.finishTask req.data.id_task, next
 
+	router.register 'tasks/unfinish', (req, next) ->
+		return next 'missing key: id_task' unless req.data.id_task
+		tasksRepository.unfinishTask req.data.id_task, next
+
 	router.register 'tasks/update', (req, next) ->
 		return next 'missing key: id_task' unless req.data.id_task
 		tasksRepository.updateTask req.data, next

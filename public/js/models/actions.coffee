@@ -68,6 +68,11 @@ hrtool.actions =
 		mediator.loadData 'tasks/finish', data, model
 		return
 
+	unfinishUserTask: (model, data) ->
+		mediator = new Mediator()
+		mediator.loadData 'tasks/unfinish', data, model
+		return
+
 	getUsers: (model, data) ->
 		mediator = new Mediator()
 		mediator.loadData 'user/get-all', data, model
