@@ -5,23 +5,86 @@ async = require	'async'
 
 module.exports = (dbClient) ->
 	return {
-		insertUser: (userData, next)->
-			data1 = _.pick userData, ['first_name', 'last_name', 'email', 'is_hr', 'id_department_role', 'id_buddy']
-			data1.started_at = new Date().toDateString()
-			data2 = _.pick userData, ['is_admin', 'id_team']
+		insertUser: (userData, next) ->
+			dbClient.begin()
+			userDataInfo = _.pick userData, ['first_name', 'last_name', 'email', 'is_hr', 'id_department_role', 'id_buddy']
+			userDataInfo.started_at = new Date().toDateString()
+			userDataAdminTeam = _.pick userData, ['is_admin', 'id_team']
+			debug userData
+			debug userDataAdminTeam.is_admin
 			async.waterfall([
-				(callback) ->
-					title = if userData.is_admin then 'Team manager' else 'User'
-					dbClient.queryOne "SELECT id_user_role FROM user_roles WHERE title=$1", [title], callback
+					(callback) ->
+						title = if userDataAdminTeam.is_admin is yes then 'Team manager' else 'User'
+						debug title
+						dbClient.queryOne "SELECT id_user_role FROM user_roles WHERE title=$1", [title], callback
 				,
-				(res, callback) ->
-					data1.id_user_role = res.id_user_role
-					dbClient.insertOne 'users', data1, callback
+					(idUserRole, callback) ->
+						userDataInfo['id_user_role'] = idUserRole.id_user_role
+						dbClient.insertOne 'users', userDataInfo, callback
 				,
-				(res, callback) ->
-					data2.id_user = res.id_user
-					dbClient.insertOne 'users_teams', data2, callback
-				], next)
+					(insertedUser, callback) ->
+						userDataAdminTeam['id_user'] = insertedUser.id_user
+						dbClient.insertOne 'users_teams', userDataAdminTeam, callback
+				,
+					(userTeam, callback) ->
+						dbClient.queryAll """SELECT t.id_department, t.id_team FROM users_teams AS u
+								JOIN teams AS t ON u.id_team  = t.id_team WHERE u.id_user = $1""", [userDataAdminTeam.id_user], callback
+				,
+					(depsAndTeams, callback) ->
+						userDataInfo['id_department'] = depsAndTeams[0].id_department
+						query = "SELECT t.title, t.description,i.id_team, i.id_department, i.start_day, i.duration FROM tasks_implicit AS i
+											JOIN task_templates AS t ON i.id_task_template = t.id_task_template  WHERE "
+						query += "(i.id_department is null AND i.id_team is null) OR
+											((i.id_department= #{depsAndTeams[0].id_department} AND i.id_team is null)
+												OR (i.id_department= #{depsAndTeams[0].id_department} AND i.id_team = #{depsAndTeams[0].id_team }))"
+						for item in  depsAndTeams
+							query += " OR ((i.id_department= #{item.id_department} AND i.id_team is null)
+												 OR (i.id_department= #{item.id_department} AND i.id_team = #{item.id_team}))"
+						dbClient.queryAll query, callback
+				,
+					(tasks, callback) ->
+						unless tasks.length
+							callback null, 'none tasks'
+						else
+							values = [];
+							date = new Date();
+							for item,i in tasks
+								startDate = _.clone date
+								startDate.setDate date.getDate() + item.start_day
+								duration = _.clone startDate
+								duration.setDate startDate.getDate() + item.duration
+								values.push(
+									title: item['title'],
+									description: item['description'],
+									completed: no,
+									date_from: startDate.toDateString(),
+									date_to: duration.toDateString(),
+									id_user: userDataAdminTeam.id_user,
+									id_buddy: userDataInfo.id_buddy,
+									id_department: item.id_department
+									id_team : null
+								)
+								if item.id_department?
+									values[i]['id_department'] = item.id_department
+								else
+									values[i]['id_department'] = userDataInfo.id_department
+								if item.id_team?
+									values[i]['id_team'] = item.id_team
+								else
+									values[i]['id_team'] = userDataAdminTeam.id_team
+							dbClient.insert "tasks", values, callback
+				,	(insertedUser, callback) ->
+						dbClient.commit callback
+				],(e, commit) ->
+					if e?
+						dbClient.rollback()
+						if e.code? and e.code is "23505"
+							next error: "User's email already exists "
+						else
+							next error : e.detail
+					else
+						next null, commit
+			)
 
 		insertUsersFromCSV: (str, next) ->
 			parse str, (err, rows)->

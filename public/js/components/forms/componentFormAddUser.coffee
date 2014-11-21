@@ -214,7 +214,7 @@ class ComponentFormAddUser extends ComponentBase
 		else
 			@helper.debugger "FormStatus: Err", data.error
 			div = document.createElement "div"
-			div.innerText = "User Not Added Error:" + data.error
+			div.innerText = "User Not Added Error: " + data.error
 			@addNotification div, ComponentNotificationCenter.DEFAULT_TIME, ComponentNotificationCenter.eventType.ERROR
 		return
 
