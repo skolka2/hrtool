@@ -2,6 +2,7 @@ debug = require('debug') 'hrtool:user-repository'
 parse = require 'csv-parse'
 _ = require 'lodash-node'
 async = require	'async'
+Const = require '../constants'
 
 module.exports = (dbClient) ->
 	return {
@@ -43,19 +44,11 @@ module.exports = (dbClient) ->
 			dbClient.queryOne 'SELECT * FROM users WHERE email=$1', [email], done
 
 		getAllUsers : (userIdRole, next) ->
-			dbClient.queryAll "SELECT id_user_role FROM user_roles
-								WHERE id_user_role=$1 AND (title='Administrator' OR title='Team manager')" , [userIdRole], (err, data) ->
-				return next err if err
-				if data.length > 0
+			if userIdRole is Const.ADMINISTRATOR
 					dbClient.queryAll """
 						SELECT u.*,
-							ut.id_team,
-							t.id_department,
-							CONCAT(u.last_name,', ',u.first_name) AS full_name,
-							CONCAT(u.id_user, '-', ut.id_team) AS unique_id
-					   FROM users u
-					   JOIN users_teams ut ON u.id_user=ut.id_user
-					   JOIN teams t ON ut.id_team=t.id_team""", next
+							ARRAY(SELECT ut.id_team FROM users_teams ut WHERE u.id_user=ut.id_user) as teams
+							FROM users u""", next
 				else
 					return next 'Not authorized to do that'
 
@@ -130,35 +123,4 @@ module.exports = (dbClient) ->
 				dbClient.queryAll query, next
 
 
-		getAllUserTeams: (idUser, next) ->
-			dbClient.queryAll """
-				SELECT
-					ut.is_admin,
-					t.title AS team,
-					t.id_team,
-					d.title AS department,
-					d.id_department
-				FROM users_teams ut
-				JOIN teams t ON t.id_team=ut.id_team
-				JOIN departments d ON t.id_department=d.id_department
-				WHERE ut.id_user=$1""", [idUser], next
-
-		getBasicUserInfo: (idUser, next) ->
-			dbClient.queryOne """
-				SELECT
-					u.first_name,
-					u.last_name,
-					u.email,
-					u.id_user_role,
-					u2.id_user AS id_buddy,
-					u2.last_name AS buddy_last_name,
-					u2.first_name AS buddy_first_name,
-					t.id_team,
-					t.id_department
-				FROM users u
-				LEFT JOIN users u2 ON u.id_buddy = u2.id_user
-				LEFT JOIN users_teams ut ON ut.id_user = u.id_user
-				LEFT JOIN teams t ON ut.id_team = t.id_team
-				WHERE u.id_user=$1
-				LIMIT 1""", [idUser], next
 	}

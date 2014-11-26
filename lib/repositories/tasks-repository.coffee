@@ -155,7 +155,6 @@ module.exports = (dbClient) ->
 					if(res.count? and res.count is '1')
 						callback(true)
 					else
-						# TODO: dodelat zjisteni jestli je manazer tymu daneho uzivatele
 						dbClient.queryOne """SELECT count(u) FROM users u
 							JOIN users_teams ut ON ut.id_user = u.id_user and ut.id_team = $2 and ut.is_admin
 							WHERE u.id_user =$1 """, [data.myUserId, data.idTeam],callback

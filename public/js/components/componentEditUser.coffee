@@ -18,6 +18,7 @@ class ComponentEditUser extends ComponentBase
 		@setModel model, ComponentEditUser.eventType.GET_USERS
 		hrtool.actions.getUserTeams @model, {id_user: idUser}
 
+
 		infoModel = new Model ComponentEditUser.eventType.GET_INFO
 		@listen ComponentEditUser.eventType.GET_INFO, infoModel, @onInfoLoad
 		hrtool.actions.getBasicUserInfo infoModel, {id_user: idUser}
@@ -59,7 +60,10 @@ class ComponentEditUser extends ComponentBase
 
 	onUsersLoad: (data) ->
 		users = {}
-		users[item.id_user] = item for item in data
+		for item in data
+			users[item.id_user] =
+				id_user : item.id_user
+				full_name: item.first_name+' '+item.last_name
 
 		@buddySelectWrapper = @element.getElementsByClassName(ComponentEditUser.classes.BUDDY_SELECT_WRAPPER_CLASS)[0]
 		usersData = ComponentFilterFormatter.transform users, 'id_user', 'full_name'

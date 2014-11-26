@@ -34,8 +34,17 @@ class ComponentAddTask extends ComponentBase
 		buddies = {};
 
 		for item in data
-			buddies[item.id_user] = item
-			users[item.unique_id] = item
+			buddies[item.id_user] =
+				id_user : item.id_user
+				full_name: item.first_name+' '+item.last_name
+			for team in item.teams
+				users[item.id_user + '-' +team]=
+					id_user : item.id_user
+					full_name: item.first_name+' '+item.last_name
+					id_team : team
+					id_department : teams[team].id_department
+
+
 
 		data2 = ComponentFilterFormatter.factory.createUsersDropdownsData departments, teams, users
 		@_componentFilter = new ComponentFilter data2, ['department', 'team', 'user'], [false, false, true]
