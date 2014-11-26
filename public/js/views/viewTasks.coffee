@@ -1,6 +1,6 @@
 ViewBase =  require './viewBase'
-ComponentAddTask = require '../components/features/addTask/newTask/componentAddTask'
-ComponentHide = require '../components/features/componentHide'
+
+btnFactory = require '../factories/buttons'
 
 class ViewTasks extends ViewBase
 	constructor: ->
@@ -14,14 +14,13 @@ class ViewTasks extends ViewBase
 		viewWrapper.innerHTML = "Task Admin View"
 		viewWrapper.appendChild document.createElement 'br'
 
-		div = document.createElement 'div'
-		component = new ComponentAddTask()
-		component.render div
-		hide = new ComponentHide @helper.dom.createElement("<span>Insert new task</span>"), div, no
-		hide.render viewWrapper
+		viewWrapper.appendChild btnFactory.createPopupButton(ViewTasks.messages.BUTTON_ADD_TASK, 'bt-home-add-task')
 
 		mainWrapper.appendChild viewWrapper
 		
 		return
+
+ViewTasks.messages =
+	BUTTON_ADD_TASK : 'Add new task'
 
 module.exports = ViewTasks
