@@ -29,7 +29,7 @@ class ViewTest extends ViewBase
 
 		button2 = document.createElement "p"
 		button2.innerHTML = "Button2"
-		button2.className = "button active"
+		button2.className = "button button-active"
 		witzDiv.appendChild button2
 
 		button3 = document.createElement "p"

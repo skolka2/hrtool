@@ -134,12 +134,21 @@ body {
 
 .button {
   .buttonConstructor(rgb(20, 29, 34), rgb(46, 58, 65));
+
+  &:hover{
+    .button-active;
+  }
 }
 
-.button.active {
+.button-active {
   background-color: rgb(37, 48, 54);
 }
 
 .button-confirm {
   .buttonConstructor(rgb(19, 158, 225), rgb(34, 174, 242));
+
+  &:hover{
+    .button-active;
+    border-color: rgb(46, 58, 65);
+  }
 }
