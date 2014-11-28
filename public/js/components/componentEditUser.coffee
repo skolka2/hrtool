@@ -63,7 +63,7 @@ class ComponentEditUser extends ComponentBase
 
 		@buddySelectWrapper = @element.getElementsByClassName(ComponentEditUser.classes.BUDDY_SELECT_WRAPPER_CLASS)[0]
 		usersData = ComponentFilterFormatter.transform users, 'id_user', 'full_name'
-		@buddyDropdown = new ComponentDropdown usersData[''], true
+		@buddyDropdown = new ComponentDropdown usersData[''], yes
 		@buddyDropdown.setSelectionById @idBuddy
 		@addChild 'buddyDropdown', @buddyDropdown, {el: @buddySelectWrapper}
 		@buddyDropdown.render @buddySelectWrapper
@@ -96,14 +96,14 @@ class ComponentEditUser extends ComponentBase
 
 
 
-	handleSaveClick: () ->
+	handleSaveClick: ->
 		#TODO: dodělat endpoint na editaci dat uživatele a na mazání a přidávání týmů (jesli už nejsou)
 		console.log 'ukládám změny -> taky dodělat odeslání změn údajů na backend'
 
 
 
 
-	createTeamItems: () ->
+	createTeamItems: ->
 		for item, i in @teams
 			@teamWrapper.appendChild @getTeamItemDom item, i
 
@@ -143,13 +143,13 @@ class ComponentEditUser extends ComponentBase
 
 
 
-	createNewTeamDom: () ->
+	createNewTeamDom: ->
 		data = ComponentFilterFormatter.factory.createTeamDropdownsData app?.bulk?.departments, app?.bulk?.teams
 		@newTeamFilter = new ComponentFilter data, ['department', 'team']
 		@addChild 'teamFilter', @newTeamFilter, {el: @newTeamWrapper}
 		@newTeamFilter.render @newTeamWrapper
 
-		@newTeamCheckBox = new ComponentCheckBox 'Manager', true, true
+		@newTeamCheckBox = new ComponentCheckBox 'Manager', yes, yes
 		this.addChild 'newTeamCheckBox', @newTeamCheckBox, {el: @newTeamWrapper}
 		@newTeamCheckBox.render @newTeamWrapper
 
@@ -169,7 +169,7 @@ class ComponentEditUser extends ComponentBase
 		status = @newTeamFilter.getStatus()
 		if status.team isnt ComponentDropdown.EmptyOption
 			isIn = no
-			(isIn = true; break) for team in @teams when status.team.id is team?.id_team
+			(isIn = yes; break) for team in @teams when status.team.id is team?.id_team
 			if isIn is no
 				@teams.push
 					is_admin: @newTeamCheckBox.isChecked()

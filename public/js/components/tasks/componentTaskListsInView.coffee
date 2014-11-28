@@ -36,7 +36,7 @@ class ComponentTaskListsInView extends ComponentBase
 		listsWrapper = document.createElement 'div'
 		listsWrapper.className = "lists-wrapper"
 
-		hideAll = new ComponentHide outerHideHeader, listsWrapper, false
+		hideAll = new ComponentHide outerHideHeader, listsWrapper, no
 		hideAll.render outerHideWrapper
 
 		if @useFilter
@@ -52,7 +52,7 @@ class ComponentTaskListsInView extends ComponentBase
 		listNotCompletedWrapper = document.createElement 'div'
 		listNotCompletedWrapper.className = "task-list-wrapper"
 
-		hideNotCompleted = new ComponentHide notCompletedHeader, listNotCompletedWrapper, false
+		hideNotCompleted = new ComponentHide notCompletedHeader, listNotCompletedWrapper, no
 		hideNotCompleted.render listsWrapper
 
 		completedHeader = document.createElement 'h2'
@@ -62,7 +62,7 @@ class ComponentTaskListsInView extends ComponentBase
 		listCompletedWrapper = document.createElement 'div'
 		listCompletedWrapper.className = "task-list-wrapper"
 
-		hideCompleted = new ComponentHide completedHeader, listCompletedWrapper, true
+		hideCompleted = new ComponentHide completedHeader, listCompletedWrapper, yes
 		hideCompleted.render listsWrapper
 
 		@listNotCompleted.render listNotCompletedWrapper

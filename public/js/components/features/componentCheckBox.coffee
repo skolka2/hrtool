@@ -29,7 +29,7 @@ class ComponentCheckBox extends ComponentBase
 
 
 
-	_setCheckClass: () ->
+	_setCheckClass: ->
 		@checkChecked.className = if @checked then ComponentCheckBox.checkBoxClass.CHECKED else ComponentCheckBox.checkBoxClass.NOTCHECKED
 		return
 
@@ -50,7 +50,7 @@ class ComponentCheckBox extends ComponentBase
 		@fire ComponentBase.eventType.CHANGE, @checked
 		return
 
-	isChecked: () ->
+	isChecked: ->
 		return @checked
 
 

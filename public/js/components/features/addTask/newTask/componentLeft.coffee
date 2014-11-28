@@ -7,17 +7,17 @@ ComponentDropdown = require '../../componentDropdown'
 helper = require '../../../../helpers/helpers'
 
 class ComponentLeft extends ComponentLeftBase
-	constructor: () ->
+	constructor: ->
 		super()
-		@_filter = null
+		@_filterTeam1 = null
 		@_status =
 			department_id: -1
 			team_id: -1
-			save_as_template: false
-		@_saveAsNew = new ComponentCheckBox 'Save as template', false
+			save_as_template: no
+		@_saveAsNew = new ComponentCheckBox 'Save as template', no
 		@listen ComponentBase.eventType.CHANGE, @_saveAsNew, @handleSetAsImplicitChanged
 
-	createDom: () ->
+	createDom: ->
 		super()
 		@_selectorDiv = document.createElement 'div'
 		@_selectorDiv = document.createElement 'div'
@@ -27,17 +27,17 @@ class ComponentLeft extends ComponentLeftBase
 		departments = helper.bulk.getData ['departments']
 		teams = helper.bulk.getData ['teams']
 		data = ComponentFilterFormatter.factory.createTeamDropdownsData departments, teams
-		@_filter = new ComponentFilter data, ['department', 'team']
-		@_filter.setActive false
+		@_filterTeam1 = new ComponentFilter data, ['department', 'team']
+		@_filterTeam1.setActive no
 		@element.appendChild @_selectorDiv
-		@addChild "filter_" + @_filter.componentId, @_filter, {el: @_selectorDiv}
+		@addChild "filter_" + @_filterTeam1.componentId, @_filterTeam1, {el: @_selectorDiv}
 
-		@listen ComponentBase.eventType.CHANGE, @_filter, @handleSetAsImplicitChanged
+		@listen ComponentBase.eventType.CHANGE, @_filterTeam1, @handleSetAsImplicitChanged
 
-	getStatus: () ->
+	getStatus: ->
 		super()
-		if @_filter
-			filterStatus = @_filter.getStatus()
+		if @_filterTeam1
+			filterStatus = @_filterTeam1.getStatus()
 			@_status.department_id = helper.obj.getData filterStatus, ['department', 'id']
 			@_status.team_id = helper.obj.getData filterStatus, ['team', 'id']
 
@@ -45,7 +45,7 @@ class ComponentLeft extends ComponentLeftBase
 		return @_status
 
 	handleSetAsImplicitChanged: (data) =>
-		@_filter.setActive data
+		@_filterTeam1.setActive data
 		@fire ComponentBase.eventType.CHANGE, @getStatus()
 
 module.exports = ComponentLeft

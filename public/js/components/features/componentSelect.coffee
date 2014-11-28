@@ -16,8 +16,8 @@ module.exports = class ComponentSelect extends ComponentBase
 		cancelButton = @element.getElementsByClassName("select-button-cancel")[0]
 		saveButton = @element.getElementsByClassName("select-button-save")[0]
 
-		cancelButton.addEventListener ComponentBase.eventType.CLICK, @cancel, false
-		saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSave, false
+		cancelButton.addEventListener ComponentBase.eventType.CLICK, @cancel, no
+		saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSave, no
 		@filter = new ComponentFilter @data
 		@addChild @filter.componentId, @filter, "el": selectorEl
 

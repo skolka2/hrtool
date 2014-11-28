@@ -4,7 +4,7 @@ Const = require '../helpers/constants'
 ComponentNotificationCenter = require './componentNotificationCenter'
 
 module.exports = class ComponentBase extends EventEmitter
-	constructor: ->
+	constructor:->
 		EventEmitter.apply @
 		@super = EventEmitter
 		@childs = {}
@@ -26,7 +26,7 @@ module.exports = class ComponentBase extends EventEmitter
 		if @rendered
 			@element.remove()
 			@childs[child].component.removeFromDOM() for child of @childs
-			@rendered = false
+			@rendered = no
 	destroy: ->
 		@removeFromDOM()
 		@removeListeners @componentId
@@ -44,7 +44,7 @@ module.exports = class ComponentBase extends EventEmitter
 		parent = @getWrapper(parent)
 		parent.appendChild element
 
-		@rendered = true
+		@rendered = yes
 
 		for name of @childs
 			parentOfChild = element

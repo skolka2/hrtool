@@ -45,11 +45,11 @@ class Router
 
 		else
 			document.addEventListener ComponentBase.eventType.DOMContentLoaded, =>
-				document.removeEventListener ComponentBase.eventType.DOMContentLoaded, arguments.callee, false
+				document.removeEventListener ComponentBase.eventType.DOMContentLoaded, arguments.callee, no
 				if mainWrapper
 					mainWrapper.innerHTML = ''
 					@view.render()
-			, false
+			, no
 
 		return
 

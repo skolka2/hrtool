@@ -122,7 +122,7 @@ class ComponentDropdown extends ComponentBase
 
 
 
-	getSelection: () ->
+	getSelection: ->
 		return @selected
 
 
@@ -145,7 +145,7 @@ class ComponentDropdown extends ComponentBase
 
 		
 		
-	createDom: () ->
+	createDom: ->
 		@element = document.createElement "div"
 		@element.id = 'component-' + @componentId
 		@element.className = 'dropDownDiv'
@@ -165,7 +165,7 @@ class ComponentDropdown extends ComponentBase
 		else
 			selection.add "disabled"
 
-	getIsEnabled: () ->
+	getIsEnabled: ->
 		return @_enabled
 
 
@@ -181,6 +181,10 @@ class ComponentDropdown extends ComponentBase
 				else
 					item.el.style.display = "list-item"
 		return
+
+
+	getMap: ->
+		return @_map
 
 ComponentDropdown.eventType =
 	CHANGE: 'dropdown-change'

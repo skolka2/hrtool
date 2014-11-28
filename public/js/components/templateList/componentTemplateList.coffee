@@ -8,14 +8,14 @@ ComponentNotificationCenter = require './../componentNotificationCenter'
 
 
 class ComponentTemplateList extends ComponentBase
-	constructor: () ->
+	constructor: ->
 		super()
 		@data = null
 		@dropdowns = {}
 
 
 
-	createDom: () ->
+	createDom: ->
 		wrapper = document.createElement 'div'
 		wrapper.className = "template-list"
 		wrapper.innerHTML = "Loading... Please wait"
@@ -104,10 +104,10 @@ class ComponentTemplateList extends ComponentBase
 			dd: JSON.parse JSON.stringify(dropDownData)
 
 		if data.id_department
-			map.dd[0][""][@_getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "true"
+			map.dd[0][""][@_getIdForSelected(map.dd[0][""], data.id_department)]['selected'] = "yes"
 
 		if data.id_team
-			map.dd[1][data.id_department][@_getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "true"
+			map.dd[1][data.id_department][@_getIdForSelected(map.dd[1][data.id_department], data.id_team)]['selected'] = "yes"
 		return map
 
 	_getIdForSelected: (arr, key) ->
@@ -176,7 +176,7 @@ class ComponentTemplateList extends ComponentBase
 
 
 	handleButtonDelete: (data) ->
-		if data.object.getAttribute("implicit") is "true"
+		if data.object.getAttribute("implicit") is "yes"
 			newDiv = document.createElement 'div'
 			newDiv.innerHTML = "Implicit task cannot be deleted"
 			@addNotification newDiv, 3000, ComponentNotificationCenter.eventType.ERROR

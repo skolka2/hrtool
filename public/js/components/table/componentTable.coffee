@@ -33,7 +33,7 @@ class ComponentTable extends ComponentBase
 		@reloadData()
 
 
-	createDom : () ->
+	createDom : ->
 		wrapper = document.createElement("div")
 		wrapper.className = 'table-wrapper'
 		header = helper.tpl.create "components/table/componentTable", {array: @headerTitles}
@@ -60,7 +60,7 @@ class ComponentTable extends ComponentBase
 		return
 
 #	div with data
-	getDivTable :() ->
+	getDivTable :->
 		if not @divTable?
 			@divTable = document.createElement("div")
 			@divTable.className = 'table'
@@ -69,7 +69,7 @@ class ComponentTable extends ComponentBase
 
 
 # div for loadmore functionality
-	getDivLoadMore :() ->
+	getDivLoadMore :->
 		if not @divLoadMore?
 			@divLoadMore = document.createElement('div')
 			@divLoadMore.className = 'load-more'
@@ -137,7 +137,7 @@ class ComponentTable extends ComponentBase
 		@reloadData()
 		return
 
-	reloadData :() ->
+	reloadData :->
 		reloadModel = new Model(@_endpoint)
 		@listen(@_endpoint, reloadModel, @onLoad)
 		@_action(reloadModel, @reqData)

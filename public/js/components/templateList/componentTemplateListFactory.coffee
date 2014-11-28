@@ -3,7 +3,7 @@ Model = require '../../models/model'
 hrtool = require '../../models/actions'
 
 ComponentTemplateListFactory  =
-	createAll: () ->
+	createAll: ->
 		componentTemplateList = new ComponentTemplateList()
 		componentTemplateList.setModel new Model(ComponentTemplateList.eventType.DATA_LOAD), ComponentTemplateList.eventType.DATA_LOAD
 		hrtool.actions.getTemplatesData componentTemplateList.model

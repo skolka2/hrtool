@@ -16,7 +16,7 @@ class ComponentContentSwitcher extends ComponentBase
 		@_divs[0]?.className = ComponentContentSwitcher.SELECTED_TAB_DIV_CLASS
 
 
-	createDom: () ->
+	createDom: ->
 		@element = document.createElement 'div'
 		divWrapper = document.createElement 'div'
 		ul = document.createElement 'ul'
@@ -55,7 +55,7 @@ class ComponentContentSwitcher extends ComponentBase
 
 
 
-	getSelectedTabNumber: () ->
+	getSelectedTabNumber: ->
 		return @_currentTab
 
 

@@ -1,13 +1,13 @@
 ComponentBase = require '../componentBase'
 
 class ComponentHide extends ComponentBase
-	constructor: (@headlineEl, @content, @closed = false) ->
+	constructor: (@headlineEl, @content, @closed = no) ->
 		super()
 		@headTitle = null
 		@arrow = null
 		@contentEl = @content
 		
-	createDom: () ->
+	createDom: ->
 		wrapper = document.createElement "div"
 		wrapper.className = "hide-comp"
 	
@@ -74,7 +74,7 @@ class ComponentHide extends ComponentBase
 		@headTittle.appendChild header
 
 
-	getContentWrapper: () ->
+	getContentWrapper: ->
 		@getElement()
 		return @content
 

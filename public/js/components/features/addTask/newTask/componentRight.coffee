@@ -5,7 +5,7 @@ hrtool = require '../../../../models/actions'
 Model = require '../../../../models/model'
 
 class ComponentRight extends ComponentBase
-	constructor: () ->
+	constructor: ->
 		super();
 		@setModel new Model(ComponentRight.eventType.GET_USERS), ComponentRight.eventType.GET_USERS
 		hrtool.actions.getTemplatesData @model
@@ -20,7 +20,7 @@ class ComponentRight extends ComponentBase
 		@addChild 'componentFilter', @_componentFilter, {el: @element}
 		@_componentFilter.render @element
 
-	createDom: () ->
+	createDom: ->
 		@element = document.createElement 'div'
 		@element.className = ComponentRight.WRAPPER_CLASS
 
@@ -34,7 +34,7 @@ class ComponentRight extends ComponentBase
 			return template if template.id_task_template is id
 
 
-	getStatus: () ->
+	getStatus: ->
 		return @_componentFilter.getStatus()
 
 

@@ -1,5 +1,5 @@
 class ComponentNotificationCenter
-	constructor: () ->
+	constructor: ->
 		@_countOfNotifications = 0
 		@render document.getElementById('navbar')
 
@@ -35,7 +35,7 @@ class ComponentNotificationCenter
 
 
 
-	createDom: () ->
+	createDom: ->
 		wrapper = document.createElement 'div'
 		wrapper.className = "notification-center deactivated"
 		@element = wrapper
@@ -48,7 +48,7 @@ class ComponentNotificationCenter
 		wrapper.appendChild @element
 
 
-	isOpened: () ->
+	isOpened: ->
 		return !!@_countOfNotifications
 
 

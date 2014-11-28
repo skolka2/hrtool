@@ -10,7 +10,7 @@ app = require '../../app'
 
 
 class ComponentFormAddUser extends ComponentBase
-	constructor: () ->
+	constructor: ->
 		super()
 		@isSelectedHRBuddy = no
 		model = new Model ComponentFormAddUser.eventType.DATA_LOAD
@@ -19,7 +19,7 @@ class ComponentFormAddUser extends ComponentBase
 
 
 		
-	createDom: () ->
+	createDom: ->
 		@element = @helper.tpl.create "components/forms/componentFormAddUser"
 		@name = @element.getElementsByClassName("input1")[0]
 		@surname = @element.getElementsByClassName("input2")[0]
@@ -47,7 +47,7 @@ class ComponentFormAddUser extends ComponentBase
 
 
 
-	setFilterData: () ->
+	setFilterData: ->
 		departmentsData = app?.bulk?.departments
 		teamsData = app?.bulk?.teams
 		roleData = app?.bulk?.departmentRoles
@@ -123,7 +123,7 @@ class ComponentFormAddUser extends ComponentBase
 
 
 
-	isValid : () ->
+	isValid : ->
 		err = yes
 		baseTime = ComponentNotificationCenter.DEFAULT_TIME
 		if @name.value is ""
@@ -221,7 +221,7 @@ class ComponentFormAddUser extends ComponentBase
 
 
 
-	reset: () ->
+	reset: ->
 		@name.value = ""
 		@surname.value = ""
 		@email.value = ""

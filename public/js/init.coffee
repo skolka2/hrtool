@@ -13,7 +13,7 @@ do ->
 			if router? then router.changeView()
 	else
 		storedHash = window.location.hash
-		window.setInterval () ->
+		window.setInterval ->
 			if window.location.hash != storedHash
 				if router?
 					router.changeView()

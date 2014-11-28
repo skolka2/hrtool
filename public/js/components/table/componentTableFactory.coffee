@@ -8,13 +8,13 @@ ComponentEditUser = require '../componentEditUser'
 ComponentPopupFactory = require '../componentPopupFactory'
 
 module.exports = ComponentTableFactory =
-	implicitTable: () ->
+	implicitTable: ->
 		implicitTab = new ComponentTable ComponentTableFactory.getImplicitTableFormat, ComponentTableFactory.implicitTableSettings
 		implicitTab.setModel(new Model(ComponentTableFactory.implicitTableSettings.endpoint),ComponentTableFactory.implicitTableSettings.endpoint)
 		implicitTab._action implicitTab.model, implicitTab.reqData
 		return implicitTab
 
-	createUsersTable: () ->
+	createUsersTable: ->
 		usersTable = new ComponentTable ComponentTableFactory.getUsersTableFormat, ComponentTableFactory.usersTableSettings
 		usersTable.setModel new Model(ComponentTableFactory.usersTableSettings.endpoint), ComponentTableFactory.usersTableSettings.endpoint
 		hrtool.actions.getUsersForTable usersTable.model, usersTable.reqData
@@ -32,7 +32,7 @@ module.exports = ComponentTableFactory =
 		limit: 4
 		offset:0
 		sortBy: 'full_name'  #order by 'column_name' for first onLoad
-		sortDesc: false
+		sortDesc: no
 		sort_way: "ASC"
 		endpoint : 'user/get-table-data'
 		actionFunc : hrtool.actions.getUsersForTable

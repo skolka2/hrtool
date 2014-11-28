@@ -2,11 +2,11 @@ ViewBase =  require './viewBase'
 ComponentAddImplicitTask = require "../components/features/addTask/newImplicitTask/componentAddImplicitTask"
 
 class ViewTest extends ViewBase
-	constructor: () ->
+	constructor: ->
 		super()
 
 
-	render: () ->
+	render: ->
 		super()
 		mainWrapper = document.getElementById ViewBase.mainWrapper
 		zibbyDiv = document.createElement "div"

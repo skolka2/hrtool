@@ -108,10 +108,10 @@ helper =
 		isNumber: (num, min, max) ->
 			out = parseInt num
 
-			if not out then return false
+			if not out then return no
 			if min is "" then min = Number.MIN_VALUE
 			if max is "" then max = Number.MAX_VALUE
-			if out > min or out < max then return true
-			false
+			if out > min or out < max then return yes
+			no
 
 module.exports = helper

@@ -8,7 +8,7 @@ class ComponentTableWrapper extends ComponentBase
 	constructor: (@_table, @_filterComponent, @_textInput) ->
 		super()
 
-	createDom: () ->
+	createDom: ->
 		@element = document.createElement 'div'
 		@element.className = ComponentTableWrapper.WRAPPER_CLASS;
 

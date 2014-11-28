@@ -8,7 +8,7 @@ class ComponentFilter extends ComponentBase
 		super()
 		@_status = []
 		@_dropdowns = []
-		searchable = if searchable then searchable else searchable = Array.apply(null, new Array(@_data.length)).map(Boolean.prototype.valueOf, false)
+		searchable = if searchable then searchable else searchable = Array.apply(null, new Array(@_data.length)).map(Boolean.prototype.valueOf, no)
 		for i in [0...@_data.length] by 1
 			newDropdown = new ComponentDropdown @_initData(i), searchable[i]
 			if preselectedIds? then newDropdown.setSelectionById preselectedIds[i]
@@ -40,7 +40,7 @@ class ComponentFilter extends ComponentBase
 		return items
 
 
-	getStatus: () ->
+	getStatus: ->
 		return @_status unless @_keys
 		res = {}
 		for item, i in @_keys
@@ -90,7 +90,7 @@ class ComponentFilter extends ComponentBase
 
 
 
-	createDom:  () ->
+	createDom:  ->
 		mainDiv = document.createElement 'div'
 		mainDiv.class = "filtrable-task"
 
@@ -100,7 +100,7 @@ class ComponentFilter extends ComponentBase
 		@element = mainDiv
 		return
 
-	unselectAll: () ->
+	unselectAll: ->
 		firstDropdown = @_dropdowns[0]
 		firstDropdown.setSelection ComponentDropdown.EmptyOption
 		@_filterData ComponentDropdown.EmptyOption, firstDropdown.componentId
@@ -110,13 +110,13 @@ class ComponentFilter extends ComponentBase
 		dropdown.setEnabled active for dropdown in @_dropdowns
 		return
 
-	getDropdowns: () ->
+	getDropdowns: ->
 		return @_dropdowns
 
 
 	selectItems: (ids) ->
 		for dropdown, i in @_dropdowns
-			for item in dropdown._map
+			for item in dropdown.getMap()
 				if item.value.id is ids[i]
 					dropdown.setSelection item.value
 		return

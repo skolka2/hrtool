@@ -38,13 +38,13 @@ class ComponentAddTask extends ComponentBase
 			users[item.unique_id] = item
 
 		data2 = ComponentFilterFormatter.factory.createUsersDropdownsData departments, teams, users
-		@_componentFilter = new ComponentFilter data2, ['department', 'team', 'user'], [false, false, true]
+		@_componentFilter = new ComponentFilter data2, ['department', 'team', 'user'], [no, no, yes]
 		@addChild 'componentFilter', @_componentFilter, {el: @_personWrapper}
 		@_componentFilter.render @_personWrapper
 		@listen ComponentDropdown.eventType.CHANGE, @_componentFilter, @handleDropdownChange
 	
 		buddies2 = ComponentFilterFormatter.transform buddies, 'id_user', 'full_name'
-		@_buddyDropdown = new ComponentDropdown buddies2[''], true
+		@_buddyDropdown = new ComponentDropdown buddies2[''], yes
 		@addChild 'buddyDropdown', @_buddyDropdown, {el: @_personWrapper}
 		@_buddyDropdown.render @_personWrapper
 
@@ -75,7 +75,7 @@ class ComponentAddTask extends ComponentBase
 		return
 
 
-	createDom: () ->
+	createDom: ->
 		today = @helper.format.getDateInputFormat new Date()
 		jadeData =
 			today: today
@@ -96,9 +96,9 @@ class ComponentAddTask extends ComponentBase
 		@addChild 'tabbedArea', @_tabbedAreaComponent, {el: tabbedAreaDiv}
 	
 		@saveButton = @element.getElementsByClassName(jadeData.saveButtonClass)[0]
-		@saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSaveClickEvent, false
+		@saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSaveClickEvent, no
 	
-		@element.addEventListener ComponentBase.eventType.CLICK, @handleClickEvent, false
+		@element.addEventListener ComponentBase.eventType.CLICK, @handleClickEvent, no
 		return
 
 
@@ -148,88 +148,88 @@ class ComponentAddTask extends ComponentBase
 
 
 
-	clearInputs: () ->
+	clearInputs: ->
 		@_lengthInput.value = ''
 		@_dateInput.value = @helper.format.getDateInputFormat new Date()
 		@_componentFilter.unselectAll()
 		@_buddyDropdown.setSelection ComponentDropdown.EmptyOption
 
-		@_leftComponent._title.value = ''
-		@_leftComponent._text.value = ''
-		@_leftComponent._saveAsNew.setChecked false
-		@_leftComponent._filter.unselectAll()
-		@_leftComponent._filter.setActive false
+		@_leftComponent._titleEL.value = ''
+		@_leftComponent._descriptionEl.value = ''
+		@_leftComponent._saveAsNew.setChecked no
+		@_leftComponent._filterTeam1.unselectAll()
+		@_leftComponent._filterTeam1.setActive no
 		@_rightComponent._componentFilter.unselectAll()
 		return
 
 
 	checkInputs: (userStatus, taskStatus, dateFrom, length, selectedTab) -> 
-		ret = true;
+		ret = yes;
 		date = new Date();
 		today = new Date date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0
 	
 		if userStatus.department.id is -1
 			@addNotification ComponentAddTask.messages.NO_DEPARTMENT, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@_componentFilter._dropdowns[0].setInvalidInputClass()
-			ret = false
+			ret = no
 	
 		if userStatus.team.id is -1
 			@addNotification ComponentAddTask.messages.NO_TEAM,ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@_componentFilter._dropdowns[1].setInvalidInputClass() if @_componentFilter._dropdowns[1].getIsEnabled()
-			ret = false
+			ret = no
 	
 		if userStatus.user.id is -1
 			@addNotification ComponentAddTask.messages.NO_USER, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@_componentFilter._dropdowns[2].setInvalidInputClass() if @_componentFilter._dropdowns[2].getIsEnabled()
-			ret = false
+			ret = no
 	
 		if @_buddyDropdown.selected.id is -1
 			@addNotification ComponentAddTask.messages.NO_BUDDY, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@_buddyDropdown.setInvalidInputClass()
-			ret = false
+			ret = no
 	
 		if userStatus.user.id isnt -1 and (userStatus.user.id is @_buddyDropdown.selected.id)
 			@addNotification ComponentAddTask.messages.SAME_BUDDY_AND_USER, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@_componentFilter._dropdowns[2].setInvalidInputClass()
 			@_buddyDropdown.setInvalidInputClass()
-			ret = false
+			ret = no
 
 		if dateFrom.toString() is 'Invalid Date' or dateFrom.getTime() < today.getTime()
 			@addNotification ComponentAddTask.messages.WRONG_DATE, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@setInvalidInputClass @_dateInput
-			ret = false
+			ret = no
 	
 		if not Number(length)
 			@addNotification ComponentAddTask.messages.WRONG_TASK_LENGTH, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 			@setInvalidInputClass @_lengthInput
-			ret = false
+			ret = no
 	
 		if selectedTab is 0
 			if taskStatus.title is ''
 				@addNotification ComponentAddTask.messages.NO_TASK_TITLE, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
-				@setInvalidInputClass @_leftComponent._title
-				ret = false
+				@setInvalidInputClass @_leftComponent._titleEL
+				ret = no
 
 			if taskStatus.description is ''
 				@addNotification ComponentAddTask.messages.NO_TASK_DESCRIPTION,ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
-				@setInvalidInputClass @_leftComponent._text
-				ret = false
+				@setInvalidInputClass @_leftComponent._descriptionEl
+				ret = no
 
 			if taskStatus.save_as_template and taskStatus.department_id is -1
 				@addNotification ComponentAddTask.messages.NO_TASK_DEPARTMENT, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
-				@_leftComponent._filter._dropdowns[0].setInvalidInputClass()
-				ret = false
+				@_leftComponent._filterTeam1._dropdowns[0].setInvalidInputClass()
+				ret = no
 
 			if taskStatus.save_as_template and taskStatus.department_id is -1
 				@addNotification ComponentAddTask.messages.NO_TASK_TEAM, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
-				@_leftComponent._filter._dropdowns[1].setInvalidInputClass()
-				ret = false
+				@_leftComponent._filterTeam1._dropdowns[1].setInvalidInputClass()
+				ret = no
 	
 		if selectedTab is 1
 			if taskStatus.task_template.id is -1
 				@addNotification ComponentAddTask.messages.NO_TEMPLATE, ComponentAddTask.NOTIFICATION_DURATION, NotificationCenter.eventType.ERROR
 				@_rightComponent._componentFilter._dropdowns[2].setInvalidInputClass()
-				ret = false
+				ret = no
 
 		return ret;
 
@@ -244,16 +244,16 @@ class ComponentAddTask extends ComponentBase
 	handleDropdownChange: (selection) =>
 		switch selection.value
 			when @_componentFilter._dropdowns[0].selected.value
-				dropdown = @_leftComponent._filter._dropdowns[0]
+				dropdown = @_leftComponent._filterTeam1._dropdowns[0]
 			when @_componentFilter._dropdowns[1].selected.value
-				dropdown = @_leftComponent._filter._dropdowns[1]
+				dropdown = @_leftComponent._filterTeam1._dropdowns[1]
 			else return
 
-		for item in dropdown._map
+		for item in dropdown.getMap()
 			if item.value.value is selection.value
 				dropdown.setSelection item.value
 				break;
-		@_leftComponent._filter.setActive @_leftComponent._saveAsNew.checked
+		@_leftComponent._filterTeam1.setActive @_leftComponent._saveAsNew.checked
 		return
 
 ComponentAddTask.messages =
