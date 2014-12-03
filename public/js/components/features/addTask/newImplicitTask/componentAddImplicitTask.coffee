@@ -15,15 +15,12 @@ class ComponentAddImplicitTask extends ComponentBase
 	constructor: ->
 		super()
 		dropData = ComponentFilterFormatter.factory.createTeamDropdownsData app?.bulk?.departments, app?.bulk?.teams
-		@_filterTeam1 = new ComponentFilter dropData, ['department', 'team']
-		@_filterTeam2 = new ComponentFilter dropData, ['department', 'team']
-		@listen ComponentDropdown.eventType.CHANGE, @_filterTeam1, @handleDropdownChange
+		@_teamFilter = new ComponentFilter dropData, ['department', 'team']
+		@listen ComponentDropdown.eventType.CHANGE, @_teamFilter, @handleDropdownChange
 
-		dropData = {}
-		for role in app?.bulk?.departmentRoles
-			dropData[role.id_department_role] = role
-		dropData = ComponentFilterFormatter.transform dropData, 'id_department_role', 'title'
-		@_roleDropdown = new ComponentDropdown dropData[''], yes
+		dropData = ComponentFilterFormatter.factory.createTeamDepRoleDropdownsData app?.bulk?.departments, app?.bulk?.teams, app?.bulk?.departmentRoles
+		
+		@_roleFilter = new ComponentFilter dropData, ['department', 'team', 'role']
 
 		@taskModel = new Model ComponentAddImplicitTask.eventType.SAVE_IMPLICIT_TASK
 		@listen ComponentAddImplicitTask.eventType.SAVE_IMPLICIT_TASK, @taskModel, @onSave
@@ -50,15 +47,11 @@ class ComponentAddImplicitTask extends ComponentBase
 		@contentSwitcher.render switcherDiv
 
 		selectorsDiv = @element.getElementsByClassName(ComponentAddImplicitTask.classes.SELECTORS)[0]
-		@addChild 'filter1', @_filterTeam1, {el: selectorsDiv}
-		@_filterTeam1.render selectorsDiv
+		@addChild 'filter1', @_teamFilter, {el: selectorsDiv}
+		@_teamFilter.render selectorsDiv
 
-		@addChild 'filter2', @_filterTeam2, {el: selectorsDiv}
-		@_filterTeam2.render selectorsDiv
-
-		@addChild 'roleDropdown', @_roleDropdown, {el: selectorsDiv}
-		@_roleDropdown.render selectorsDiv
-
+		@addChild 'filter2', @_roleFilter, {el: selectorsDiv}
+		@_roleFilter.render selectorsDiv
 
 		@saveButton = @element.getElementsByClassName(ComponentAddImplicitTask.classes.SAVE_BUTTON)[0]
 		@saveButton.addEventListener ComponentBase.eventType.CLICK, @handleSaveClickEvent
@@ -72,10 +65,10 @@ class ComponentAddImplicitTask extends ComponentBase
 
 	handleDropdownChange: (selection) =>
 		switch selection.value
-			when @_filterTeam1._dropdowns[0].selected.value
-				dropdown = @_filterTeam2._dropdowns[0]
-			when @_filterTeam1._dropdowns[1].selected.value
-				dropdown = @_filterTeam2._dropdowns[1]
+			when @_teamFilter._dropdowns[0].selected.value
+				dropdown = @_roleFilter._dropdowns[0]
+			when @_teamFilter._dropdowns[1].selected.value
+				dropdown = @_roleFilter._dropdowns[1]
 			else return
 
 		for item in dropdown.getMap()
@@ -88,25 +81,26 @@ class ComponentAddImplicitTask extends ComponentBase
 
 
 	handleSetAsImplicitChanged: (data) =>
-		@_filterTeam2.setActive data
-		@fire ComponentBase.eventType.CHANGE, @_filterTeam2.getStatus()
+		@_roleFilter.setActive data
+		@fire ComponentBase.eventType.CHANGE, @_roleFilter.getStatus()
 		return
 
 
 
 
 	onTemplateSave: (template) =>
-		teamStatus1 = @_filterTeam1.getStatus()
-		teamStatus2 = @_filterTeam2.getStatus()
+		tStatus = @_teamFilter.getStatus()
+		rStatus = @_roleFilter.getStatus()
+		console.log rStatus
 		hrtool.actions.saveImplicitTaskData @taskModel,
 			start_day: @startInput.value
 			duration: @durationInput.value
 			id_task_template: template.id_task_template
-			id_team: if teamStatus1.team.id is -1 then null else teamStatus1.team.id
-			id_department: if teamStatus1.department.id is -1 then null else teamStatus1.department.id
-			id_department_role: if @_roleDropdown.getSelection().id is -1 then null else @_roleDropdown.getSelection().id
-			id_buddy_team: if teamStatus2.team.id is -1 then null else teamStatus2.team.id
-			id_buddy_department: if teamStatus2.department.id is -1 then null else teamStatus2.department.id
+			id_team: if tStatus.team.id is -1 then null else tStatus.team.id
+			id_department: if tStatus.department.id is -1 then null else tStatus.department.id
+			id_department_role: if rStatus.role.id is -1 then null else rStatus.role.id
+			id_buddy_team: if rStatus.team.id is -1 then null else rStatus.team.id
+			id_buddy_department: if rStatus.department.id is -1 then null else rStatus.department.id
 		return
 
 
@@ -133,7 +127,7 @@ class ComponentAddImplicitTask extends ComponentBase
 		if @checkInputs(taskStatus, start, length, selectedTab) is yes
 			switch selectedTab
 				when 0    #new implicit task is inserted
-					status = @_filterTeam1.getStatus()
+					status = @_teamFilter.getStatus()
 					title = taskStatus.title
 					description = taskStatus.description
 					template_team = if status.team.id is -1 then null else status.team.id
@@ -200,9 +194,8 @@ class ComponentAddImplicitTask extends ComponentBase
 		@startInput.value = ''
 		@componentLeftBase.getTitleInput().value = ''
 		@componentLeftBase.getDescriptionInput().value = ''
-		@_filterTeam1.unselectAll()
-		@_filterTeam2.unselectAll()
-		@_roleDropdown.setSelection ComponentDropdown.EmptyOption
+		@_teamFilter.unselectAll()
+		@_roleFilter.unselectAll()
 		@componentRight._componentFilter.unselectAll()
 		return
 

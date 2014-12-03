@@ -71,6 +71,12 @@ ComponentFilterFormatter =
 				ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department'])
 			]
 		,
+		createTeamDepRoleDropdownsData : (departments, teams, roles) ->
+			return ComponentFilterFormatter.format [
+				ComponentFilterFormatter.transform(departments, 'id_department', 'title'),
+				ComponentFilterFormatter.transform(teams, 'id_team', 'title', ['id_department']),
+				ComponentFilterFormatter.transform(roles, 'id_department_role', 'title', ['id_department']),
+			]
 
 
 
