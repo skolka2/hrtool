@@ -4,7 +4,7 @@ ComponentFilter = require '../components/features/componentFilter'
 ComponentTableWrapper = require '../components/table/componentTableWrapper'
 ComponentTextInput = require '../components/features/componentTextInput'
 ComponentTableFactory = require '../components/table/componentTableFactory'
-ComponentAddImplicitTask = require '../components/features/addTask/newImplicitTask/componentAddImplicitTask'
+ComponentAddImplicitTask = require '../components/tasks/addTask/newImplicitTask/componentAddImplicitTask'
 
 class ViewImplicitTasks extends ViewBase
 	constructor: ->

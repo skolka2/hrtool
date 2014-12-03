@@ -1,11 +1,11 @@
 ComponentBase = require '../../../componentBase'
-ComponentFilterFormatter = require '../../componentFilterFormatter'
-ComponentFilter = require '../../componentFilter'
-ComponentLeftBase = require '../componentLeftBase'
+ComponentFilterFormatter = require '../../../features/componentFilterFormatter'
+ComponentFilter = require '../../../features/componentFilter'
+ComponentLeftBase = require '../../componentLeftBase'
 ComponentRight = require '../newTask/componentRight'
-ComponentContentSwitcher = require '../../componentContentSwitcher'
-ComponentCheckBox = require '../../componentCheckBox'
-ComponentDropdown = require '../../componentDropdown'
+ComponentContentSwitcher = require '../../../features/componentContentSwitcher'
+ComponentCheckBox = require '../../../features/componentCheckBox'
+ComponentDropdown = require '../../../features/componentDropdown'
 Model = require '../../../../models/model'
 NotificationCenter = require '../../../componentNotificationCenter'
 hrtool = require '../../../../models/actions'
@@ -37,7 +37,7 @@ class ComponentAddImplicitTask extends ComponentBase
 			startInputClass: ComponentAddImplicitTask.classes.START_INPUT
 			taskLengthInputClass: ComponentAddImplicitTask.classes.TASK_LENGTH_INPUT
 			saveButtonClass: ComponentAddImplicitTask.classes.SAVE_BUTTON
-		@element = @helper.tpl.create 'components/features/addTask/newImplicitTask/componentAddImplicitTask', jadeData
+		@element = @helper.tpl.create 'components/tasks/addTask/newImplicitTask/componentAddImplicitTask', jadeData
 
 		switcherDiv = @element.getElementsByClassName(ComponentAddImplicitTask.classes.CONTENT_SWITCHER_DIV)[0]
 		@componentLeftBase = new ComponentLeftBase()

@@ -1,5 +1,5 @@
 ViewBase =  require './viewBase'
-ComponentAddImplicitTask = require "../components/features/addTask/newImplicitTask/componentAddImplicitTask"
+ComponentAddImplicitTask = require "../components/tasks/addTask/newImplicitTask/componentAddImplicitTask"
 
 class ViewTest extends ViewBase
 	constructor: ->

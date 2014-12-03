@@ -1,6 +1,6 @@
 ComponentBase = require '../../../componentBase'
-ComponentFilterFormatter = require '../../componentFilterFormatter'
-ComponentFilter = require '../../componentFilter'
+ComponentFilterFormatter = require '../../../features/componentFilterFormatter'
+ComponentFilter = require '../../../features/componentFilter'
 hrtool = require '../../../../models/actions'
 Model = require '../../../../models/model'
 

@@ -1,10 +1,10 @@
 ComponentBase = require '../../../componentBase' 
 ComponentLeft = require './componentLeft'
 ComponentRight = require './componentRight' 
-ComponentContentSwitcher = require '../../componentContentSwitcher'
-ComponentFilterFormatter = require '../../componentFilterFormatter' 
-ComponentFilter = require '../../componentFilter' 
-ComponentDropdown = require '../../componentDropdown' 
+ComponentContentSwitcher = require '../../../features/componentContentSwitcher'
+ComponentFilterFormatter = require '../../../features/componentFilterFormatter'
+ComponentFilter = require '../../../features/componentFilter'
+ComponentDropdown = require '../../../features/componentDropdown'
 Model = require '../../../../models/model' 
 hrtool = require '../../../../models/actions' 
 Const = require '../../../../helpers/constants' 
@@ -87,7 +87,7 @@ class ComponentAddTask extends ComponentBase
 			bottomWrapperClass: ComponentAddTask.classes.BOTTOM_WRAPPER_CLASS
 			contentSwitcherDiv: ComponentAddTask.classes.CONTENT_SWITCHER_DIV
 	
-		@element = @helper.tpl.create 'components/features/addTask/newTask/componentAddTask', jadeData
+		@element = @helper.tpl.create 'components/tasks/addTask/newTask/componentAddTask', jadeData
 		@_personWrapper = @element.getElementsByClassName(ComponentAddTask.classes.PERSON_WRAPPER_CLASS)[0]
 		@_lengthInput = @element.getElementsByClassName(jadeData.taskLengthInputClass)[0];
 		@_dateInput = @element.getElementsByClassName(jadeData.dateInputClass)[0];

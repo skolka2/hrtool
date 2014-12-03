@@ -1,9 +1,9 @@
 ComponentBase = require '../../../componentBase'
-ComponentLeftBase = require '../componentLeftBase'
-ComponentCheckBox = require '../../componentCheckBox'
-ComponentFilterFormatter = require '../../componentFilterFormatter'
-ComponentFilter = require '../../componentFilter'
-ComponentDropdown = require '../../componentDropdown'
+ComponentLeftBase = require '../../componentLeftBase'
+ComponentCheckBox = require '../../../features/componentCheckBox'
+ComponentFilterFormatter = require '../../../features/componentFilterFormatter'
+ComponentFilter = require '../../../features/componentFilter'
+ComponentDropdown = require '../../../features/componentDropdown'
 helper = require '../../../../helpers/helpers'
 
 class ComponentLeft extends ComponentLeftBase

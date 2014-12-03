@@ -4,7 +4,7 @@ ComponentFilter = require './features/componentFilter'
 ComponentSelectFactory = require './features/componentSelectFactory'
 ComponentSelect= require './features/componentSelect'
 ComponentEditUser = require './componentEditUser'
-ComponentAddTask = require './features/addTask/newTask/componentAddTask'
+ComponentAddTask = require './tasks/addTask/newTask/componentAddTask'
 ComponentFormAddUser = require './forms/componentFormAddUser'
 ComponentBase = require './componentBase'
 
