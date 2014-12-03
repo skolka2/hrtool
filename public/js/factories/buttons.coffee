@@ -6,9 +6,9 @@ module.exports =
 		a.href = href
 		button = document.createElement "button"
 		if active is href
-			button.className = "bt-button active"
+			button.className = "button active"
 		else
-			button.className = "bt-button"
+			button.className = "button"
 		button.innerHTML = title
 		a.appendChild button
 		return a
@@ -16,7 +16,7 @@ module.exports =
 	createPopupButton : (title, className, params)->
 		button = document.createElement 'button'
 		button.innerHTML = title
-		button.className = 'bt-button ' + className
+		button.className = 'button ' + className
 		button.addEventListener 'click', (ev) ->
 				popup = ComponentPopupFactory.getNewTaskPopup(params)
 				popup.open()
