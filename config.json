@@ -1,0 +1,7 @@
+{
+    "host"      : "http://localhost",
+    "port"      : 8080,
+    "conString"  : "pg://buddytool:7bm1YneqygmiujltoCYq@postgres1.dev1.nag.ccl:5432/buddytool",
+    "CLIENT_ID": "1089474475480-p81as6f1u0bqemv7gncleobk9amem97u.apps.googleusercontent.com",
+    "CLIENT_SECRET": "DEj_NwlYwbPibxDTpQ1h4g3v"
+}
