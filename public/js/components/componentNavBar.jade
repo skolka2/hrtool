@@ -21,9 +21,7 @@ if loggedIn
                 a(href="#tasks")
                     .navbar-menu-item Tasks
         //- end of MENU
-        #navbar-user
-            a(href='/User/user='+userID) #{userFirstName} #{userLastName}
-            a(href="/logout") Logout
+
 else
     .navbar
         a(href='/auth/google' id='login-button' class='login-button') Login

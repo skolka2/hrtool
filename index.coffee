@@ -5,7 +5,7 @@ dbClient = epg config.conString
 express = require 'express.io'
 passport = require 'passport'
 mailer = require './lib/mailer'
-{Strategy} = require 'passport-google'
+GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
 bulk = require('./lib/bulk') dbClient
 tasksRepository = require('./lib/repositories/tasks-repository') dbClient
@@ -18,11 +18,13 @@ passport.serializeUser (user, done) -> done null, user
 
 passport.deserializeUser (obj, done) -> done null, obj
 
-passport.use new Strategy
-	returnURL: "#{config.host}:#{config.port}/auth/google/return"
-	realm: "#{config.host}:#{config.port}/"
-, (identifier, profile, done) ->
-	userRepository.verifyUser profile.emails[0].value, done
+passport.use new GoogleStrategy(
+	clientID: config.CLIENT_ID
+	clientSecret: config.CLIENT_SECRET
+	callbackURL: "#{config.host}:#{config.port}/oauth2callback"
+, (accessToken, refreshToken, profile, done)  ->
+		userRepository.verifyUser email:profile.emails[0].value, picture: profile._json['picture'], done
+)
 
 # init app
 app = express()
@@ -58,13 +60,19 @@ app.get '/handshake', (req, res, next) ->
 		res.json data: response
 
 
-app.get '/auth/google', passport.authenticate 'google'
+app.get '/auth/google', passport.authenticate 'google',
+	 scope: ['https://www.googleapis.com/auth/userinfo.profile',
+						'https://www.googleapis.com/auth/userinfo.email']
 
-app.get '/auth/google/return',
-	passport.authenticate 'google', {
-		successRedirect: '/#home',
-		failureRedirect: '/'
-	}
+
+app.get '/oauth2callback',
+	passport.authenticate 'google',
+		failureRedirect: '/#home',
+		successRedirect: '/'
+
+
+
+
 
 app.get '/logout', (req, res) ->
 	req.logout()

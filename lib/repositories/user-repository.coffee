@@ -3,6 +3,7 @@ parse = require 'csv-parse'
 _ = require 'lodash-node'
 async = require	'async'
 
+
 module.exports = (dbClient) ->
 	return {
 		insertUser: (userData, next)->
@@ -39,8 +40,12 @@ module.exports = (dbClient) ->
 					}
 			dbClient.insert 'users', values, next
 
-		verifyUser: (email, done) ->
-			dbClient.queryOne 'SELECT * FROM users WHERE email=$1', [email], done
+		verifyUser: (data, done) ->
+			dbClient.queryOne 'SELECT * FROM users WHERE email=$1', [data.email], (e,res)->
+				if res
+					dbClient.updateOne 'users', picture:data.picture , 'id_user=$1', [res.id_user], done
+				else done e,res
+
 
 		getAllUsers : (userIdRole, next) ->
 			dbClient.queryAll "SELECT id_user_role FROM user_roles
@@ -129,36 +134,4 @@ module.exports = (dbClient) ->
 				query += " ORDER BY full_name"
 				dbClient.queryAll query, next
 
-
-		getAllUserTeams: (idUser, next) ->
-			dbClient.queryAll """
-				SELECT
-					ut.is_admin,
-					t.title AS team,
-					t.id_team,
-					d.title AS department,
-					d.id_department
-				FROM users_teams ut
-				JOIN teams t ON t.id_team=ut.id_team
-				JOIN departments d ON t.id_department=d.id_department
-				WHERE ut.id_user=$1""", [idUser], next
-
-		getBasicUserInfo: (idUser, next) ->
-			dbClient.queryOne """
-				SELECT
-					u.first_name,
-					u.last_name,
-					u.email,
-					u.id_user_role,
-					u2.id_user AS id_buddy,
-					u2.last_name AS buddy_last_name,
-					u2.first_name AS buddy_first_name,
-					t.id_team,
-					t.id_department
-				FROM users u
-				LEFT JOIN users u2 ON u.id_buddy = u2.id_user
-				LEFT JOIN users_teams ut ON ut.id_user = u.id_user
-				LEFT JOIN teams t ON ut.id_team = t.id_team
-				WHERE u.id_user=$1
-				LIMIT 1""", [idUser], next
 	}

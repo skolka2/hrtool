@@ -52,7 +52,8 @@ CREATE TABLE users
     id_user_role INTEGER,
     id_department_role INTEGER NOT NULL,
     id_buddy INTEGER,
-    is_HR BOOLEAN DEFAULT FALSE
+    is_HR BOOLEAN DEFAULT FALSE,
+    picture TEXT
  
 );
  

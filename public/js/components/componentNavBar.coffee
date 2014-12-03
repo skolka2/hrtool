@@ -1,6 +1,7 @@
 ComponentBase = require './componentBase'
 Const = require '../helpers/constants'
 app = require '../app'
+ComponentUserInfo = require './componentUserInfo'
 
 module.exports = class ComponentNavBar extends ComponentBase
 
@@ -16,6 +17,7 @@ module.exports = class ComponentNavBar extends ComponentBase
 				userFirstName: @helper.bulk.getData ['user', 'first_name']
 				userLastName: @helper.bulk.getData ['user', 'last_name']
 				userRoleID : @helper.bulk.getData ['user', 'id_user_role']
+				picture : @helper.bulk.getData ['user', 'picture']
 				teamManagerID : Const.TEAM_MANAGER
 				administratorID : Const.ADMINISTRATOR
 				HRemail: @helper.bulk.getData ['hrBuddy', 'email']
@@ -29,6 +31,10 @@ module.exports = class ComponentNavBar extends ComponentBase
 
 
 		@element = @helper.tpl.create "components/componentNavBar", jadeData
+		userInfo = new ComponentUserInfo(jadeData)
+		userInfo.render @element
+		#navbar-user
+
 
 	render: ->
 		if !@rendered
