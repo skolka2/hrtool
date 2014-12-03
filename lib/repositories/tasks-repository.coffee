@@ -82,10 +82,16 @@ module.exports = (dbClient) ->
 			dbClient.queryAll sql, params, next
 
 		finishTask : (id, next) ->
-			dbClient.update 'tasks', {completed: true}, 'id_task=$1', [id], next
+			obj =
+				completed: yes
+				date_finished: new Date()
+			dbClient.update 'tasks', obj, 'id_task=$1', [id], next
 
 		unfinishTask : (id, next) ->
-			dbClient.update 'tasks', {completed: no}, 'id_task=$1', [id], next
+			obj =
+				completed: no
+				date_finished: null
+			dbClient.update 'tasks', obj, 'id_task=$1', [id], next
 
 		updateTask : (taskData, next) ->
 			obj = _.pick taskData, ['title', 'description', 'notes']

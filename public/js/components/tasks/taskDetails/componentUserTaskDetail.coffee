@@ -5,8 +5,8 @@ Model = require '../../../models/model'
 hrtool = require '../../../models/actions'
 
 class ComponentUserTaskDetail extends ComponentBaseTaskDetail
-	constructor: (taskParams) ->
-		super taskParams
+	constructor: (taskParams, tempFinishDate = null) ->
+		super
 		@taskBuddy = taskParams.taskBuddy
 		@addNoteButtonVisible = no
 		return

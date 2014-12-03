@@ -1,7 +1,7 @@
 ComponentBase = require '../componentBase'
 
 class ComponentDeadlineInfo extends ComponentBase
-	constructor: (@deadlineDate, @isFinished = no) ->
+	constructor: (@deadlineDate, @finishDate = new Date(), @isFinished = no) ->
 		@isRed = if @deadlineDate <= new Date() then yes else no
 		super()
 
@@ -26,13 +26,16 @@ class ComponentDeadlineInfo extends ComponentBase
 		@square = document.createElement 'div'
 		@square.className = if @isRed then ComponentDeadlineInfo.classes.RED_SQUARE else ComponentDeadlineInfo.classes.SQUARE
 
-		diff = @helper.format.getDiffDate(new Date(), @deadlineDate)
+		diff = @helper.format.getDiffDate new Date(), @deadlineDate
+		date = @helper.format.getDate @deadlineDate
 		if diff is 0
-			@contentDiv.appendChild document.createTextNode('Today')
+			@contentDiv.appendChild document.createTextNode 'Today'
 			@contentDiv.classList.add 'white-bg'
 			@circle.appendChild @contentDiv
 		else
 			if @isFinished is yes
+				span2.innerHTML = 'Task Finished'
+				date = @helper.format.getDate @finishDate
 				if diff > 1
 					@circle.classList.add 'correct' #task was finished before deadline
 					@circle.innerHTML = '✔'
@@ -40,14 +43,14 @@ class ComponentDeadlineInfo extends ComponentBase
 					@circle.classList.add 'incorrect' #task was finished before deadline
 					@circle.innerHTML = '✘'
 			else
+				span2.innerHTML = 'Task Deadline'
 				span.innerHTML = Math.abs diff
 				@contentDiv.appendChild span
-				@contentDiv.appendChild document.createTextNode('Days')
+				@contentDiv.appendChild document.createTextNode 'Days'
 				@circle.appendChild @contentDiv
 
-		span2.innerHTML = 'Task Deadline'
 		@hoverContentDiv.appendChild span2
-		@hoverContentDiv.appendChild document.createTextNode(@helper.format.getDate(@deadlineDate))
+		@hoverContentDiv.appendChild document.createTextNode date
 
 		@square.appendChild @hoverContentDiv
 

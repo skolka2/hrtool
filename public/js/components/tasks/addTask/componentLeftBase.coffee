@@ -1,5 +1,5 @@
-ComponentBase = require '../componentBase'
-helper = require '../../helpers/helpers'
+ComponentBase = require '../../componentBase'
+helper = require '../../../helpers/helpers'
 
 class ComponentLeftBase extends ComponentBase
   constructor: ->

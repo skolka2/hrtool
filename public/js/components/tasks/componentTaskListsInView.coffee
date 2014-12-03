@@ -76,7 +76,7 @@ class ComponentTaskListsInView extends ComponentBase
 	handleFinishTask: (src) ->
 		@listCompleted.content.innerHTML = '' if Object.keys(@listCompleted.childs).length is 0
 
-		finishedTask = new ComponentUserTaskDetail src
+		finishedTask = new ComponentUserTaskDetail src, new Date()
 		finishedTask.getElement().classList.add ComponentUserTaskDetail.classes.FINISHED_TASK
 		@listCompleted.addChild 'task'+src.taskId, finishedTask, @listCompleted.content
 

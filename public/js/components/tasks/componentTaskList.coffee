@@ -27,6 +27,7 @@ class ComponentTaskList extends ComponentBase
 				taskTitle: taskData.title
 				dateFrom: taskData.date_from
 				dateTo: taskData.date_to
+				dateFinished: taskData.date_finished
 				taskDescription: taskData.description
 				taskNotes: taskData.notes
 				isFinished: taskData.completed

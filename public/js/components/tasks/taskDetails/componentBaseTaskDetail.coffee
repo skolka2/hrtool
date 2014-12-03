@@ -2,16 +2,18 @@ ComponentBase = require '../../componentBase'
 ComponentDeadlineInfo = require "../componentDeadlineInfo"
 
 class ComponentBaseTaskDetail extends ComponentBase
-	constructor: (taskParams) ->
+	constructor: (taskParams, tempFinishDate) ->
 		super()
 		@taskId = taskParams.taskId
 		@taskBuddy = taskParams.taskOwner
 		@taskTitle = taskParams.taskTitle
 		@dateTo = new Date taskParams.dateTo
-		@taskDescription = taskParams.taskDescription
+		@dateFinished = new Date taskParams.dateFinished
+		@taskDescription = if tempFinishDate? then tempFinishDate else taskParams.taskDescription
 		@taskNotes = taskParams.taskNotes
 		@isFinished = taskParams.isFinished
 		@notesTextArea = null;
+		console.log @dateFinished
 		return
 
 	createDom: ->
@@ -36,7 +38,7 @@ class ComponentBaseTaskDetail extends ComponentBase
 		@setNotes()
 		notesWrapper.appendChild @notesTextArea
 		deadlineInfoWrapper = @element.getElementsByClassName(ComponentBaseTaskDetail.classes.DEADLINE_INFO_WRAPPER_CLASS)[0]
-		deadlineInfo = new ComponentDeadlineInfo @dateTo, @isFinished
+		deadlineInfo = new ComponentDeadlineInfo @dateTo, @dateFinished, @isFinished
 		deadlineInfo.render deadlineInfoWrapper
 		return
 
